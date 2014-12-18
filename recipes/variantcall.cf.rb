@@ -21,7 +21,7 @@ bash "prepare_variantcall" do
   #{node[:hadoop][:home]}/bin/yarn jar #{node[:hiway][:home]}/hiway-core-#{node[:hiway][:version]}.jar -w #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:setupworkflow]}}
   touch #{prepared_variantcall}
   EOF
-    not_if { ::File.exists?( "#{prepared_variantcall}" ) }
+#    not_if { ::File.exists?( "#{prepared_variantcall}" ) }
 end
 
 ran_variantcall = "/tmp/.ran_variantcall"
@@ -33,5 +33,5 @@ bash "run_variantcall" do
   #{node[:hadoop][:home]}/bin/yarn jar #{node[:hiway][:home]}/hiway-core-#{node[:hiway][:version]}.jar -w #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:workflow]}}
   touch #{ran_variantcall}
   EOF
-    not_if { ::File.exists?( "#{ran_variantcall}" ) }
+#    not_if { ::File.exists?( "#{ran_variantcall}" ) }
 end

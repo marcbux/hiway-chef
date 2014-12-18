@@ -30,7 +30,6 @@ remote_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:variantcall][:ann
   action :create_if_missing
 end
 
-installed_bowtie2 = "/tmp/.installed_bowtie2"
 bash "install_bowtie2" do
   user "root"
   code <<-EOF
@@ -38,12 +37,10 @@ bash "install_bowtie2" do
   apt-get install unzip -y
   unzip #{Chef::Config[:file_cache_path]}/#{node[:hiway][:variantcall][:bowtie2][:zip]} -d #{node[:hiway][:dir]}
   ln -f -s #{node[:hiway][:variantcall][:bowtie2][:home]}/bowtie2* /usr/bin/
-  touch #{installed_bowtie2}
   EOF
-    not_if { ::File.exists?( "#{installed_bowtie2}" ) }
+#    not_if { ::File.exists?( "#{installed_bowtie2}" ) }
 end
 
-installed_samtools = "/tmp/.installed_samtools"
 bash "install_samtools" do
   user "root"
   code <<-EOF
@@ -52,30 +49,25 @@ bash "install_samtools" do
   tar xjvf #{Chef::Config[:file_cache_path]}/#{node[:hiway][:variantcall][:samtools][:tarbz2]} -C #{node[:hiway][:dir]}
   make -C #{node[:hiway][:variantcall][:samtools][:home]}
   ln -s #{node[:hiway][:variantcall][:samtools][:home]}/samtools /usr/bin/
-  touch #{installed_samtools}
   EOF
-    not_if { ::File.exists?( "#{installed_samtools}" ) }
+#    not_if { ::File.exists?( "#{installed_samtools}" ) }
 end
 
-installed_varscan = "/tmp/.installed_varscan"
 bash "install_varscan" do
   user "root"
   code <<-EOF
   set -e && set -o pipefail
   ln -s #{node[:hiway][:dir]}/#{node[:hiway][:variantcall][:varscan][:jar]} \$JAVA_HOME/jre/lib/ext/
-  touch #{installed_varscan}
   EOF
-    not_if { ::File.exists?( "#{installed_varscan}" ) }
+#    not_if { ::File.exists?( "#{installed_varscan}" ) }
 end
 
-installed_annovar = "/tmp/.installed_annovar"
 bash "install_annovar" do
   user "root"
   code <<-EOF
   set -e && set -o pipefail
   tar xvfz #{Chef::Config[:file_cache_path]}/#{node[:hiway][:variantcall][:annovar][:targz]} -C #{node[:hiway][:dir]}
   ln -f -s #{node[:hiway][:variantcall][:annovar][:home]}/*.pl /usr/bin/
-  touch #{installed_annovar}
   EOF
-    not_if { ::File.exists?( "#{installed_annovar}" ) }
+#    not_if { ::File.exists?( "#{installed_annovar}" ) }
 end

@@ -1,8 +1,8 @@
 include_attribute "hadoop"
 
-default[:hiway][:user]                              =  node[:hadoop][:yarn][:user]
-default[:hiway][:group]                             =  node[:hadoop][:group]
-default[:hiway][:dir]                               =  node[:hadoop][:dir]
+default[:hiway][:user]                              = node[:hadoop][:yarn][:user]
+default[:hiway][:group]                             = node[:hadoop][:group]
+default[:hiway][:dir]                               = node[:hadoop][:dir]
 default[:hiway][:version]                           = "0.2.0-SNAPSHOT"
 default[:hiway][:targz]                             = "hiway-dist-#{node[:hiway][:version]}.tar.gz"
 default[:hiway][:home]                              = "#{default[:hiway][:dir]}/hiway-#{default[:hiway][:version]}"
@@ -12,6 +12,8 @@ default[:hiway][:galaxy][:repository]               = "https://bitbucket.org/gal
 default[:hiway][:galaxy][:home]                     = "#{default[:hiway][:dir]}/galaxy" 
 
 default[:hiway][:wordcount][:workflow]              = "wordcount.cf"
+default[:hiway][:wordcount][:input]                 = "'gronemeyer.txt' 'benzko.txt'"
+default[:hiway][:wordcount][:iterations]            = 2
 
 default[:hiway][:variantcall][:setupworkflow]       = "variantcall.setup.cf"
 default[:hiway][:variantcall][:workflow]            = "variantcall.cf"

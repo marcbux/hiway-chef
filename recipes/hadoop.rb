@@ -10,7 +10,7 @@ bash "configure_hadoop_for_hiway" do
     sed -i 's%</configuration>%<name>yarn.application.classpath</name>\\n\\t\\t<value>\$HADOOP_CONF_DIR, \$HADOOP_COMMON_HOME/share/hadoop/common/\\*, \$HADOOP_COMMON_HOME/share/hadoop/common/lib/\\*, \$HADOOP_HDFS_HOME/share/hadoop/hdfs/\\*, \$HADOOP_HDFS_HOME/share/hadoop/hdfs/lib/\\*, \$HADOOP_YARN_HOME/share/hadoop/yarn/\\*, \$HADOOP_YARN_HOME/share/hadoop/yarn/lib/\\*, \$HIWAY_HOME/\\*, \$HIWAY_HOME/lib/\\*</value>\\n\\t</property>\\n</configuration>%' #{node[:hadoop][:home]}/etc/hadoop/yarn-site.xml
   fi
   EOF
-    only_if { "grep -q #{node[:hiway][:home]} #{node[:hadoop][:home]}/etc/hadoop/yarn-site.xml" }
+#    only_if { "grep -q #{node[:hiway][:home]} #{node[:hadoop][:home]}/etc/hadoop/yarn-site.xml" }
 end
 
 service "resourcemanager" do
