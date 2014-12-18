@@ -1,0 +1,6 @@
+hiway/hadoop:hadoop/rm,hadoop/nm,L/hadoop/install
+hiway/install:L/hiway/hadoop
+hiway/wordcount.cf:hiway/install
+hiway/variantcall.cf_tools:L/hiway/install
+hiway/variantcall.cf:hiway/variantcall.cf_tools,hiway/install
+hiway/montage_synthetic.dax:L/hiway/install
