@@ -84,9 +84,9 @@ deftask annovar-annotate( fun(File) exonicfun(File) : csv(File) db(File) buildve
     annotate_variation.pl -buildver $buildver -geneanno -outfile table $csv db/
 }*
 
-threads = '24';
+threads = '<%= node[:hiway][:variantcall][:threads] %>';
 
-memory = '25769803776';
+memory = '<%= node[:hiway][:variantcall][:memory] %>';
 
 read1 = read(
     list : 'reads_1.txt'

@@ -27,7 +27,10 @@ bash "run_variantcall" do
   group node[:hiway][:group]
   code <<-EOF
   set -e && set -o pipefail
-  #{node[:hadoop][:home]}/bin/yarn jar #{node[:hiway][:home]}/hiway-core-#{node[:hiway][:version]}.jar -w #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:workflow]}} -s #{node[:hiway][:home]}/variantcall_summary.json
+  for i in {1..#{node[:hiway][:variantcall][:iterations]}}
+  do
+    #{node[:hadoop][:home]}/bin/yarn jar #{node[:hiway][:home]}/hiway-core-#{node[:hiway][:version]}.jar -w #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:workflow]}} -s #{node[:hiway][:home]}/variantcall_summary.json
+  done
   EOF
 #    not_if { ::File.exists?( "#{ran_variantcall}" ) }
 end

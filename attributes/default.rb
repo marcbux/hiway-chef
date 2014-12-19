@@ -31,6 +31,11 @@ default[:hiway][:variantcall][:varscan][:url]       = "http://downloads.sourcefo
 default[:hiway][:variantcall][:annovar][:targz]     = "annovar.latest.tar.gz"
 default[:hiway][:variantcall][:annovar][:home]      = "#{default[:hiway][:dir]}/annovar"
 default[:hiway][:variantcall][:annovar][:url]       = "http://www.openbioinformatics.org/annovar/download/g4EUwyphi9/#{node[:hiway][:variantcall][:annovar][:targz]}"
+default[:hiway][:variantcall][:splitsize_reference] = 12000
+default[:hiway][:variantcall][:paired_read_files]   = 1
+default[:hiway][:variantcall][:iterations]          = 1
+default[:hiway][:variantcall][:threads]             = 1
+default[:hiway][:variantcall][:memory]              = 4096000000
 
 default[:hiway][:montage_synthetic][:workflow]       = "Montage_25.xml"
 default[:hiway][:montage_synthetic][:url]            = "https://confluence.pegasus.isi.edu/download/attachments/2490624/#{node[:hiway][:montage_synthetic][:workflow]}?version=1&modificationDate=1254808354000&api=v2"

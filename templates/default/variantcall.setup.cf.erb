@@ -71,11 +71,11 @@ deftask split( <out(File)> : file(File) lines ) in bash *{
     fi
 }*
 
-// 2 splits (splitsize-reference ~= 23511 / desired dop (rounded up)
-splitsize-reference = '11756';
+// number of splits (splitsize-reference ~= 23511 / desired dop (rounded up)
+splitsize-reference = <%= node[:hiway][:variantcall][:splitsize_reference] %>;
 
 // 10281156 Byte - Number of (paired) read files to download and align (about 800 MB per File)
-n-reads = '1';
+n-reads = '<%= node[:hiway][:variantcall][:paired_read_files] %>';
 
 db ref = annovar-downdb(
     query    : 'refGene'
