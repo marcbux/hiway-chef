@@ -3,8 +3,10 @@ dependencies:
     local: 
       - "hadoop::install"
   - recipe: "hiway::hadoop"
-    global: 
+    local: 
       - "hiway::install"
+    global: 
+      - "hadoop::nm"
   - recipe: "hiway::wordcount_cf"
     local: 
       - "hiway::install"
