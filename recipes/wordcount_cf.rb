@@ -23,7 +23,8 @@ bash "prepare_wordcount" do
   user node[:hiway][:user]
   group node[:hiway][:group]
   code <<-EOF
-  set -e && set -o pipefail
+#  set -e && set -o pipefail
+# Ok if this fails because files already exist
   #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/benzko.txt
   #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/gronemeyer.txt
   EOF
