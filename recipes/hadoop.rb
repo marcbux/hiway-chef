@@ -15,8 +15,10 @@ end
 
 service "resourcemanager" do
   action :restart
+  only_if { File.exist?("/etc/init.d/resourcemanager") }
 end
 
 service "nodemanager" do
   action :restart
+  only_if { File.exist?("/etc/init.d/nodemanager") }
 end
