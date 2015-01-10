@@ -37,7 +37,7 @@ bash "run_wordcount" do
   set -e && set -o pipefail
   for i in {1..#{node[:hiway][:wordcount][:iterations]}}
   do
-    #{node[:hadoop][:home]}/bin/yarn jar #{node[:hiway][:home]}/hiway-core-#{node[:hiway][:version]}.jar -w #{node[:hiway][:home]}/#{node[:hiway][:wordcount][:workflow]} -s #{node[:hiway][:home]}/wordcount_summary_$i.json
+#    #{node[:hadoop][:home]}/bin/yarn jar #{node[:hiway][:home]}/hiway-core-#{node[:hiway][:version]}.jar -w #{node[:hiway][:home]}/#{node[:hiway][:wordcount][:workflow]} -s #{node[:hiway][:home]}/wordcount_summary_$i.json
   done
   EOF
 #    not_if { ::File.exists?("#{node[:hiway][:home]}/wordcount_summary.json") }

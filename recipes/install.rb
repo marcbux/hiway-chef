@@ -15,7 +15,7 @@ bash "create_hdfs_user_dir" do
   group node[:hiway][:group]
   code <<-EOF
   set -e && set -o pipefail
-  #{node[:hadoop][:home]}/bin/hdfs dfs -mkdir -p /user/#{node[:hiway][:user]}
+#  #{node[:hadoop][:home]}/bin/hdfs dfs -mkdir -p /user/#{node[:hiway][:user]}
   EOF
 #    not_if { "#{node[:hadoop][:home]}/bin/hdfs dfs -test -d /user/#{node[:hiway][:user]}" }
 end
