@@ -2,6 +2,21 @@ node.default['java']['jdk_version'] = 7
 node.default['java']['install_flavor'] = "openjdk"
 include_recipe "java"
 
+user node[:hiway][:user] do
+  supports :manage_home => true
+  action :create
+  home "/home/#{node[:hiway][:user]}"
+  system true
+  shell "/bin/bash"
+end
+
+group node[:hiway][:group] do
+  action :modify
+  members ["#{node[:hiway][:user]}"]
+  append true
+end
+
+
 remote_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:targz]}" do
   source node[:hiway][:url]
   owner node[:hiway][:user]
