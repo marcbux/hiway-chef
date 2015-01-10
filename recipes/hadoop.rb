@@ -23,14 +23,10 @@ service "nodemanager" do
   only_if { File.exist?("/etc/init.d/nodemanager") }
 end
 
-bash "create_hdfs_user_dir" do
-  user node[:hiway][:user]
-  group node[:hiway][:group]
-  code <<-EOF
-  #set -e && set -o pipefail
-# ok if this fails because dir already exists
-  #{node[:hadoop][:home]}/bin/hdfs dfs -mkdir -p /user/#{node[:hiway][:user]}
-  EOF
-# test doesnt work
-#  not_if { "#{node[:hadoop][:home]}/bin/hdfs dfs -test -d /user/#{node[:hiway][:user]}" }
+hadoop_hdfs_directory "/user/#{node[:hiway][:user]}" do
+ action :create
+ owner node[:hiway][:user]
+ group node[:hiway][:group]
+ mode "0775"
 end
+
