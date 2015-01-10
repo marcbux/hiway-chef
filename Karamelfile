@@ -1,8 +1,8 @@
 dependencies: 
   - recipe: "hiway::install"
-    local: 
-      - "hadoop::install"
     global: 
+      - "hadoop::install"
+      - "hopshub::install"
       - "hadoop::rm"
       - "hadoop::nm"
   - recipe: "hiway::hadoop"
