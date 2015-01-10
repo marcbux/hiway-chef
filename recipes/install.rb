@@ -10,15 +10,6 @@ remote_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:targz]}" do
   action :create_if_missing
 end
 
-bash "create_hdfs_user_dir" do
-  user node[:hiway][:user]
-  group node[:hiway][:group]
-  code <<-EOF
-  set -e && set -o pipefail
-  #{node[:hadoop][:home]}/bin/hdfs dfs -mkdir -p /user/#{node[:hiway][:user]}
-  EOF
-#    not_if { "#{node[:hadoop][:home]}/bin/hdfs dfs -test -d /user/#{node[:hiway][:user]}" }
-end
 
 bash "install_hiway" do
   user node[:hiway][:user]
