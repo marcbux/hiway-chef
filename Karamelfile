@@ -2,6 +2,9 @@ dependencies:
   - recipe: "hiway::install"
     local: 
       - "hadoop::install"
+    global: 
+      - "hadoop::rm"
+      - "hadoop::nm"
   - recipe: "hiway::hadoop"
     local: 
       - "hiway::install"
@@ -11,15 +14,18 @@ dependencies:
       - "hadoop::dn"
   - recipe: "hiway::wordcount_cf"
     local: 
-      - "hiway::install"
-    global: 
       - "hiway::hadoop"
+    global: 
       - "hadoop::rm"
   - recipe: "hiway::variantcall_cf_tools"
+    local: 
+      - "hiway::hadoop"
     global: 
       - "hiway::hadoop"
       - "hadoop::rm"
   - recipe: "variantcall_cf"
+    local: 
+      - "hiway::hadoop"
     global: 
       - "hiway::variantcall_cf_tools"
       - "hadoop::rm"
