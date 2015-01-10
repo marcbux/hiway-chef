@@ -15,7 +15,8 @@ user node[:hiway][:user] do
   not_if "getent passwd #{node[:hiway][:user]}"
 end
 
-remote_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:targz]}" do
+zippedFile = "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:targz]}"
+remote_file zippedFile do
   source node[:hiway][:url]
   owner node[:hiway][:user]
   group node[:hiway][:group]
@@ -29,9 +30,9 @@ bash "install_hiway" do
   group node[:hiway][:group]
   code <<-EOF
   set -e && set -o pipefail
-  tar xfz #{Chef::Config[:file_cache_path]}/#{node[:hiway][:targz]} -C #{node[:hiway][:dir]}
+  tar xfz #{zippedFile} -C #{node[:hiway][:dir]}
   EOF
-#    not_if { ::File.exists?("#{node[:hiway][:home]}") }
+  not_if { ::File.directory?("#{node[:hiway][:home]}") }
 end
 
 template "#{node[:hadoop][:conf_dir]}/hiway-site.xml" do
