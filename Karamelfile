@@ -17,6 +17,8 @@ dependencies:
       - "hiway::hadoop"
     global: 
       - "hadoop::rm"
+      - "hadoop::dn"
+      - "hadoop::nn"
   - recipe: "hiway::variantcall_cf_tools"
     local: 
       - "hiway::hadoop"

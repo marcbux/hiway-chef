@@ -1,3 +1,10 @@
+template "#{node[:hadoop][:conf_dir]}/hiway-site.xml" do
+  user node[:hiway][:user]
+  group node[:hiway][:group]
+  source "install.hiway-site.xml.erb"
+  mode "0755"
+end
+
 bash "configure_hadoop_for_hiway" do
   user node[:hiway][:user]
   group node[:hiway][:group]

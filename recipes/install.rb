@@ -7,9 +7,10 @@ group node[:hiway][:group] do
 end
 
 user node[:hiway][:user] do
-  comment 'Hiway user'
+  supports :manage_home => true
   gid node['hiway']['group']
   home node['hiway']['home']
+  action :create
   shell '/bin/bash'
   system true
   not_if "getent passwd #{node[:hiway][:user]}"
@@ -33,13 +34,6 @@ bash "install_hiway" do
   tar xfz #{zippedFile} -C #{node[:hiway][:dir]}
   EOF
   not_if { ::File.directory?("#{node[:hiway][:home]}") }
-end
-
-template "#{node[:hadoop][:conf_dir]}/hiway-site.xml" do
-  user node[:hiway][:user]
-  group node[:hiway][:group]
-  source "install.hiway-site.xml.erb"
-  mode "0755"
 end
 
 link "#{node[:hadoop][:dir]}/hiway" do
