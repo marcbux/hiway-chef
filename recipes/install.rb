@@ -8,8 +8,7 @@ end
 
 user node[:hiway][:user] do
   supports :manage_home => true
-  gid node['hiway']['group']
-  home node['hiway']['home']
+  home "/home/#{node['hiway']['user']}k"
   action :create
   shell '/bin/bash'
   system true
@@ -23,6 +22,13 @@ directory node[:hiway][:dir] do
   recursive true
   action :create
 end
+
+group node[:hiway][:group] do
+  action :modify
+  members node[:hiway][:user] 
+  append true
+end
+
 
 zippedFile = "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:targz]}"
 remote_file zippedFile do
