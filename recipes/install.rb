@@ -8,7 +8,7 @@ end
 
 user node[:hiway][:user] do
   supports :manage_home => true
-  home "/home/#{node['hiway']['user']}k"
+  home "/home/#{node['hiway']['user']}"
   action :create
   shell '/bin/bash'
   system true
