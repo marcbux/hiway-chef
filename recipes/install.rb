@@ -16,6 +16,14 @@ user node[:hiway][:user] do
   not_if "getent passwd #{node[:hiway][:user]}"
 end
 
+directory node[:hiway][:dir] do
+  owner node[:hiway][:user]
+  group node[:hiway][:group]
+  mode "0774"
+  recursive true
+  action :create
+end
+
 zippedFile = "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:targz]}"
 remote_file zippedFile do
   source node[:hiway][:url]
