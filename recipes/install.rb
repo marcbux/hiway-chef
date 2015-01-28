@@ -2,7 +2,6 @@ node.default['java']['jdk_version'] = 7
 node.default['java']['install_flavor'] = "openjdk"
 include_recipe "java"
 
-
 group node[:hiway][:group] do
 end
 
@@ -29,25 +28,15 @@ group node[:hiway][:group] do
   append true
 end
 
-
-zippedFile = "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:targz]}"
-remote_file zippedFile do
-  source node[:hiway][:url]
-  owner node[:hiway][:user]
-  group node[:hiway][:group]
-  mode "0775"
-  action :create_if_missing
-end
-
-
-bash "install_hiway" do
+bash 'build-hiway' do
   user node[:hiway][:user]
-  group node[:hiway][:group]
-  code <<-EOF
-  set -e && set -o pipefail
-  tar xfz #{zippedFile} -C #{node[:hiway][:dir]}
-  EOF
-  not_if { ::File.directory?("#{node[:hiway][:home]}") }
+  code <<-EOH
+    set -e
+    git clone #{node[:hiway][:github_url]} /tmp
+    mvn -f ~/tmp/hiway-#{node[:hiway][:version]}/pom.xml package
+    cp -r ~/tmp/hiway-#{node[:hiway][:version]}/hiway-dist/target/hiway-dist-#{node[:hiway][:version]}/hiway-#{node[:hiway][:version]} #{node[:hiway][:home]}
+  EOH
+  not_if { ::File.exist?("#{node[:hiway][:home]}") }
 end
 
 link "#{node[:hadoop][:dir]}/hiway" do

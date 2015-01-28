@@ -3,10 +3,9 @@ include_attribute "hadoop"
 default[:hiway][:user]                              = node[:hadoop][:yarn][:user]
 default[:hiway][:group]                             = node[:hadoop][:group]
 default[:hiway][:dir]                               = node[:hadoop][:dir]
-default[:hiway][:version]                           = "0.2.0-SNAPSHOT"
-default[:hiway][:targz]                             = "hiway-dist-#{node[:hiway][:version]}.tar.gz"
+default[:hiway][:version]                           = "1.0.0-SNAPSHOT"
 default[:hiway][:home]                              = "#{default[:hiway][:dir]}/hiway-#{default[:hiway][:version]}"
-default[:hiway][:url]                               = "https://github.com/marcbux/Hi-WAY/releases/download/#{node[:hiway][:version]}/#{node[:hiway][:targz]}"
+default[:hiway][:github_url]                        = "https://github.com/marcbux/Hi-WAY.git"
 
 default[:hiway][:galaxy][:repository]               = "https://bitbucket.org/galaxy/galaxy-dist/"
 default[:hiway][:galaxy][:home]                     = "#{default[:hiway][:dir]}/galaxy" 
@@ -38,7 +37,7 @@ default[:hiway][:variantcall][:threads]             = 1
 default[:hiway][:variantcall][:memory]              = 4096000000
 
 default[:hiway][:montage_synthetic][:workflow]       = "Montage_25.xml"
-default[:hiway][:montage_synthetic][:url]            = "https://confluence.pegasus.isi.edu/download/attachments/2490624/#{node[:hiway][:montage_synthetic][:workflow]}?version=1&modificationDate=1254808354000&api=v2"
+default[:hiway][:montage_synthetic][:url]            = "https://confluence.pegasus.isi.edu/download/attachments/2490624/#{node[:hiway][:montage_synthetic][:workflow]}"
 
 default[:hiway][:montage_m17_4][:workflow]           = "montage_m17_4.dax"
 default[:hiway][:montage_m17_4][:montage][:version]  = "3.3"

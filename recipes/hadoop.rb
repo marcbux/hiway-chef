@@ -36,4 +36,3 @@ hadoop_hdfs_directory "/user/#{node[:hiway][:user]}" do
  group node[:hiway][:group]
  mode "0775"
 end
-
