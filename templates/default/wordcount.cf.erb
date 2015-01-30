@@ -1,28 +1,47 @@
-deftask wc( csv( File ) : txt( File ) )in bash *{
-    awk '{
-        for( i = 1; i <= NF; i++ )
-            freq[ $i ]++
-    }
-    END {
-        for( word in freq )
-            printf "%s\t%d\n", word, freq[ word ]
-    }' $txt > $csv
+textpath = <%= node[:hiway][:wordcount][:input] %>;
+
+deftask split( <splitpaths( File )> : textpath( File ) )in python *{
+
+i, splitpaths = 0, []
+with open(textpath) as text:
+    for line in text:
+        if line.startswith('***'):
+            if splitpaths:
+                with open(splitpaths[-1], 'w') as splitfile:
+                    splitfile.write(split)
+            splitpaths.append('split%i.txt' % i)
+            i, split = i + 1, ""
+        elif splitpaths and i > 0:
+            split += line
+splitpaths.pop()
 }*
 
-deftask groupby( result( File ) : <csv( File )> )in bash *{
-    cat ${csv[@]} | awk '{
-        freq[ $1 ] += $2
-    }
-    END {
-        for( word in freq )
-            printf "%s\t%d\n", word, freq[ word ]
-    }' > $result
+deftask count( splitcountpath( File ) : splitpath( File ) )in python *{
+
+import pickle
+from collections import Counter
+with open(splitpath) as split:
+    wordcount = Counter(split.read().split())
+splitcountpath = '%s_counted.p' % splitpath
+with open(splitcountpath, "wb") as splitcount:
+    pickle.dump(wordcount, splitcount)
 }*
 
-txt( File ) = <%= node[:hiway][:wordcount][:input] %>;
+deftask sortmerge( countpath( File ) : <splitcountpaths( File )> )in python *{
 
-csv = wc( txt: txt );
+import pickle
+from collections import Counter
+wordcount, countpath = Counter(), 'counts.txt'
+with open(countpath, 'w') as countfile:
+    for splitcountpath in splitcountpaths:
+        with open(splitcountpath, "rb") as splitcount:
+            wordcount.update(pickle.load(splitcount))
+    for word, count in wordcount.most_common():
+        countfile.write('%s : %i\n' % (word, count))
+}*
 
-result = groupby( csv: csv );
+splitpaths = split( textpath: textpath );
+splitcountpaths = count( splitpath: splitpaths );
+countpath = sortmerge( splitcountpaths: splitcountpaths );
 
-result;
+countpath;

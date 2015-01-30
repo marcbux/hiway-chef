@@ -1,6 +1,6 @@
 include_attribute "hadoop"
 
-default[:hiway][:user]                              = node[:hadoop][:yarn][:user]
+default[:hiway][:user]                              = "hiway"
 default[:hiway][:group]                             = node[:hadoop][:group]
 default[:hiway][:dir]                               = node[:hadoop][:dir]
 default[:hiway][:version]                           = "1.0.0-SNAPSHOT"
@@ -12,7 +12,6 @@ default[:hiway][:galaxy][:home]                     = "#{default[:hiway][:dir]}/
 
 default[:hiway][:wordcount][:workflow]              = "wordcount.cf"
 default[:hiway][:wordcount][:input]                 = "'gronemeyer.txt' 'benzko.txt'"
-default[:hiway][:wordcount][:iterations]            = 2
 
 default[:hiway][:variantcall][:setupworkflow]       = "variantcall.setup.cf"
 default[:hiway][:variantcall][:workflow]            = "variantcall.cf"

@@ -31,8 +31,8 @@ service "nodemanager" do
 end
 
 hadoop_hdfs_directory "/user/#{node[:hiway][:user]}" do
- action :create
- owner node[:hiway][:user]
- group node[:hiway][:group]
- mode "0775"
+  action :create
+  owner node[:hiway][:user]
+  group node[:hiway][:group]
+  mode "0775"
 end

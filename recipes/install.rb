@@ -1,8 +1,24 @@
 node.default['java']['jdk_version'] = 7
 node.default['java']['install_flavor'] = "openjdk"
 include_recipe "java"
+include_recipe "git"
 
-group node[:hiway][:group] do
+case node[:platform_family]
+  when "debian"
+    package "maven" do
+      options "--force-yes"
+    end
+
+  when "rhel"
+    protobuf_lib_prefix = "/" 
+    ark "maven" do
+      url "http://apache.mirrors.spacedump.net/maven/maven-3/#{node[:maven][:version]}/binaries/apache-maven-#{node[:maven][:version]}-bin.tar.gz"
+      version "#{node[:maven][:version]}"
+      path "/usr/local/maven/"
+      home_dir "/usr/local/maven"
+      append_env_path true
+      owner "#{node[:hdfs][:user]}"
+    end
 end
 
 user node[:hiway][:user] do
@@ -14,27 +30,25 @@ user node[:hiway][:user] do
   not_if "getent passwd #{node[:hiway][:user]}"
 end
 
-directory node[:hiway][:dir] do
-  owner node[:hiway][:user]
-  group node[:hiway][:group]
-  mode "0774"
-  recursive true
-  action :create
-end
-
 group node[:hiway][:group] do
   action :modify
   members node[:hiway][:user] 
   append true
 end
 
+git "/tmp/hiway" do
+  repository node[:hiway][:github_url]
+  reference "master"
+  user node[:hiway][:user]
+  action :sync
+end
+
 bash 'build-hiway' do
   user node[:hiway][:user]
   code <<-EOH
     set -e
-    git clone #{node[:hiway][:github_url]} /tmp
-    mvn -f ~/tmp/hiway-#{node[:hiway][:version]}/pom.xml package
-    cp -r ~/tmp/hiway-#{node[:hiway][:version]}/hiway-dist/target/hiway-dist-#{node[:hiway][:version]}/hiway-#{node[:hiway][:version]} #{node[:hiway][:home]}
+    mvn -f /tmp/hiway/pom.xml package
+    cp -r /tmp/hiway/hiway-dist/target/hiway-dist-#{node[:hiway][:version]}/hiway-#{node[:hiway][:version]} #{node[:hiway][:home]}
   EOH
   not_if { ::File.exist?("#{node[:hiway][:home]}") }
 end
