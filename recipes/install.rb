@@ -1,8 +1,11 @@
 node.default['java']['jdk_version'] = 7
 node.default['java']['install_flavor'] = "openjdk"
+
+# install Java 1.7 and git
 include_recipe "java"
 include_recipe "git"
 
+# install Maven
 case node[:platform_family]
   when "debian"
     package "maven" do
@@ -21,6 +24,7 @@ case node[:platform_family]
     end
 end
 
+# create user hiway
 user node[:hiway][:user] do
   supports :manage_home => true
   home "/home/#{node['hiway']['user']}"
@@ -30,12 +34,19 @@ user node[:hiway][:user] do
   not_if "getent passwd #{node[:hiway][:user]}"
 end
 
+# add user hiway to group hadoop
 group node[:hiway][:group] do
   action :modify
   members node[:hiway][:user] 
   append true
 end
 
+# update Hadoop user environment for user hiway
+hadoop_user_envs node[:hdfs][:user] do
+  action :update
+end
+
+# git clone Hi-WAY
 git "/tmp/hiway" do
   repository node[:hiway][:github_url]
   reference "master"
@@ -43,16 +54,28 @@ git "/tmp/hiway" do
   action :sync
 end
 
+# maven build Hi-WAY
 bash 'build-hiway' do
   user node[:hiway][:user]
   code <<-EOH
-    set -e
+    set -e && set -o pipefail
     mvn -f /tmp/hiway/pom.xml package
     cp -r /tmp/hiway/hiway-dist/target/hiway-dist-#{node[:hiway][:version]}/hiway-#{node[:hiway][:version]} #{node[:hiway][:home]}
   EOH
   not_if { ::File.exist?("#{node[:hiway][:home]}") }
 end
 
+# add symbolic link to Hi-WAY dir
 link "#{node[:hadoop][:dir]}/hiway" do
   to node[:hiway][:home]
+end
+
+# update Hi-WAY user environment for user hiway
+bash 'update_env_variables' do
+  user node[:hiway][:user]
+  code <<-EOH
+    set -e && set -o pipefail
+    echo export HIWAY_HOME=#{node[:hiway][:home]} | tee -a /home/#{node[:hiway][:user]}/.bash*
+  EOH
+  not_if { "grep -q HIWAY_HOME /home/#{node[:hiway][:user]}/.bash_profile" }
 end

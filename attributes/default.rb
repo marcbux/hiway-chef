@@ -7,8 +7,14 @@ default[:hiway][:version]                           = "1.0.0-SNAPSHOT"
 default[:hiway][:home]                              = "#{default[:hiway][:dir]}/hiway-#{default[:hiway][:version]}"
 default[:hiway][:github_url]                        = "https://github.com/marcbux/Hi-WAY.git"
 
+default[:hiway][:cuneiform][:version]               = "2.0.0-SNAPSHOT"
+default[:hiway][:cuneiform][:home]                  = "#{default[:hiway][:dir]}/cuneiform-#{default[:hiway][:cuneiform][:version]}"
+default[:hiway][:cuneiform][:github_url]            = "https://github.com/joergen7/cuneiform.git"
+
 default[:hiway][:galaxy][:repository]               = "https://bitbucket.org/galaxy/galaxy-dist/"
 default[:hiway][:galaxy][:home]                     = "#{default[:hiway][:dir]}/galaxy" 
+
+default[:hiway][:helloworld][:workflow]             = "helloworld.cf"
 
 default[:hiway][:wordcount][:workflow]              = "wordcount.cf"
 default[:hiway][:wordcount][:input]                 = "'gronemeyer.txt' 'benzko.txt'"
