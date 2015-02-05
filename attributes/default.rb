@@ -1,6 +1,15 @@
 include_attribute "hadoop"
 
-default[:hiway][:user]                              = "hiway"
+default[:hadoop][:version]                          = "2.6.0"
+default[:hadoop][:download_url]                     = "http://apache.mirror.digionline.de/hadoop/common/hadoop-#{node[:hadoop][:version]}/hadoop-#{node[:hadoop][:version]}.tar.gz"
+default[:hadoop][:hadoop_src_url]                   = "http://apache.mirror.digionline.de/hadoop/common/hadoop-#{node[:hadoop][:version]}/hadoop-#{node[:hadoop][:version]}-src.tar.gz"
+
+default[:hadoop][:yarn][:nm][:memory_mbs]           = 4096
+default[:hadoop][:yarn][:vpmem_ratio]               = 4.1
+default[:hadoop][:yarn][:vcores]                    = 2
+#default[:hadoop][:yarn][:app_classpath]             = "$HADOOP_CONF_DIR, $HADOOP_COMMON_HOME/share/hadoop/common/*, $HADOOP_COMMON_HOME/share/hadoop/common/lib/*, $HADOOP_HDFS_HOME/share/hadoop/hdfs/*, $HADOOP_HDFS_HOME/share/hadoop/hdfs/lib/*, $HADOOP_YARN_HOME/share/hadoop/yarn/*, $HADOOP_YARN_HOME/share/hadoop/yarn/lib/*, $HIWAY_HOME/*, $HIWAY_HOME/lib/*"
+
+default[:hiway][:user]                              = node[:hadoop][:yarn][:user]
 default[:hiway][:group]                             = node[:hadoop][:group]
 default[:hiway][:dir]                               = node[:hadoop][:dir]
 default[:hiway][:version]                           = "1.0.0-SNAPSHOT"
@@ -17,7 +26,9 @@ default[:hiway][:galaxy][:home]                     = "#{default[:hiway][:dir]}/
 default[:hiway][:helloworld][:workflow]             = "helloworld.cf"
 
 default[:hiway][:wordcount][:workflow]              = "wordcount.cf"
-default[:hiway][:wordcount][:input]                 = "'gronemeyer.txt' 'benzko.txt'"
+default[:hiway][:wordcount][:input][:url]           = "http://stateoftheunion.onetwothree.net/texts/stateoftheunion1790-2014.txt.zip"
+default[:hiway][:wordcount][:input][:zip]           = "stateoftheunion1790-2014.zip"
+default[:hiway][:wordcount][:input][:txt]           = "stateoftheunion1790-2014.txt"
 
 default[:hiway][:variantcall][:setupworkflow]       = "variantcall.setup.cf"
 default[:hiway][:variantcall][:workflow]            = "variantcall.cf"

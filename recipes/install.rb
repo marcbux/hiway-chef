@@ -42,7 +42,7 @@ group node[:hiway][:group] do
 end
 
 # update Hadoop user environment for user hiway
-hadoop_user_envs node[:hdfs][:user] do
+hadoop_user_envs node[:hiway][:user] do
   action :update
 end
 
@@ -51,14 +51,16 @@ git "/tmp/hiway" do
   repository node[:hiway][:github_url]
   reference "master"
   user node[:hiway][:user]
+  group node[:hiway][:group]
   action :sync
 end
 
 # maven build Hi-WAY
 bash 'build-hiway' do
   user node[:hiway][:user]
+  group node[:hiway][:group]
   code <<-EOH
-    set -e && set -o pipefail
+  set -e && set -o pipefail
     mvn -f /tmp/hiway/pom.xml package
     cp -r /tmp/hiway/hiway-dist/target/hiway-dist-#{node[:hiway][:version]}/hiway-#{node[:hiway][:version]} #{node[:hiway][:home]}
   EOH
@@ -73,9 +75,10 @@ end
 # update Hi-WAY user environment for user hiway
 bash 'update_env_variables' do
   user node[:hiway][:user]
+  group node[:hiway][:group]
   code <<-EOH
-    set -e && set -o pipefail
+  set -e && set -o pipefail
     echo export HIWAY_HOME=#{node[:hiway][:home]} | tee -a /home/#{node[:hiway][:user]}/.bash*
   EOH
-  not_if { "grep -q HIWAY_HOME /home/#{node[:hiway][:user]}/.bash_profile" }
+  not_if "grep -q HIWAY_HOME /home/#{node[:hiway][:user]}/.bash_profile"
 end
