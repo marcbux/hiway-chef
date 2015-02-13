@@ -1,7 +1,7 @@
 # copy Hi-WAY conf file to Hadoop conf dir
 template "#{node[:hadoop][:conf_dir]}/hiway-site.xml" do
   user node[:hiway][:user]
-  group node[:hiway][:group]
+  group node[:hadoop][:group]
   source "hadoop.hiway-site.xml.erb"
   mode "0755"
 end
@@ -9,7 +9,7 @@ end
 # add the Hi-WAY jars to Hadoop classpath
 bash "configure_hadoop_for_hiway" do
   user node[:hiway][:user]
-  group node[:hiway][:group]
+  group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
     if grep -q "yarn.application.classpath" #{node[:hadoop][:home]}/etc/hadoop/yarn-site.xml
@@ -35,9 +35,9 @@ service "nodemanager" do
 end
 
 # create hiway user directory in HDFS
-hadoop_hdfs_directory "/user/#{node[:hiway][:user]}" do
-  action :create
-  owner node[:hiway][:user]
-  group node[:hiway][:group]
-  mode "0775"
-end
+#hadoop_hdfs_directory "#node{[:hiway][:hdfs][:basedir]}" do
+#  action :create
+#  owner node[:hiway][:user]
+#  group node[:hiway][:group]
+#  mode "0775"
+#end

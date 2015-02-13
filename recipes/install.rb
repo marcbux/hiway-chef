@@ -27,7 +27,7 @@ end
 # create user hiway
 user node[:hiway][:user] do
   supports :manage_home => true
-  home "/home/#{node['hiway']['user']}"
+  home "/home/#{node[:hiway][:user]}"
   action :create
   shell '/bin/bash'
   system true
@@ -35,15 +35,10 @@ user node[:hiway][:user] do
 end
 
 # add user hiway to group hadoop
-group node[:hiway][:group] do
+group node[:hadoop][:group] do
   action :modify
   members node[:hiway][:user] 
   append true
-end
-
-# update Hadoop user environment for user hiway
-hadoop_user_envs node[:hiway][:user] do
-  action :update
 end
 
 # git clone Hi-WAY
@@ -51,14 +46,14 @@ git "/tmp/hiway" do
   repository node[:hiway][:github_url]
   reference "master"
   user node[:hiway][:user]
-  group node[:hiway][:group]
+  group node[:hadoop][:group]
   action :sync
 end
 
 # maven build Hi-WAY
 bash 'build-hiway' do
   user node[:hiway][:user]
-  group node[:hiway][:group]
+  group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
     mvn -f /tmp/hiway/pom.xml package
@@ -72,13 +67,28 @@ link "#{node[:hadoop][:dir]}/hiway" do
   to node[:hiway][:home]
 end
 
-# update Hi-WAY user environment for user hiway
+# update Hadoop user environment for user hiway
+hadoop_user_envs node[:hiway][:user] do
+  action :update
+end
+
+# add HIWAY_HOME environment variable and add it to PATH
 bash 'update_env_variables' do
   user node[:hiway][:user]
-  group node[:hiway][:group]
+  group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
-    echo export HIWAY_HOME=#{node[:hiway][:home]} | tee -a /home/#{node[:hiway][:user]}/.bash*
+    echo "export HIWAY_HOME=#{node[:hiway][:home]}" | tee -a /home/#{node[:hiway][:user]}/.bash*
+    echo "export PATH=\\$HIWAY_HOME:\\$PATH" | tee -a /home/#{node[:hiway][:user]}/.bash*
   EOH
   not_if "grep -q HIWAY_HOME /home/#{node[:hiway][:user]}/.bash_profile"
+end
+
+# add script for running Hi-WAY
+template "#{node[:hiway][:home]}/hiway" do 
+  source "hiway.erb"
+  owner node[:hiway][:user]
+  group node[:hadoop][:group]
+  mode "755"
+  action :create_if_missing
 end

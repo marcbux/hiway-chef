@@ -1,7 +1,7 @@
 prepared_montage_m17_4 = "/tmp/.prepared_montage_m17_4"
 bash "prepare_montage_m17_4" do
   user node[:hiway][:user]
-  group node[:hiway][:group]
+  group node[:hadoop][:group]
   code <<-EOF
   set -e && set -o pipefail
   
@@ -13,7 +13,7 @@ end
 #ran_montage_m17_4 = "/tmp/.ran_montage_m17_4"
 #bash "run_montage_m17_4" do
 #  user node[:hiway][:user]
-#  group node[:hiway][:group]
+#  group node[:hadoop][:group]
 #  code <<-EOF
 #  set -e && set -o pipefail
 #  #{node[:hadoop][:home]}/bin/yarn jar #{node[:hiway][:home]}/hiway-core-#{node[:hiway][:version]}.jar -w #{node[:hiway][:home]}/#{node[:hiway][:montage_m17_4][:workflow]} -l dax
