@@ -19,23 +19,6 @@ bash 'build-cuneiform' do
   not_if { ::File.exist?("#{node[:hiway][:cuneiform][:home]}") }
 end
 
-# add symbolic link to Cuneiform dir
-link "#{node[:hadoop][:dir]}/cuneiform" do
-  to node[:hiway][:cuneiform][:home]
-end
-
-# add CUNEIFORM_HOME environment variable and add it to PATH
-bash 'update_env_variables' do
-  user node[:hiway][:user]
-  group node[:hadoop][:group]
-  code <<-EOH
-  set -e && set -o pipefail
-    echo "export CUNEIFORM_HOME=#{node[:hiway][:cuneiform][:home]}" | tee -a /home/#{node[:hiway][:user]}/.bash*
-    echo "export PATH=\\$CUNEIFORM_HOME:\\$PATH" | tee -a /home/#{node[:hiway][:user]}/.bash*
-  EOH
-  not_if "grep -q CUNEIFORM_HOME /home/#{node[:hiway][:user]}/.bash_profile"
-end
-
 # add script for calling Cuneiform IDE
 template "#{node[:hiway][:cuneiform][:home]}/cfide" do 
   source "cfide.erb"
@@ -61,4 +44,21 @@ template "#{node[:hiway][:cuneiform][:home]}/logview" do
   group node[:hadoop][:group]
   mode "755"
   action :create_if_missing
+end
+
+# add symbolic link to Cuneiform dir
+link "#{node[:hadoop][:dir]}/cuneiform" do
+  to node[:hiway][:cuneiform][:home]
+end
+
+# add CUNEIFORM_HOME environment variable and add it to PATH
+bash 'update_env_variables' do
+  user node[:hiway][:user]
+  group node[:hadoop][:group]
+  code <<-EOH
+  set -e && set -o pipefail
+    echo "export CUNEIFORM_HOME=#{node[:hiway][:cuneiform][:home]}" | tee -a /home/#{node[:hiway][:user]}/.bash*
+    echo "export PATH=\\$CUNEIFORM_HOME:\\$PATH" | tee -a /home/#{node[:hiway][:user]}/.bash*
+  EOH
+  not_if "grep -q CUNEIFORM_HOME /home/#{node[:hiway][:user]}/.bash_profile"
 end

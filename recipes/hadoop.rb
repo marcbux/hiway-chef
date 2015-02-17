@@ -2,7 +2,7 @@
 template "#{node[:hadoop][:conf_dir]}/hiway-site.xml" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
-  source "hadoop.hiway-site.xml.erb"
+  source "hiway-site.xml.erb"
   mode "0755"
 end
 
@@ -16,7 +16,7 @@ bash "configure_hadoop_for_hiway" do
     then
       perl -i -0pe 's%<name>yarn.application.classpath</name>\\s*<value>%<name>yarn.application.classpath</name>\\n\\t\\t<value>#{node[:hiway][:home]}/\\*, #{node[:hiway][:home]}/lib/\\*, %' #{node[:hadoop][:home]}/etc/hadoop/yarn-site.xml
     else
-      sed -i 's%</configuration>%\t<property>\n\t\t<name>yarn.application.classpath</name>\\n\\t\\t<value>\$HADOOP_CONF_DIR, \$HADOOP_COMMON_HOME/share/hadoop/common/\\*, \$HADOOP_COMMON_HOME/share/hadoop/common/lib/\\*, \$HADOOP_HDFS_HOME/share/hadoop/hdfs/\\*, \$HADOOP_HDFS_HOME/share/hadoop/hdfs/lib/\\*, \$HADOOP_YARN_HOME/share/hadoop/yarn/\\*, \$HADOOP_YARN_HOME/share/hadoop/yarn/lib/\\*, \$HIWAY_HOME/\\*, \$HIWAY_HOME/lib/\\*</value>\\n\\t</property>\\n</configuration>%' #{node[:hadoop][:home]}/etc/hadoop/yarn-site.xml
+      sed -i 's%</configuration>%\t<property>\n\t\t<name>yarn.application.classpath</name>\\n\\t\\t<value>#{node[:hiway][:home]}/\\*, #{node[:hiway][:home]}/lib/\\*, #{node[:hadoop][:yarn][:app_classpath]}</value>\\n\\t</property>\\n</configuration>%' #{node[:hadoop][:home]}/etc/hadoop/yarn-site.xml
     fi
   EOH
   not_if "grep -q yarn.application.classpath #{node[:hadoop][:home]}/etc/hadoop/yarn-site.xml && grep -q #{node[:hiway][:home]} #{node[:hadoop][:home]}/etc/hadoop/yarn-site.xml"
@@ -34,10 +34,10 @@ service "nodemanager" do
   only_if { File.exist?("/etc/init.d/nodemanager") }
 end
 
-# create hiway user directory in HDFS
-#hadoop_hdfs_directory "#node{[:hiway][:hdfs][:basedir]}" do
-#  action :create
-#  owner node[:hiway][:user]
-#  group node[:hiway][:group]
-#  mode "0775"
-#end
+# create hiway user directory in HDFS (if necessary) and grant read and write rights to all users in hadoop group such that both the yarn and hiway users can use the directory
+hadoop_hdfs_directory "#{node[:hiway][:hdfs][:basedir]}" do
+  action :create
+  owner node[:hiway][:user]
+  group node[:hiway][:group]
+  mode "0775"
+end

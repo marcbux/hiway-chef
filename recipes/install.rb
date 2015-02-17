@@ -62,6 +62,15 @@ bash 'build-hiway' do
   not_if { ::File.exist?("#{node[:hiway][:home]}") }
 end
 
+# add script for running Hi-WAY
+template "#{node[:hiway][:home]}/hiway" do 
+  source "hiway.erb"
+  owner node[:hiway][:user]
+  group node[:hadoop][:group]
+  mode "755"
+  action :create_if_missing
+end
+
 # add symbolic link to Hi-WAY dir
 link "#{node[:hadoop][:dir]}/hiway" do
   to node[:hiway][:home]
@@ -82,13 +91,4 @@ bash 'update_env_variables' do
     echo "export PATH=\\$HIWAY_HOME:\\$PATH" | tee -a /home/#{node[:hiway][:user]}/.bash*
   EOH
   not_if "grep -q HIWAY_HOME /home/#{node[:hiway][:user]}/.bash_profile"
-end
-
-# add script for running Hi-WAY
-template "#{node[:hiway][:home]}/hiway" do 
-  source "hiway.erb"
-  owner node[:hiway][:user]
-  group node[:hadoop][:group]
-  mode "755"
-  action :create_if_missing
 end

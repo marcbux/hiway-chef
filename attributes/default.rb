@@ -8,11 +8,11 @@ default[:hadoop][:native_libraries]                 = "false"
 default[:hadoop][:yarn][:nm][:memory_mbs]           = 4096
 default[:hadoop][:yarn][:vpmem_ratio]               = 4.1
 default[:hadoop][:yarn][:vcores]                    = 2
-default[:hadoop][:yarn][:app_classpath]             = "$HADOOP_CONF_DIR, $HADOOP_COMMON_HOME/share/hadoop/common/*, $HADOOP_COMMON_HOME/share/hadoop/common/lib/*, $HADOOP_HDFS_HOME/share/hadoop/hdfs/*, $HADOOP_HDFS_HOME/share/hadoop/hdfs/lib/*, $HADOOP_YARN_HOME/share/hadoop/yarn/*, $HADOOP_YARN_HOME/share/hadoop/yarn/lib/*, $HIWAY_HOME/*, $HIWAY_HOME/lib/*"
+default[:hadoop][:yarn][:app_classpath]             = "#{node[:hadoop][:home]}/etc/hadoop/, #{node[:hadoop][:home]}/share/hadoop/common/*, #{node[:hadoop][:home]}/share/hadoop/common/lib/*, #{node[:hadoop][:home]}/share/hadoop/hdfs/*, #{node[:hadoop][:home]}/share/hadoop/hdfs/lib/*, #{node[:hadoop][:home]}/share/hadoop/yarn/*, #{node[:hadoop][:home]}/share/hadoop/yarn/lib/*"#, #{node[:hadoop][:home]}, #{node[:hadoop][:home]}/lib/*, #{node[:hadoop][:home]}/share/hadoop/tools/lib/*, #{node[:hadoop][:home]}/share/hadoop/yarn/test/*, #{node[:hadoop][:home]}/share/hadoop/mapreduce/*, #{node[:hadoop][:home]}/share/hadoop/mapreduce/lib/*, #{node[:hadoop][:home]}/share/hadoop/mapreduce/test/*"
 
 default[:hiway][:user]                              = "hiway"
 default[:hiway][:software][:dir]                    = node[:hadoop][:dir]
-default[:hiway][:hdfs][:basedir]                    = "/user/#{node[:hiway][:user]}"
+default[:hiway][:hdfs][:basedir]                    = "/"
 
 default[:hiway][:version]                           = "1.0.0-SNAPSHOT"
 default[:hiway][:home]                              = "#{node[:hiway][:software][:dir]}/hiway-#{node[:hiway][:version]}"

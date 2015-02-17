@@ -3,8 +3,7 @@ bash "run_helloworld" do
   group node[:hadoop][:group]
   code <<-EOF
   set -e && set -o pipefail
-    hiway -w #{node[:hiway][:home]}/#{node[:hiway][:helloworld][:workflow]} -s #{node[:hiway][:home]}/helloworld_summary.json
-    
+    #{node[:hiway][:home]}/hiway -w #{node[:hiway][:home]}/#{node[:hiway][:helloworld][:workflow]} -s #{node[:hiway][:home]}/helloworld_summary.json
   EOF
   #    `#{node[:hiway][:home]}/helloworld_summary.json`
 #  not_if { ::File.exists?("#{node[:hiway][:home]}/wordcount_summary.json") }
