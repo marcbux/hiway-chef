@@ -3,7 +3,7 @@ template "#{node[:hiway][:home]}/#{node[:hiway][:wordcount][:workflow]}" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   source "#{node[:hiway][:wordcount][:workflow]}.erb"
-  mode "0774"
+  mode "755"
 end
 
 # obtain the word count input file
@@ -11,7 +11,7 @@ remote_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:wordcount][:input
   source node[:hiway][:wordcount][:input][:url]
   owner node[:hiway][:user]
   group node[:hadoop][:group]
-  mode "0774"
+  mode "755"
   action :create_if_missing
 end
 

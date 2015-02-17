@@ -1,3 +1,23 @@
+# install XWindows for cfide and logview
+case node[:platform_family]
+  when "debian"
+    package "xorg" do
+      options "--force-yes"
+    end
+end
+
+# adjust resolution of the terminal
+bash 'adjust_resolution' do
+  user "root"
+  code <<-EOH
+  set -e && set -o pipefail
+    echo "GRUB_GFXMODE=#{node[:hiway][:cuneiform][:resolution]}" >> /etc/default/grub
+    sed -i s/GRUB_GFXMODE=auto/GRUB_GFXMODE=#{node[:hiway][:cuneiform][:resolution]}/ /etc/grub.d/00_header
+    update-grub2
+  EOH
+  not_if "grep -q #{node[:hiway][:cuneiform][:resolution]} /etc/default/grub && grep -q #{node[:hiway][:cuneiform][:resolution]} /etc/grub.d/00_header"
+end
+
 # git clone Cuneiform
 git "/tmp/cuneiform" do
   repository node[:hiway][:cuneiform][:github_url]
@@ -51,14 +71,25 @@ link "#{node[:hadoop][:dir]}/cuneiform" do
   to node[:hiway][:cuneiform][:home]
 end
 
-# add CUNEIFORM_HOME environment variable and add it to PATH
+# add CUNEIFORM_HOME environment variable
 bash 'update_env_variables' do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
     echo "export CUNEIFORM_HOME=#{node[:hiway][:cuneiform][:home]}" | tee -a /home/#{node[:hiway][:user]}/.bash*
-    echo "export PATH=\\$CUNEIFORM_HOME:\\$PATH" | tee -a /home/#{node[:hiway][:user]}/.bash*
   EOH
   not_if "grep -q CUNEIFORM_HOME /home/#{node[:hiway][:user]}/.bash_profile"
+end
+
+# add cuneiform executables to /usr/bin
+bash 'update_env_variables' do
+  user "root"
+  code <<-EOH
+  set -e && set -o pipefail
+    ln -f -s #{node[:hiway][:cuneiform][:home]}/cuneiform /usr/bin/
+    ln -f -s #{node[:hiway][:cuneiform][:home]}/cfide /usr/bin/
+    ln -f -s #{node[:hiway][:cuneiform][:home]}/logview /usr/bin/
+  EOH
+  not_if { ::File.exist?("/usr/bin/cuneiform") }
 end

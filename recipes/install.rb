@@ -81,14 +81,23 @@ hadoop_user_envs node[:hiway][:user] do
   action :update
 end
 
-# add HIWAY_HOME environment variable and add it to PATH
+# add HIWAY_HOME environment variable
 bash 'update_env_variables' do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
     echo "export HIWAY_HOME=#{node[:hiway][:home]}" | tee -a /home/#{node[:hiway][:user]}/.bash*
-    echo "export PATH=\\$HIWAY_HOME:\\$PATH" | tee -a /home/#{node[:hiway][:user]}/.bash*
   EOH
   not_if "grep -q HIWAY_HOME /home/#{node[:hiway][:user]}/.bash_profile"
+end
+
+# add hiway to /usr/bin
+bash 'update_env_variables' do
+  user "root"
+  code <<-EOH
+  set -e && set -o pipefail
+    ln -f -s #{node[:hiway][:home]}/hiway /usr/bin/
+  EOH
+  not_if { ::File.exist?("/usr/bin/hiway") }
 end
