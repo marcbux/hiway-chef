@@ -22,7 +22,7 @@ bash "extract_input_data" do
   code <<-EOF
   set -e && set -o pipefail
     zcat #{Chef::Config[:file_cache_path]}/#{node[:hiway][:wordcount][:input][:zip]} > #{node[:hiway][:home]}/#{node[:hiway][:wordcount][:input][:txt]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:wordcount][:input][:txt]} #{node[:hiway][:hdfs][:basedir]}#{node[:hiway][:wordcount][:input][:txt]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:wordcount][:input][:txt]} #{node[:hiway][:hdfs][:basedir]}
   EOF
   not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:hdfs][:basedir]}#{node[:hiway][:wordcount][:input][:txt]}"
 end

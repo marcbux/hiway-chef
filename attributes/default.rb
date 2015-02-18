@@ -92,5 +92,7 @@ default[:hiway][:montage_m17_4][:montage][:home]     = "#{node[:hiway][:software
 default[:hiway][:montage_m17_4][:montage][:url]      = "http://montage.ipac.caltech.edu/download/#{node[:hiway][:montage_m17_4][:montage][:targz]}"
 
 default[:hiway][:galaxy101][:workflow]               = "galaxy101.ga"
+default[:hiway][:galaxy101][:exons]                  = "Exons.bed"
+default[:hiway][:galaxy101][:snps]                   = "SNPs.bed"
 
 default[:hiway][:RNASeq][:workflow]                  = "RNASeq.ga"

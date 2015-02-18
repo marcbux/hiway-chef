@@ -215,3 +215,16 @@ bash 'download_input_data' do
   EOH
   not_if { ::File.exists?( "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:file]}" ) }
 end
+
+# copy input data into HDFS
+bash "copy_input_data_to_hdfs" do
+  user node[:hiway][:user]
+  group node[:hadoop][:group]
+  code <<-EOH
+  set -e && set -o pipefail
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]} #{node[:hiway][:hdfs][:basedir]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:reads][:directory]} #{node[:hiway][:hdfs][:basedir]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]} #{node[:hiway][:hdfs][:basedir]}
+  EOH
+  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]}"
+end

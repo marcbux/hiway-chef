@@ -26,6 +26,7 @@ end
 
 # create user hiway
 user node[:hiway][:user] do
+  password "$1$salt$N3yBrMPqdSW4WoCjoBJMm."
   supports :manage_home => true
   home "/home/#{node[:hiway][:user]}"
   action :create

@@ -1,47 +1,46 @@
-#{node[:hiway][:galaxy][:home]}/scripts/api/install_tool_shed_repositories.py --url http://toolshed.g2.bx.psu.edu/ --api `echo #{node[:hiway][:galaxy][:home]}/api` --local http://localhost:8080/ --name join --owner devteam --revision de21bdbb8d28 --repository-deps --tool-deps --panel-section-name galaxy101
+# update tool shed
+bash "update_tool_shed" do
+  user node[:hiway][:user]
+  group node[:hadoop][:group]
+  code <<-EOH
+  set -e && set -o pipefail
+    #{node[:hiway][:galaxy][:home]}/scripts/api/install_tool_shed_repositories.py --url http://toolshed.g2.bx.psu.edu/ --api `cat #{node[:hiway][:galaxy][:home]}/api` --local http://localhost:8080/ --name join --owner devteam --revision de21bdbb8d28 --repository-deps --tool-deps --panel-section-name galaxy101
+  EOH
+  not_if { ::File.exists?( "#{node[:hiway][:software][:dir]}/shed_tools/toolshed.g2.bx.psu.edu/repos/devteam/join" ) }
+end
 
+# prepare the galaxy 101 workflow file
 template "#{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:workflow]}" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   source "#{node[:hiway][:galaxy101][:workflow]}.erb"
-  mode "0774"
+  mode "755"
 end
 
-template "#{node[:hiway][:home]}/Exons.bed" do
+# prepare the Exons input file
+template "#{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:exons]}" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
-  source "galaxy101.Exons.bed.erb"
-  mode "0774"
+  source "#{node[:hiway][:galaxy101][:exons]}.erb"
+  mode "755"
 end
 
-template "#{node[:hiway][:home]}/SNPs.bed" do
+# prepare the SNPs input file
+template "#{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:snps]}" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
-  source "galaxy101.SNPs.bed.erb"
-  mode "0774"
+  source "#{node[:hiway][:galaxy101][:snps]}.erb"
+  mode "755"
 end
 
-prepared_galaxy101 = "/tmp/.prepared_galaxy101"
-bash "prepare_galaxy101" do
+# copy input data into hdfs
+bash "extract_input_data" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
-  code <<-EOF
+  code <<-EOH
   set -e && set -o pipefail
-  #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/Exons.bed
-  #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/SNPs.bed
-  touch #{prepared_galaxy101}
-  EOF
-    not_if { ::File.exists?( "#{prepared_galaxy101}" ) }
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:exons]} #{node[:hiway][:hdfs][:basedir]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:snps]} #{node[:hiway][:hdfs][:basedir]}
+  EOH
+  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:hdfs][:basedir]}#{node[:hiway][:galaxy101][:snps]}"
 end
-
-#ran_galaxy101 = "/tmp/.ran_galaxy101"
-#bash "run_galaxy101" do
-#  user node[:hiway][:user]
-#  group node[:hadoop][:group]
-#  code <<-EOF
-#  set -e && set -o pipefail
-#  #{node[:hadoop][:home]}/bin/yarn jar #{node[:hiway][:home]}/hiway-core-#{node[:hiway][:version]}.jar -w #{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:workflow]} -l galaxy 
-#  touch #{ran_galaxy101}
-#  EOF
-#    not_if { ::File.exists?( "#{ran_galaxy101}" ) }
-#end
