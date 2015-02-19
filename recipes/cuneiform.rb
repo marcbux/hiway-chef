@@ -80,9 +80,9 @@ bash 'update_env_variables' do
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
-    echo "export CUNEIFORM_HOME=#{node[:hiway][:cuneiform][:home]}" | tee -a /home/#{node[:hiway][:user]}/.bash*
+    echo "export CUNEIFORM_HOME=#{node[:hiway][:cuneiform][:home]}" | tee -a #{node[:hiway][:home]}/.bash*
   EOH
-  not_if "grep -q CUNEIFORM_HOME /home/#{node[:hiway][:user]}/.bash_profile"
+  not_if "grep -q CUNEIFORM_HOME #{node[:hiway][:home]}/.bash_profile"
 end
 
 # add cuneiform executables to /usr/bin

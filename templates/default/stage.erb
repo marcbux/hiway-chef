@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+string=`cat $1 | grep -oP '\"output\":\[\K[^\]]*' | sed s/\"//g`
+IFS=',' read -a array <<< `echo $string`
+for index in "${!array[@]}"
+do
+  <%= node[:hadoop][:home] %>/bin/hdfs dfs -get ${array[index]} $2
+done

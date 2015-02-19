@@ -38,7 +38,7 @@ end
 bash "install_galaxy" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
-  environment "PYTHON_EGG_CACHE" => "/home/#{node[:hiway][:user]}/.python-eggs"
+  environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"
   code <<-EOH
   set -e && set -o pipefail
     hg clone #{node[:hiway][:galaxy][:repository]} #{node[:hiway][:galaxy][:home]}
@@ -70,7 +70,7 @@ end
 bash "install_galaxy" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
-  environment "PYTHON_EGG_CACHE" => "/home/#{node[:hiway][:user]}/.python-eggs"
+  environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"
   code <<-EOH
   set -e && set -o pipefail
     sh #{node[:hiway][:galaxy][:home]}/run.sh --daemon

@@ -11,12 +11,13 @@ default[:hadoop][:yarn][:vcores]                    = 2
 default[:hadoop][:yarn][:app_classpath]             = "#{node[:hadoop][:home]}/etc/hadoop/, #{node[:hadoop][:home]}/share/hadoop/common/*, #{node[:hadoop][:home]}/share/hadoop/common/lib/*, #{node[:hadoop][:home]}/share/hadoop/hdfs/*, #{node[:hadoop][:home]}/share/hadoop/hdfs/lib/*, #{node[:hadoop][:home]}/share/hadoop/yarn/*, #{node[:hadoop][:home]}/share/hadoop/yarn/lib/*"#, #{node[:hadoop][:home]}, #{node[:hadoop][:home]}/lib/*, #{node[:hadoop][:home]}/share/hadoop/tools/lib/*, #{node[:hadoop][:home]}/share/hadoop/yarn/test/*, #{node[:hadoop][:home]}/share/hadoop/mapreduce/*, #{node[:hadoop][:home]}/share/hadoop/mapreduce/lib/*, #{node[:hadoop][:home]}/share/hadoop/mapreduce/test/*"
 
 default[:hiway][:user]                              = "hiway"
+default[:hiway][:home]                              = "/home/#{node[:hiway][:user]}"
 default[:hiway][:software][:dir]                    = node[:hadoop][:dir]
 
-default[:hiway][:hdfs][:basedir]                    = "/"
-default[:hiway][:version]                           = "1.0.0-SNAPSHOT"
-default[:hiway][:home]                              = "#{node[:hiway][:software][:dir]}/hiway-#{node[:hiway][:version]}"
-default[:hiway][:github_url]                        = "https://github.com/marcbux/Hi-WAY.git"
+default[:hiway][:hiway][:hdfs][:basedir]            = "/"
+default[:hiway][:hiway][:version]                   = "1.0.0-SNAPSHOT"
+default[:hiway][:hiway][:home]                      = "#{node[:hiway][:software][:dir]}/hiway-#{node[:hiway][:hiway][:version]}"
+default[:hiway][:hiway][:github_url]                = "https://github.com/marcbux/Hi-WAY.git"
 
 default[:hiway][:cuneiform][:resolution]            = "800x600x32"
 default[:hiway][:cuneiform][:version]               = "2.0.0-SNAPSHOT"
@@ -52,7 +53,7 @@ default[:hiway][:variantcall][:hg38][:reads][:gz2]           = "SRR062634_2.filt
 default[:hiway][:variantcall][:hg38][:reads][:file1]         = "SRR062634_1.filt.part.fastq"
 default[:hiway][:variantcall][:hg38][:reads][:file2]         = "SRR062634_2.filt.part.fastq"
 default[:hiway][:variantcall][:hg38][:reads][:url]           = "ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/HG00096/sequence_read"
-default[:hiway][:variantcall][:hg38][:reads][:lines]         = 400000
+default[:hiway][:variantcall][:hg38][:reads][:lines]         = 40000
 default[:hiway][:variantcall][:hg38][:reference][:directory] = "hg38"
 default[:hiway][:variantcall][:hg38][:reference][:gz1]       = "chrY.fa.gz"
 default[:hiway][:variantcall][:hg38][:reference][:gz2]       = "chr22.fa.gz"

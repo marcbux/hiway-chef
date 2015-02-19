@@ -166,7 +166,7 @@ bash 'update_env_variables' do
 end
 
 # prepare the variant call workflow file
-template "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:workflow]}" do
+template "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:workflow]}" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   source "#{node[:hiway][:variantcall][:hg38][:workflow]}.erb"
@@ -174,7 +174,7 @@ template "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38]
 end
 
 # create reads directory
-directory "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:reads][:directory]}" do
+directory "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reads][:directory]}" do
   owner node[:hiway][:user]
   group node[:hadoop][:group]
   mode "755"
@@ -183,7 +183,7 @@ directory "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38
 end
 
 # create reference directory
-directory "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]}" do
+directory "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]}" do
   owner node[:hiway][:user]
   group node[:hadoop][:group]
   mode "755"
@@ -192,7 +192,7 @@ directory "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38
 end
 
 # create annovar database directory
-directory "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]}" do
+directory "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]}" do
   owner node[:hiway][:user]
   group node[:hadoop][:group]
   mode "755"
@@ -206,14 +206,14 @@ bash 'download_input_data' do
   group node[:hadoop][:group]
   code <<-EOH
   set -e
-    wget -q -O - "#{node[:hiway][:variantcall][:hg38][:reads][:url]}/#{node[:hiway][:variantcall][:hg38][:reads][:gz1]}" | gzip -cd | head -n #{node[:hiway][:variantcall][:hg38][:reads][:lines]} > #{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:reads][:directory]}/#{node[:hiway][:variantcall][:hg38][:reads][:file1]}
-    wget -q -O - "#{node[:hiway][:variantcall][:hg38][:reads][:url]}/#{node[:hiway][:variantcall][:hg38][:reads][:gz2]}" | gzip -cd | head -n #{node[:hiway][:variantcall][:hg38][:reads][:lines]} > #{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:reads][:directory]}/#{node[:hiway][:variantcall][:hg38][:reads][:file2]}
-    wget -q -O - "#{node[:hiway][:variantcall][:hg38][:reference][:url]}/#{node[:hiway][:variantcall][:hg38][:reference][:gz1]}" | gzip -cd > #{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]}/#{node[:hiway][:variantcall][:hg38][:reference][:file1]}
-    wget -q -O - "#{node[:hiway][:variantcall][:hg38][:reference][:url]}/#{node[:hiway][:variantcall][:hg38][:reference][:gz2]}" | gzip -cd > #{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]}/#{node[:hiway][:variantcall][:hg38][:reference][:file2]}
-    annotate_variation.pl -downdb -webfrom annovar refGene -buildver hg38 "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]}/db/"
-    tar cf "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:file]}" -C "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]}" db
+    wget -q -O - "#{node[:hiway][:variantcall][:hg38][:reads][:url]}/#{node[:hiway][:variantcall][:hg38][:reads][:gz1]}" | gzip -cd | head -n #{node[:hiway][:variantcall][:hg38][:reads][:lines]} > #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reads][:directory]}/#{node[:hiway][:variantcall][:hg38][:reads][:file1]}
+    wget -q -O - "#{node[:hiway][:variantcall][:hg38][:reads][:url]}/#{node[:hiway][:variantcall][:hg38][:reads][:gz2]}" | gzip -cd | head -n #{node[:hiway][:variantcall][:hg38][:reads][:lines]} > #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reads][:directory]}/#{node[:hiway][:variantcall][:hg38][:reads][:file2]}
+    wget -q -O - "#{node[:hiway][:variantcall][:hg38][:reference][:url]}/#{node[:hiway][:variantcall][:hg38][:reference][:gz1]}" | gzip -cd > #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]}/#{node[:hiway][:variantcall][:hg38][:reference][:file1]}
+    wget -q -O - "#{node[:hiway][:variantcall][:hg38][:reference][:url]}/#{node[:hiway][:variantcall][:hg38][:reference][:gz2]}" | gzip -cd > #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]}/#{node[:hiway][:variantcall][:hg38][:reference][:file2]}
+    annotate_variation.pl -downdb -webfrom annovar refGene -buildver hg38 "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]}/db/"
+    tar cf "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:file]}" -C "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]}" db
   EOH
-  not_if { ::File.exists?( "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:file]}" ) }
+  not_if { ::File.exists?( "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:file]}" ) }
 end
 
 # copy input data into HDFS
@@ -222,9 +222,9 @@ bash "copy_input_data_to_hdfs" do
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]} #{node[:hiway][:hdfs][:basedir]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:reads][:directory]} #{node[:hiway][:hdfs][:basedir]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]} #{node[:hiway][:hdfs][:basedir]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]} #{node[:hiway][:hiway][:hdfs][:basedir]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reads][:directory]} #{node[:hiway][:hiway][:hdfs][:basedir]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]} #{node[:hiway][:hiway][:hdfs][:basedir]}
   EOH
-  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]}"
+  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]}"
 end

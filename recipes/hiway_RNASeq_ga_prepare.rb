@@ -10,14 +10,14 @@
 #{node[:hiway][:galaxy][:home]}/scripts/api/install_tool_shed_repositories.py --url http://toolshed.g2.bx.psu.edu/ --api `echo #{node[:hiway][:galaxy][:home]}/api` --local http://localhost:8080/ --name column_maker --owner devteam --revision 08a01b2ce4cd --repository-deps --tool-deps --panel-section-name RNAseq
 
 
-template "#{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:workflow]}" do
+template "#{node[:hiway][:hiway][:home]}/#{node[:hiway][:RNASeq][:workflow]}" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   source "#{node[:hiway][:RNASeq][:workflow]}.erb"
   mode "0774"
 end
 
-template "#{node[:hiway][:home]}/mm9_ref_annotation.gtf.tar.gz" do
+template "#{node[:hiway][:hiway][:home]}/mm9_ref_annotation.gtf.tar.gz" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   source "RNASeq.mm9_ref_annotation.gtf.tar.gz.erb"
@@ -78,8 +78,8 @@ bash "prepare_RNASeq" do
   group node[:hadoop][:group]
   code <<-EOF
   set -e && set -o pipefail
-  tar xzvf #{node[:hiway][:home]}/mm9_ref_annotation.gtf.tar.gz -C #{node[:hiway][:home]}
-  #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/mm9_ref_annotation.gtf
+  tar xzvf #{node[:hiway][:hiway][:home]}/mm9_ref_annotation.gtf.tar.gz -C #{node[:hiway][:hiway][:home]}
+  #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:hiway][:home]}/mm9_ref_annotation.gtf
   #{node[:hadoop][:home]}/bin/hdfs dfs -put #{Chef::Config[:file_cache_path]}/GSM1533014_MD_O1_WT_Colon.fastq
   #{node[:hadoop][:home]}/bin/hdfs dfs -put #{Chef::Config[:file_cache_path]}/GSM1533014_MD_O2_WT_Colon.fastq
   #{node[:hadoop][:home]}/bin/hdfs dfs -put #{Chef::Config[:file_cache_path]}/GSM1533014_MD_O3_WT_Colon.fastq
@@ -97,7 +97,7 @@ end
 #  group node[:hadoop][:group]
 #  code <<-EOF
 #  set -e && set -o pipefail
-#  #{node[:hadoop][:home]}/bin/yarn jar #{node[:hiway][:home]}/hiway-core-#{node[:hiway][:version]}.jar -w #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:workflow]} -l galaxy
+#  #{node[:hadoop][:home]}/bin/yarn jar #{node[:hiway][:hiway][:home]}/hiway-core-#{node[:hiway][:hiway][:version]}.jar -w #{node[:hiway][:hiway][:home]}/#{node[:hiway][:RNASeq][:workflow]} -l galaxy
 #  touch #{ran_RNASeq}
 #  EOF
 #    not_if { ::File.exists?( "#{ran_RNASeq}" ) }
