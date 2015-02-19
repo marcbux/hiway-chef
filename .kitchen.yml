@@ -2,7 +2,7 @@
 driver:
   name: vagrant
   customize:
-    memory: 5120
+    memory: 4608
     cpus: 2
     natdnshostresolver1: "on"
     natdnsproxy1: "on"
@@ -36,15 +36,15 @@ suites:
       - recipe[hiway::hadoop]
       - recipe[hiway::cuneiform]
       - recipe[hiway::cuneiform_helloworld_cf_prepare]
-      - recipe[hiway::cuneiform_helloworld_cf_run]
+#      - recipe[hiway::cuneiform_helloworld_cf_run]
       - recipe[hiway::cuneiform_variantcall_hg38_cf_prepare]
       - recipe[hiway::galaxy]
       - recipe[hiway::hiway_wordcount_cf_prepare]
-      - recipe[hiway::hiway_wordcount_cf_run]
+#      - recipe[hiway::hiway_wordcount_cf_run]
       - recipe[hiway::hiway_montage_synthetic_dax_prepare]
-      - recipe[hiway::hiway_montage_synthetic_dax_run]
+#      - recipe[hiway::hiway_montage_synthetic_dax_run]
       - recipe[hiway::hiway_galaxy101_ga_prepare]
-      - recipe[hiway::hiway_galaxy101_ga_run]
+#      - recipe[hiway::hiway_galaxy101_ga_run]
 #      - recipe[hiway::hiway_variantcall_cf_prepare]
 #      - recipe[hiway::hiway_montage_m17_4_dax_prepare]
 #      - recipe[hiway::hiway_RNASeq_ga_prepare]

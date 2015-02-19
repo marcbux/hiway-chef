@@ -174,7 +174,7 @@ template "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38]
 end
 
 # create reads directory
-directory node[:hiway][:variantcall][:hg38][:reads][:directory] do
+directory "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:reads][:directory]}" do
   owner node[:hiway][:user]
   group node[:hadoop][:group]
   mode "755"
@@ -183,7 +183,7 @@ directory node[:hiway][:variantcall][:hg38][:reads][:directory] do
 end
 
 # create reference directory
-directory node[:hiway][:variantcall][:hg38][:reference][:directory] do
+directory "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]}" do
   owner node[:hiway][:user]
   group node[:hadoop][:group]
   mode "755"
@@ -192,7 +192,7 @@ directory node[:hiway][:variantcall][:hg38][:reference][:directory] do
 end
 
 # create annovar database directory
-directory node[:hiway][:variantcall][:hg38][:annovardb][:directory] do
+directory "#{node[:hiway][:cuneiform][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]}" do
   owner node[:hiway][:user]
   group node[:hadoop][:group]
   mode "755"

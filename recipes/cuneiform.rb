@@ -4,6 +4,9 @@ case node[:platform_family]
     package "xorg" do
       options "--force-yes"
     end
+    package "graphviz" do
+      options "--force-yes"
+    end
 end
 
 # adjust resolution of the terminal
