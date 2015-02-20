@@ -1,5 +1,5 @@
 dependencies:
-  - recipe: hiway::install
+  - recipe: hiway::hadoop
     global: 
       - hadoop::rm
       - hadoop::nm
