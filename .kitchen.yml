@@ -7,6 +7,7 @@ driver:
     natdnshostresolver1: "on"
     natdnsproxy1: "on"
   network:
+  - ["forwarded_port", {guest: 8042, host: 8042}]
   - ["forwarded_port", {guest: 8080, host: 8080}]
   - ["forwarded_port", {guest: 8088, host: 8088}]
   - ["forwarded_port", {guest: 50070, host: 50070}]

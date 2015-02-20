@@ -19,7 +19,7 @@ default[:hiway][:hiway][:version]                   = "1.0.0-SNAPSHOT"
 default[:hiway][:hiway][:home]                      = "#{node[:hiway][:software][:dir]}/hiway-#{node[:hiway][:hiway][:version]}"
 default[:hiway][:hiway][:github_url]                = "https://github.com/marcbux/Hi-WAY.git"
 
-default[:hiway][:cuneiform][:resolution]            = "800x600x32"
+default[:hiway][:cuneiform][:resolution]            = "1024x768x32"
 default[:hiway][:cuneiform][:version]               = "2.0.0-SNAPSHOT"
 default[:hiway][:cuneiform][:home]                  = "#{node[:hiway][:software][:dir]}/cuneiform-#{node[:hiway][:cuneiform][:version]}"
 default[:hiway][:cuneiform][:github_url]            = "https://github.com/joergen7/cuneiform.git"
@@ -53,7 +53,7 @@ default[:hiway][:variantcall][:hg38][:reads][:gz2]           = "SRR062634_2.filt
 default[:hiway][:variantcall][:hg38][:reads][:file1]         = "SRR062634_1.filt.part.fastq"
 default[:hiway][:variantcall][:hg38][:reads][:file2]         = "SRR062634_2.filt.part.fastq"
 default[:hiway][:variantcall][:hg38][:reads][:url]           = "ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/HG00096/sequence_read"
-default[:hiway][:variantcall][:hg38][:reads][:lines]         = 40000
+default[:hiway][:variantcall][:hg38][:reads][:lines]         = 400000
 default[:hiway][:variantcall][:hg38][:reference][:directory] = "hg38"
 default[:hiway][:variantcall][:hg38][:reference][:gz1]       = "chrY.fa.gz"
 default[:hiway][:variantcall][:hg38][:reference][:gz2]       = "chr22.fa.gz"

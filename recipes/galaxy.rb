@@ -18,7 +18,7 @@ case node[:platform_family]
       options "--force-yes"
     end
     # required for downloading boto
-    package "python-cheetah" do
+    package "python-pip" do
       options "--force-yes"
     end
 end

@@ -1,10 +1,16 @@
 # install XWindows for cfide and logview
 case node[:platform_family]
   when "debian"
+    package "maven" do
+      options "--force-yes"
+    end
     package "xorg" do
       options "--force-yes"
     end
     package "graphviz" do
+      options "--force-yes"
+    end
+    package "r-base" do
       options "--force-yes"
     end
 end

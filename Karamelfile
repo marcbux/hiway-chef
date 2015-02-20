@@ -1,4 +1,29 @@
-dependencies: 
+dependencies:
+  - recipe: hadoop::install
+  - recipe: hadoop::nn
+    local:
+      - hadoop::install
+  - recipe: hadoop::rm
+    local:
+      - hadoop::install
+    global:  
+      - hadoop::nn
+  - recipe: hadoop::dn
+    local:
+      - hadoop::install
+    global:  
+      - hadoop::nn
+  - recipe: hadoop::nm
+    local:
+      - hadoop::install
+    global:  
+      - hadoop::rm
+  - recipe: hadoop::jhs
+    local:
+      - hadoop::install
+    global:  
+      - hadoop::nn
+      - hadoop::dn
   - recipe: "hiway::install"
     local: 
       - "hadoop::install"
@@ -10,13 +35,33 @@ dependencies:
       - "hadoop::nm"
       - "hadoop::dn"
       - "hadoop::nn"
-  - recipe: "hiway::prepare_wordcount_cf"
+  - recipe: "hiway::cuneiform_helloworld_cf_prepare"
     local: 
       - "hiway::hadoop"
     global: 
       - "hadoop::dn"
       - "hadoop::nn"
-  - recipe: "hiway::run_wordcount_cf"
-    global: 
+  - recipe: "hiway::cuneiform_variantcall_hg38_cf_prepare"
+    local: 
       - "hiway::hadoop"
-      - "hiway::prepare_wordcount_cf"
+    global: 
+      - "hadoop::dn"
+      - "hadoop::nn"
+  - recipe: "hiway::hiway_wordcount_cf_prepare"
+    local: 
+      - "hiway::hadoop"
+    global: 
+      - "hadoop::dn"
+      - "hadoop::nn"
+  - recipe: "hiway::hiway_montage_synthetic_dax_prepare"
+    local: 
+      - "hiway::hadoop"
+    global: 
+      - "hadoop::dn"
+      - "hadoop::nn"
+  - recipe: "hiway::hiway_galaxy101_ga_prepare"
+    local: 
+      - "hiway::hadoop"
+    global: 
+      - "hadoop::dn"
+      - "hadoop::nn"

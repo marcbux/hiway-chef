@@ -12,7 +12,7 @@ cookbooks:
   hiway:
     github: "marcbux/hiway-chef"
     branch: "master"
-
+    
 groups:
   master:
     size: 1
@@ -20,19 +20,17 @@ groups:
         - hadoop::nn
         - hadoop::rm
         - hadoop::jhs
-        - hiway::wordcount_cf
-#        - hiway::variantcall_cf
-#        - hiway::montage_synthetic_dax_cf
-#        - hiway::montage_m17_4_dax
-#        - hiway::galaxy101_ga
-#        - hiway::RNASeq_ga
+
   slaves:
     size: 2
     recipes:
-    - hadoop::dn
-    - hadoop::nm
-    - hiway::hadoop
-    - hiway::install
-#    - hiway::galaxy
-#    - hiway::variantcall_cf_tools
-#    - hiway::montage_m17_4_cf_tools
+        - hadoop::dn
+        - hadoop::nm
+        - hiway::install
+        - hiway::hadoop
+        - hiway::cuneiform
+        - hiway::cuneiform_helloworld_cf_prepare
+        - hiway::cuneiform_variantcall_hg38_cf_prepare
+        - hiway::hiway_wordcount_cf_prepare
+        - hiway::hiway_montage_synthetic_dax_prepare
+        - hiway::hiway_galaxy101_ga_prepare
