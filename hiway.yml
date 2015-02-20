@@ -14,14 +14,14 @@ cookbooks:
     branch: "master"
     
 groups:
-  master:
+  hadoopmaster:
     size: 1
     recipes:
         - hadoop::nn
         - hadoop::rm
         - hadoop::jhs
 
-  slaves:
+  hiwayslaves:
     size: 2
     recipes:
         - hadoop::dn
