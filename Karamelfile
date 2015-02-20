@@ -1,4 +1,7 @@
 dependencies:
+  - recipe: hiway::install
+    local: 
+      - hadoop::install
   - recipe: hiway::hadoop
     global: 
       - hadoop::rm

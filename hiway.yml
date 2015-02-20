@@ -26,7 +26,6 @@ groups:
     recipes:
         - hadoop::dn
         - hadoop::nm
-        - hiway::install
         - hiway::hadoop
         - hiway::cuneiform
         - hiway::cuneiform_helloworld_cf_prepare
