@@ -2,7 +2,7 @@ name             'hiway'
 maintainer       "Marc Bux"
 maintainer_email "bux@informatik.hu-berlin.de"
 license          "Apache 2.0"
-description      'Installs/Configures Hiway, its dependencies and several test workflows'
+description      'Chef recipes for installing Hi-WAY, its dependencies, and several workflows.'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "1.0.0"
 
@@ -42,36 +42,11 @@ depends 'locale'
   supports os
 end
 
-attribute "hadoop/version",
-:display_name => "Hadoop version",
-:description => "Version of hadoop",
+attribute "hiway/user",
+:display_name => "Name of the Hi-WAY user",
+:description => "Name of the Hi-WAY user",
 :type => 'string',
-:default => "2.6.0"
-
-
-default[:hiway][:hiway][:am][:memory]               = 512
-default[:hiway][:hiway][:am][:vcores]               = 1
-default[:hiway][:hiway][:worker][:memory]           = 1024
-default[:hiway][:hiway][:worker][:vcores]           = 1
-default[:hiway][:hiway][:scheduler]                 = "placementAware"
-
-attribute "hadoop/version",
-:display_name => "Hadoop version",
-:description => "Version of hadoop",
-:type => 'string',
-:default => "2.6.0"
-
-attribute "hadoop/yarn/nm/memory_mbs",
-:display_name => "Hadoop NodeManager Memory in MB",
-:description => "",
-:type => 'integer',
-:default => 3584
-
-attribute "hadoop/yarn/vcores",
-:display_name => "Hadoop NodeManager Number of Virtual Cores",
-:description => "",
-:type => 'integer',
-:default => 4
+:default => "hiway"
 
 attribute "hiway/hiway/am/memory",
 :display_name => "Hi-WAY Application Master Memory in MB",
@@ -81,19 +56,19 @@ attribute "hiway/hiway/am/memory",
 
 attribute "hiway/hiway/am/vcores",
 :display_name => "Hi-WAY Application Master Number of Virtual Cores",
-:description => "",
+:description => "Hi-WAY Application Master Number of Virtual Cores",
 :type => 'integer',
 :default => 1
 
 attribute "hiway/hiway/worker/memory",
 :display_name => "Hi-WAY Worker Memory in MB",
-:description => "",
+:description => "Hi-WAY Worker Memory in MB",
 :type => 'integer',
 :default => 1024
 
 attribute "hiway/hiway/worker/vcores",
 :display_name => "Hi-WAY Worker Number of Virtual Cores",
-:description => "",
+:description => "Hi-WAY Worker Number of Virtual Cores",
 :type => 'integer',
 :default => 1
 
