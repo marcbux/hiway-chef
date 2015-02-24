@@ -4,7 +4,6 @@ node.default['java']['install_flavor'] = "openjdk"
 # install Java 1.7 and git
 include_recipe "java"
 include_recipe "git"
-include_recipe "locale"
 
 # install Maven
 case node[:platform_family]

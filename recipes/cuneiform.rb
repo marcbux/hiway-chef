@@ -1,3 +1,8 @@
+# set the locale for keyboard input
+locales node[:hiway][:locale] do
+  action :set
+end
+
 # install XWindows for cfide and logview
 case node[:platform_family]
   when "debian"

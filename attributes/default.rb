@@ -1,17 +1,7 @@
 include_attribute "hadoop"
 
-default[:locales][:default]                         = "de_DE.utf8"
 default[:hiway][:resolution]                        = "1024x768x32"
-
-default[:hadoop][:version]                          = "2.6.0"
-default[:hadoop][:download_url]                     = "http://apache.mirror.digionline.de/hadoop/common/hadoop-#{node[:hadoop][:version]}/hadoop-#{node[:hadoop][:version]}.tar.gz"
-default[:hadoop][:hadoop_src_url]                   = "http://apache.mirror.digionline.de/hadoop/common/hadoop-#{node[:hadoop][:version]}/hadoop-#{node[:hadoop][:version]}-src.tar.gz"
-default[:hadoop][:native_libraries]                 = "false"
-
-default[:hadoop][:yarn][:nm][:memory_mbs]           = 3584
-default[:hadoop][:yarn][:vpmem_ratio]               = 4.1
-default[:hadoop][:yarn][:vcores]                    = 4
-default[:hadoop][:yarn][:app_classpath]             = "#{node[:hadoop][:home]}/etc/hadoop/, #{node[:hadoop][:home]}/share/hadoop/common/*, #{node[:hadoop][:home]}/share/hadoop/common/lib/*, #{node[:hadoop][:home]}/share/hadoop/hdfs/*, #{node[:hadoop][:home]}/share/hadoop/hdfs/lib/*, #{node[:hadoop][:home]}/share/hadoop/yarn/*, #{node[:hadoop][:home]}/share/hadoop/yarn/lib/*"#, #{node[:hadoop][:home]}, #{node[:hadoop][:home]}/lib/*, #{node[:hadoop][:home]}/share/hadoop/tools/lib/*, #{node[:hadoop][:home]}/share/hadoop/yarn/test/*, #{node[:hadoop][:home]}/share/hadoop/mapreduce/*, #{node[:hadoop][:home]}/share/hadoop/mapreduce/lib/*, #{node[:hadoop][:home]}/share/hadoop/mapreduce/test/*"
+default[:hiway][:locale]                            = "de_DE.utf8"
 
 default[:hiway][:user]                              = "hiway"
 default[:hiway][:home]                              = "/home/#{node[:hiway][:user]}"

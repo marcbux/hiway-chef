@@ -1,3 +1,33 @@
+# download annovar binaries
+remote_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:variantcall][:annovar][:targz]}" do
+  source node[:hiway][:variantcall][:annovar][:url]
+  owner node[:hiway][:user]
+  group node[:hadoop][:group]
+  mode "775"
+  action :create_if_missing
+end
+
+# install annovar
+bash "install_annovar" do
+  user node[:hiway][:user]
+  group node[:hadoop][:group]
+  code <<-EOH
+  set -e && set -o pipefail
+    tar xvfz #{Chef::Config[:file_cache_path]}/#{node[:hiway][:variantcall][:annovar][:targz]} -C #{node[:hiway][:software][:dir]}
+  EOH
+  not_if { ::File.exist?("#{node[:hiway][:variantcall][:annovar][:home]}") }
+end
+
+# add annovar executables to /usr/bin
+bash 'update_env_variables' do
+  user "root"
+  code <<-EOH
+  set -e && set -o pipefail
+    ln -s #{node[:hiway][:variantcall][:annovar][:home]}/*.pl /usr/bin/
+  EOH
+  not_if { ::File.exist?("/usr/bin/annotate_variation.pl") }
+end
+
 # prepare the variant call workflow file
 template "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:workflow]}" do
   user node[:hiway][:user]

@@ -36,7 +36,7 @@ recipe           "hiway::galaxy101_run_hw", "Runs the Galaxy 101 Galaxy workflow
 #recipe           "hiway::RNASeq_client", "Prepares the TRAPLINE RNASeq Galaxy Workflow"
 
 depends 'hadoop'
-depends 'locale'
+depends 'locales'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
@@ -51,25 +51,25 @@ attribute "hiway/user",
 attribute "hiway/hiway/am/memory",
 :display_name => "Hi-WAY Application Master Memory in MB",
 :description => "Amount of memory in MB to be requested to run the application master.",
-:type => 'integer',
+:type => 'string',
 :default => 512
 
 attribute "hiway/hiway/am/vcores",
 :display_name => "Hi-WAY Application Master Number of Virtual Cores",
 :description => "Hi-WAY Application Master Number of Virtual Cores",
-:type => 'integer',
+:type => 'string',
 :default => 1
 
 attribute "hiway/hiway/worker/memory",
 :display_name => "Hi-WAY Worker Memory in MB",
 :description => "Hi-WAY Worker Memory in MB",
-:type => 'integer',
+:type => 'string',
 :default => 1024
 
 attribute "hiway/hiway/worker/vcores",
 :display_name => "Hi-WAY Worker Number of Virtual Cores",
 :description => "Hi-WAY Worker Number of Virtual Cores",
-:type => 'integer',
+:type => 'string',
 :default => 1
 
 attribute "hiway/hiway/scheduler",
