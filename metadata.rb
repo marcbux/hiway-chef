@@ -15,23 +15,28 @@ recipe           "hadoop::dn", "Installs a Hadoop Namenode"
 recipe           "hadoop::nm", "Installs a YARN NodeManager"
 recipe           "hadoop::jhs", "Installs a MapReduce History Server for YARN"
 recipe           "hiway::install", "Installs and sets up Hi-WAY"
-recipe           "hiway::hadoop", "Configures Hadoop to support Hi-WAY"
-recipe           "hiway::cuneiform", "Installs Cuneiform with all its dependencies"
-recipe           "hiway::cuneiform_helloworld_cf_prepare", "Prepares the Hello World Cuneiform workflow"
-#recipe           "hiway::cuneiform_helloworld_cf_run", "Runs the Hello World Cuneiform workflow locally via Cuneiform"
-recipe           "hiway::cuneiform_variantcall_hg38_cf_prepare", "Prepares the HG38 Variant Calling Cuneiform workflow"
+recipe           "hiway::rm", "Configures Hadoop to support Hi-WAY on the RM"
+recipe           "hiway::nm", "Configures Hadoop to support Hi-WAY on the NMs"
 recipe           "hiway::galaxy", "Installs, configures and updates Galaxy"
-recipe           "hiway::hiway_wordcount_cf_prepare", "Prepares the Word Count Cuneiform workflow"
-#recipe           "hiway::hiway_wordcount_cf_run", "Runs the Word Count Cuneiform workflow on Hadoop"
-recipe           "hiway::hiway_montage_synthetic_dax_prepare", "Prepares the synthetic Montage DAX workflow"
-#recipe           "hiway::hiway_montage_synthetic_dax_run", "Runs the synthetic Montage DAX workflow on Hadoop"
-recipe           "hiway::hiway_galaxy101_ga_prepare", "Prepares the Galaxy 101 Galaxy workflow"
-#recipe           "hiway::hiway_galaxy101_ga_run", "Runs the Galaxy 101 Galaxy workflow on Hadoop"
-#recipe           "hiway::hiway_variantcall_cf_prepare", "Prepares the HG19 Variant Calling Cuneiform workflow"
-#recipe           "hiway::hiway_montage_m17_4_dax_prepare", "Prepares the Montage DAX Workflow"
-#recipe           "hiway::hiway_RNASeq_ga_prepare", "Prepares the TRAPLINE RNASeq Galaxy Workflow"
+recipe           "hiway::cuneiform", "Installs Cuneiform with all its dependencies"
+recipe           "hiway::helloworld_client", "Prepares the Hello World Cuneiform workflow on the Client"
+recipe           "hiway::helloworld_run_loc", "Runs the Hello World Cuneiform workflow locally on the Client via Cuneiform"
+recipe           "hiway::wordcount_client", "Prepares the Word Count Cuneiform workflow on the Client"
+recipe           "hiway::wordcount_run_loc", "Runs the Word Count Cuneiform workflow locally on the Client via Cuneiform"
+recipe           "hiway::variantcall_hg38_client", "Prepares the HG38 Variant Calling Cuneiform workflow on the Client"
+recipe           "hiway::variantcall_hg38_worker", "Prepares the HG38 Variant Calling Cuneiform workflow on the Workers"
+recipe           "hiway::variantcall_hg38_run_hw", "Runs the HG38 Variant Calling Cuneiform on Hi-WAY from the Client"
+recipe           "hiway::montage_synth_client", "Prepares the synthetic Montage DAX workflow on the Client"
+recipe           "hiway::montage_synth_run_hw", "Runs the synthetic Montage DAX workflow on Hi-WAY from the Client"
+recipe           "hiway::galaxy101_client", "Prepares the Galaxy 101 Galaxy workflow on the Client"
+recipe           "hiway::galaxy101_worker", "Prepares the Galaxy 101 Galaxy workflow on the Workers"
+recipe           "hiway::galaxy101_run_hw", "Runs the Galaxy 101 Galaxy workflow on Hi-WAY from the Client"
+#recipe           "hiway::variantcall_hg19_client", "Prepares the HG19 Variant Calling Cuneiform workflow"
+#recipe           "hiway::montage_m17_4_client", "Prepares the Montage DAX Workflow"
+#recipe           "hiway::RNASeq_client", "Prepares the TRAPLINE RNASeq Galaxy Workflow"
 
 depends 'hadoop'
+depends 'locale'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
@@ -42,3 +47,58 @@ attribute "hadoop/version",
 :description => "Version of hadoop",
 :type => 'string',
 :default => "2.6.0"
+
+
+default[:hiway][:hiway][:am][:memory]               = 512
+default[:hiway][:hiway][:am][:vcores]               = 1
+default[:hiway][:hiway][:worker][:memory]           = 1024
+default[:hiway][:hiway][:worker][:vcores]           = 1
+default[:hiway][:hiway][:scheduler]                 = "placementAware"
+
+attribute "hadoop/version",
+:display_name => "Hadoop version",
+:description => "Version of hadoop",
+:type => 'string',
+:default => "2.6.0"
+
+attribute "hadoop/yarn/nm/memory_mbs",
+:display_name => "Hadoop NodeManager Memory in MB",
+:description => "",
+:type => 'integer',
+:default => 3584
+
+attribute "hadoop/yarn/vcores",
+:display_name => "Hadoop NodeManager Number of Virtual Cores",
+:description => "",
+:type => 'integer',
+:default => 4
+
+attribute "hiway/hiway/am/memory",
+:display_name => "Hi-WAY Application Master Memory in MB",
+:description => "Amount of memory in MB to be requested to run the application master.",
+:type => 'integer',
+:default => 512
+
+attribute "hiway/hiway/am/vcores",
+:display_name => "Hi-WAY Application Master Number of Virtual Cores",
+:description => "",
+:type => 'integer',
+:default => 1
+
+attribute "hiway/hiway/worker/memory",
+:display_name => "Hi-WAY Worker Memory in MB",
+:description => "",
+:type => 'integer',
+:default => 1024
+
+attribute "hiway/hiway/worker/vcores",
+:display_name => "Hi-WAY Worker Number of Virtual Cores",
+:description => "",
+:type => 'integer',
+:default => 1
+
+attribute "hiway/hiway/scheduler",
+:display_name => "Hi-WAY Scheduler",
+:description => "valid values: c3po, cloning, conservative, greedyQueue, heft, outlooking, placementAware, staticRoundRobin",
+:type => 'string',
+:default => "placementAware"

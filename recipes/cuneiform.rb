@@ -20,11 +20,11 @@ bash 'adjust_resolution' do
   user "root"
   code <<-EOH
   set -e && set -o pipefail
-    echo "GRUB_GFXMODE=#{node[:hiway][:cuneiform][:resolution]}" >> /etc/default/grub
-    sed -i s/GRUB_GFXMODE=auto/GRUB_GFXMODE=#{node[:hiway][:cuneiform][:resolution]}/ /etc/grub.d/00_header
+    echo "GRUB_GFXMODE=#{node[:hiway][:resolution]}" >> /etc/default/grub
+    sed -i s/GRUB_GFXMODE=auto/GRUB_GFXMODE=#{node[:hiway][:resolution]}/ /etc/grub.d/00_header
     update-grub2
   EOH
-  not_if "grep -q #{node[:hiway][:cuneiform][:resolution]} /etc/default/grub && grep -q #{node[:hiway][:cuneiform][:resolution]} /etc/grub.d/00_header"
+  not_if "grep -q #{node[:hiway][:resolution]} /etc/default/grub && grep -q #{node[:hiway][:resolution]} /etc/grub.d/00_header"
 end
 
 # git clone Cuneiform

@@ -2,7 +2,7 @@ name: hiway
 ec2:
     type: m3.medium
     image: ami-0307ce74
-    region: eu-west-1
+    region: eu-east-1
     username: ubuntu
 
 cookbooks:
@@ -14,22 +14,32 @@ cookbooks:
     branch: "master"
     
 groups:
-  hadoopmaster:
+  clientmaster:
     size: 1
     recipes:
         - hadoop::nn
         - hadoop::rm
         - hadoop::jhs
+        - hiway::rm
+        - hiway::cuneiform
+        - hiway::helloworld_client
+        - hiway::helloworld_run_loc
+        - hiway::wordcount_client
+        - hiway::wordcount_run_loc
+        - hiway::variantcall_hg38_client
+        - hiway::variantcall_hg38_run_hw
+        - hiway::montage_synth_client
+        - hiway::montage_synth_run_hw
+        - hiway::galaxy101_client
+        - hiway::galaxy101_run_hw
 
-  hiwayslaves:
+  workerslaves:
     size: 2
     recipes:
         - hadoop::dn
         - hadoop::nm
-        - hiway::hadoop
+        - hiway::nm
+        - hiway::galaxy
         - hiway::cuneiform
-        - hiway::cuneiform_helloworld_cf_prepare
-        - hiway::cuneiform_variantcall_hg38_cf_prepare
-        - hiway::hiway_wordcount_cf_prepare
-        - hiway::hiway_montage_synthetic_dax_prepare
-        - hiway::hiway_galaxy101_ga_prepare
+        - hiway::variantcall_hg38_worker
+        - hiway::galaxy101_worker

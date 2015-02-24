@@ -1,37 +1,55 @@
 dependencies:
-  - recipe: hiway::hadoop
-    global: 
+  - recipe: hiway::rm
+    local: 
       - hadoop::rm
+    global: 
+      - hadoop::dn
+      - hadoop::nn
+  - recipe: hiway::nm
+    local: 
       - hadoop::nm
-      - hadoop::dn
-      - hadoop::nn
-  - recipe: hiway::cuneiform_helloworld_cf_prepare
+  - recipe: hiway::helloworld_run_loc
     local: 
-      - hiway::hadoop
+      - hiway::helloworld_client
+      - hiway::cuneiform
+  - recipe: hiway::wordcount_client
     global: 
       - hadoop::dn
       - hadoop::nn
-  - recipe: hiway::cuneiform_variantcall_hg38_cf_prepare
+  - recipe: hiway::wordcount_run_loc
     local: 
-      - hiway::hadoop
+      - hiway::wordcount_client
+      - hiway::cuneiform
+  - recipe: hiway::variantcall_hg38_client
     global: 
       - hadoop::dn
       - hadoop::nn
-  - recipe: hiway::hiway_wordcount_cf_prepare
+  - recipe: hiway::variantcall_hg38_run_hw
     local: 
-      - hiway::hadoop
+      - hiway::variantcall_hg38_client
+    global:
+      - hiway::rm
+      - hiway::nm
+      - hiway::cuneiform
+      - hiway::variantcall_hg38_worker
+  - recipe: hiway::montage_synth_run_hw
+    local: 
+      - hiway::montage_synth_client
+    global:
+      - hiway::rm
+      - hiway::nm
+  - recipe: hiway::galaxy101_client
     global: 
       - hadoop::dn
       - hadoop::nn
-  - recipe: hiway::hiway_montage_synthetic_dax_prepare
+  - recipe: hiway::galaxy101_worker
     local: 
-      - hiway::hadoop
-    global: 
-      - hadoop::dn
-      - hadoop::nn
-  - recipe: hiway::hiway_galaxy101_ga_prepare
+      - hiway::galaxy
+  - recipe: hiway::galaxy101_run_hw
     local: 
-      - hiway::hadoop
-    global: 
-      - hadoop::dn
-      - hadoop::nn
+      - hiway::galaxy101_client
+    global:
+      - hiway::rm
+      - hiway::nm
+      - hiway::galaxy
+      - hiway::galaxy101_worker

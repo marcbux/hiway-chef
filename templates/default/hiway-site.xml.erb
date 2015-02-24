@@ -23,7 +23,7 @@
     </property>
     <property>
         <name>hiway.am.memory</name>
-        <value>1024</value>
+        <value><%= node[:hiway][:hiway][:am][:memory] %></value>
         <description>Amount of memory in MB to be requested to run the application master. Default 1024.</description>
     </property>
     <property>
@@ -40,7 +40,7 @@
     </property>
     <property>
         <name>hiway.am.vcores</name>
-        <value>1</value>
+        <value><%= node[:hiway][:hiway][:am][:vcores] %></value>
     </property>
     <property>
         <name>hiway.am.timeout</name>
@@ -82,12 +82,12 @@
     </property>
     <property>
         <name>hiway.scheduler</name>
-        <value>placementAware</value>
+        <value><%= node[:hiway][:hiway][:scheduler] %></value>
         <description>valid values: c3po, cloning, conservative, greedyQueue, heft, outlooking, placementAware, staticRoundRobin</description>
     </property>
     <property>
         <name>hiway.worker.memory</name>
-        <value>1024</value>
+        <value><%= node[:hiway][:hiway][:worker][:memory] %></value>
     </property>
     <property>
         <name>hiway.worker.priority</name>
@@ -99,6 +99,6 @@
     </property>
     <property>
         <name>hiway.worker.vcores</name>
-        <value>1</value>
+        <value><%= node[:hiway][:hiway][:worker][:vcores] %></value>
     </property>
 </configuration>

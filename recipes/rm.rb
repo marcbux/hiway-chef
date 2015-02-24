@@ -28,12 +28,6 @@ service "resourcemanager" do
   only_if { File.exist?("/etc/init.d/resourcemanager") }
 end
 
-# restart YARN NM for changes to yarn-site to take effect
-service "nodemanager" do
-  action :restart
-  only_if { File.exist?("/etc/init.d/nodemanager") }
-end
-
 # create hiway user directory in HDFS (if necessary) and grant read and write rights to all users in hadoop group such that both the yarn and hiway users can use the directory
 hadoop_hdfs_directory "#{node[:hiway][:hiway][:hdfs][:basedir]}" do
   action :create

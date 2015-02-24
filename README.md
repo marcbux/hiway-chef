@@ -1,4 +1,4 @@
 hiway-chef
 ==========
 
-Collectd chef recipes for Hiway
+Chef recipes for installing Hi-WAY, its dependencies, and several workflows.
