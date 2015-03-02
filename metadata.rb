@@ -36,7 +36,6 @@ recipe           "hiway::galaxy101_run_hw", "Runs the Galaxy 101 Galaxy workflow
 #recipe           "hiway::RNASeq_client", "Prepares the TRAPLINE RNASeq Galaxy Workflow"
 
 depends 'hadoop'
-depends 'locales'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os

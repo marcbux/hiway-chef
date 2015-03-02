@@ -5,7 +5,7 @@ bash "run_galaxy101" do
   code <<-EOH
   set -e && set -o pipefail
     hiway -w "#{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:workflow]}" -l galaxy -s "#{node[:hiway][:home]}/galaxy101_summary.json"
-    stage "#{node[:hiway][:home]}/galaxy101_summary.json"` "#{node[:hiway][:home]}/"
+    stage "#{node[:hiway][:home]}/galaxy101_summary.json" "#{node[:hiway][:home]}/"
   EOH
   not_if { ::File.exists?( "#{node[:hiway][:home]}/galaxy101_summary.json" ) }
 end

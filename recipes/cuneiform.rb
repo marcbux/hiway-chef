@@ -1,8 +1,3 @@
-# set the locale for keyboard input
-locales node[:hiway][:locale] do
-  action :set
-end
-
 # install XWindows for cfide and logview
 case node[:platform_family]
   when "debian"
@@ -20,17 +15,27 @@ case node[:platform_family]
     end
 end
 
-# adjust resolution of the terminal
-bash 'adjust_resolution' do
+# enable X11 forwarding
+bash 'enable_x11_forwarding' do
   user "root"
   code <<-EOH
   set -e && set -o pipefail
-    echo "GRUB_GFXMODE=#{node[:hiway][:resolution]}" >> /etc/default/grub
-    sed -i s/GRUB_GFXMODE=auto/GRUB_GFXMODE=#{node[:hiway][:resolution]}/ /etc/grub.d/00_header
-    update-grub2
+    echo "X11Forwarding yes" >> /etc/ssh/sshd_config
   EOH
-  not_if "grep -q #{node[:hiway][:resolution]} /etc/default/grub && grep -q #{node[:hiway][:resolution]} /etc/grub.d/00_header"
+  not_if "grep -q \"X11Forwarding yes\" /etc/ssh/sshd_config"
 end
+
+# adjust resolution of the terminal
+#bash 'adjust_resolution' do
+#  user "root"
+#  code <<-EOH
+#  set -e && set -o pipefail
+#    echo "GRUB_GFXMODE=#{node[:hiway][:resolution]}" >> /etc/default/grub
+#    sed -i s/GRUB_GFXMODE=auto/GRUB_GFXMODE=#{node[:hiway][:resolution]}/ /etc/grub.d/00_header
+#    update-grub2
+#  EOH
+#  not_if "grep -q #{node[:hiway][:resolution]} /etc/default/grub && grep -q #{node[:hiway][:resolution]} /etc/grub.d/00_header"
+#end
 
 # git clone Cuneiform
 git "/tmp/cuneiform" do

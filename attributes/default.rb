@@ -1,7 +1,6 @@
 include_attribute "hadoop"
 
-default[:hiway][:resolution]                        = "1024x768x32"
-default[:hiway][:locale]                            = "de_DE.utf8"
+#default[:hiway][:resolution]                        = "1024x768x32"
 
 default[:hiway][:user]                              = "hiway"
 default[:hiway][:home]                              = "/home/#{node[:hiway][:user]}"
