@@ -23,13 +23,15 @@ template "#{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:snps]}" do
 end
 
 # copy input data into hdfs
-bash "extract_input_data" do
+bash "stage_out_input_data" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
     #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:exons]} #{node[:hiway][:hiway][:hdfs][:basedir]}
     #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:snps]} #{node[:hiway][:hiway][:hdfs][:basedir]}
+    rm #{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:exons]}
+    rm #{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:snps]}
   EOH
   not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:galaxy101][:snps]}"
 end

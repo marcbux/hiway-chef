@@ -1,9 +1,9 @@
 name: hiway
 ec2:
     type: m3.medium
-    image: ami-0307ce74
-    region: eu-east-1
-    username: ubuntu
+    image: ami-9a562df2
+    region: us-east-1
+    price: 0.1
 
 cookbooks:
   hadoop:
@@ -12,6 +12,13 @@ cookbooks:
   hiway:
     github: "marcbux/hiway-chef"
     branch: "master"
+
+attrs:
+  hadoop:
+    yarn:
+      nm:
+        memory_mbs: '6656'
+      vcores: '7'
     
 groups:
   clientmaster:

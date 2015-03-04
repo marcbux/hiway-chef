@@ -62,6 +62,7 @@ bash "configure_galaxy" do
     sed -i 's/#master_api_key = changethis/master_api_key = #{node[:hiway][:galaxy][:master_api_key]}/g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
     sed -i 's/#admin_users = None/admin_users = #{node[:hiway][:galaxy][:admin_users]}/g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
     sed -i 's/#tool_dependency_dir = None/tool_dependency_dir = dependencies/g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
+    sed -i 's%#shed_tool_data_table_config = config/shed_tool_data_table_conf.xml%shed_tool_data_table_config = config/shed_tool_data_table_conf.xml%g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
   EOH
   not_if "grep -q \"tool_dependency_dir = dependencies\" #{node[:hiway][:galaxy][:home]}/config/galaxy.ini"
 end
@@ -95,6 +96,3 @@ bash "generate_api_key" do
   EOH
   not_if { ::File.exists?( "#{node[:hiway][:galaxy][:home]}/api" ) }
 end
-
-#cp #{node[:hiway][:galaxy][:home]}/config/tool_conf.xml.sample #{node[:hiway][:galaxy][:home]}/config/tool_conf.xml
-#cp #{node[:hiway][:galaxy][:home]}/config/shed_tool_conf.xml #{node[:hiway][:galaxy][:home]}/shed_tool_conf.xml   

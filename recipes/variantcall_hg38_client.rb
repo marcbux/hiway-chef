@@ -88,6 +88,9 @@ bash "copy_input_data_to_hdfs" do
     #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]} #{node[:hiway][:hiway][:hdfs][:basedir]}
     #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reads][:directory]} #{node[:hiway][:hiway][:hdfs][:basedir]}
     #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]} #{node[:hiway][:hiway][:hdfs][:basedir]}
+    rm -r #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb][:directory]}
+    rm -r #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reads][:directory]}
+    rm -r #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]}
   EOH
   not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reference][:directory]}"
 end
