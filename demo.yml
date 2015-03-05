@@ -3,6 +3,7 @@ ec2:
     type: m3.medium
     image: ami-9a562df2
     region: us-east-1
+    username: hiway
     price: 0.1
 
 cookbooks:
