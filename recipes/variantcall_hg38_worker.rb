@@ -104,7 +104,6 @@ directory node[:hiway][:variantcall][:varscan][:home] do
   group node[:hadoop][:group]
   mode "755"
   action :create
-  recursive true
 end
 
 # download varscan jar

@@ -42,7 +42,6 @@ directory "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reads][:d
   group node[:hadoop][:group]
   mode "755"
   action :create
-  recursive true
 end
 
 # create reference directory
@@ -51,7 +50,6 @@ directory "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:reference
   group node[:hadoop][:group]
   mode "755"
   action :create
-  recursive true
 end
 
 # create annovar database directory
@@ -60,7 +58,6 @@ directory "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:hg38][:annovardb
   group node[:hadoop][:group]
   mode "755"
   action :create
-  recursive true
 end
 
 # obtain workflow input data

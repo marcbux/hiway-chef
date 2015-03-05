@@ -34,7 +34,6 @@ directory "#{node[:hiway][:home]}/.ncbi" do
   group node[:hadoop][:group]
   mode "755"
   action :create
-  recursive true
 end
 
 # create SRA configuration
@@ -82,14 +81,13 @@ bash "stage_out_input_data" do
     #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input2][:replicate1][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:RNASeq][:input2][:replicate1][:fastq]}
     #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input2][:replicate2][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:RNASeq][:input2][:replicate2][:fastq]}
     #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input2][:replicate3][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:RNASeq][:input2][:replicate3][:fastq]}
-    rm -r #{node[:hiway][:home]}/ncbi
     rm #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:ref_annotation][:gtf]}
-    rm #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input1][:replicate1][:fastq]}
-    rm #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input1][:replicate2][:fastq]}
-    rm #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input1][:replicate3][:fastq]}
-    rm #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input2][:replicate1][:fastq]}
-    rm #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input2][:replicate2][:fastq]}
-    rm #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input2][:replicate3][:fastq]}
+    rm #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input1][:replicate1][:accession]}.fastq
+    rm #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input1][:replicate2][:accession]}.fastq
+    rm #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input1][:replicate3][:accession]}.fastq
+    rm #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input2][:replicate1][:accession]}.fastq
+    rm #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input2][:replicate2][:accession]}.fastq
+    rm #{node[:hiway][:home]}/#{node[:hiway][:RNASeq][:input2][:replicate3][:accession]}.fastq
   EOH
   not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:RNASeq][:input2][:replicate3][:fastq]}"
 end

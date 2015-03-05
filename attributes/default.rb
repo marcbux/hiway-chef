@@ -24,7 +24,7 @@ default[:hiway][:cuneiform][:cache]                 = "/tmp/cf-cache"
 
 default[:hiway][:galaxy][:repository]               = "https://bitbucket.org/galaxy/galaxy-dist/"
 default[:hiway][:galaxy][:home]                     = "#{node[:hiway][:software][:dir]}/galaxy" 
-default[:hiway][:galaxy][:master_api_key]           = "reverse"
+default[:hiway][:galaxy][:master_api_key]           = "hiway"
 default[:hiway][:galaxy][:admin_users]              = "hiway@hiway.com"
 
 default[:hiway][:helloworld][:workflow]             = "helloworld.cf"
