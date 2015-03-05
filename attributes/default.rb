@@ -89,8 +89,10 @@ default[:hiway][:montage_m17_4][:montage][:home]     = "#{node[:hiway][:software
 default[:hiway][:montage_m17_4][:montage][:url]      = "http://montage.ipac.caltech.edu/download/#{node[:hiway][:montage_m17_4][:montage][:targz]}"
 
 default[:hiway][:galaxy101][:workflow]               = "galaxy101.ga"
-default[:hiway][:galaxy101][:exons]                  = "Exons.bed"
-default[:hiway][:galaxy101][:snps]                   = "SNPs.bed"
+default[:hiway][:galaxy101][:exons][:bed]            = "Exons.bed"
+default[:hiway][:galaxy101][:exons][:targz]          = "#{node[:hiway][:galaxy101][:exons][:bed]}.tar.gz"
+default[:hiway][:galaxy101][:snps][:bed]             = "SNPs.bed"
+default[:hiway][:galaxy101][:snps][:targz]           = "#{node[:hiway][:galaxy101][:snps][:bed]}.tar.gz"
 default[:hiway][:galaxy101][:join][:name]            = "join"
 default[:hiway][:galaxy101][:join][:revision]        = "de21bdbb8d28"
 

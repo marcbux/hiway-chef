@@ -7,19 +7,21 @@ template "#{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:workflow]}" do
 end
 
 # prepare the Exons input file
-template "#{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:exons]}" do
-  user node[:hiway][:user]
+cookbook_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:galaxy101][:exons][:targz]}" do
+  source "#{node[:hiway][:galaxy101][:exons][:targz]}"
+  owner node[:hiway][:user]
   group node[:hadoop][:group]
-  source "#{node[:hiway][:galaxy101][:exons]}.erb"
-  mode "755"
+  mode "775"
+  action :create_if_missing
 end
 
 # prepare the SNPs input file
-template "#{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:snps]}" do
-  user node[:hiway][:user]
+cookbook_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:galaxy101][:snps][:targz]}" do
+  source "#{node[:hiway][:galaxy101][:snps][:targz]}"
+  owner node[:hiway][:user]
   group node[:hadoop][:group]
-  source "#{node[:hiway][:galaxy101][:snps]}.erb"
-  mode "755"
+  mode "775"
+  action :create_if_missing
 end
 
 # copy input data into hdfs
@@ -28,6 +30,8 @@ bash "stage_out_input_data" do
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
+    tar xzvf #{Chef::Config[:file_cache_path]}/#{node[:hiway][:galaxy101][:exons][:targz]} -C #{node[:hiway][:home]}
+    tar xzvf #{Chef::Config[:file_cache_path]}/#{node[:hiway][:galaxy101][:snps][:targz]} -C #{node[:hiway][:home]}
     #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:exons]} #{node[:hiway][:hiway][:hdfs][:basedir]}
     #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:snps]} #{node[:hiway][:hiway][:hdfs][:basedir]}
     rm #{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:exons]}
