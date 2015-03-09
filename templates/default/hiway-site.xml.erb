@@ -23,7 +23,7 @@
     </property>
     <property>
         <name>hiway.am.memory</name>
-        <value><%= node[:hiway][:hiway][:am][:memory] %></value>
+        <value><%= node[:hiway][:hiway][:am][:memory_mb] %></value>
         <description>Amount of memory in MB to be requested to run the application master. Default 1024.</description>
     </property>
     <property>
@@ -87,7 +87,7 @@
     </property>
     <property>
         <name>hiway.worker.memory</name>
-        <value><%= node[:hiway][:hiway][:worker][:memory] %></value>
+        <value><%= node[:hiway][:hiway][:worker][:memory_mb] %></value>
     </property>
     <property>
         <name>hiway.worker.priority</name>

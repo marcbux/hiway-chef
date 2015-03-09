@@ -1,3 +1,14 @@
+// tar
+deftask untar( <out( File )> : tar( File ) )in bash *{
+  tar xf $tar
+  if [ "$?" -ne "0" ]
+  then
+    echo untar returned error. >&2
+    exit -1
+  fi
+  out=`tar tf $tar`
+}*
+
 // gzip
 deftask gunzip( out( File ) : gz( File ) )in bash *{
   gzip -c -d $gz > $out
@@ -58,7 +69,7 @@ deftask samtools-faidx( fai( File ) : fa( File ) )in bash *{
 
 deftask samtools-sort( sortedbam( File ) : bam( File ) )in bash *{
   sortedbam=alignment-sorted.bam
-  samtools sort -m 2G $bam alignment-sorted
+  samtools sort -m `expr <%= node[:hiway][:variantcall][:memory_mb] %> \* 1024 \* 1024` $bam alignment-sorted
 }*
 
 deftask samtools-mpileup( mpileup( File ) : sortedbam( File ) [fa( File ) fai( File )] )in bash *{
@@ -120,13 +131,13 @@ deftask per-sample(
     buildver: 'hg38' );
 }
 
-fastq1 = '<%= node[:hiway][:variantcall][:hg38][:reads][:directory] %>/<%= node[:hiway][:variantcall][:hg38][:reads][:file1] %>';
-fastq2 = '<%= node[:hiway][:variantcall][:hg38][:reads][:directory] %>/<%= node[:hiway][:variantcall][:hg38][:reads][:file2] %>';
+fastq1 = '<%= node[:hiway][:variantcall][:reads][:directory] %>/<%= node[:hiway][:variantcall][:reads][:file1] %>';
+fastq2 = '<%= node[:hiway][:variantcall][:reads][:directory] %>/<%= node[:hiway][:variantcall][:reads][:file2] %>';
 
-db = '<%= node[:hiway][:variantcall][:hg38][:annovardb][:directory] %>/<%= node[:hiway][:variantcall][:hg38][:annovardb][:file] %>';
+db = '<%= node[:hiway][:variantcall][:annovardb][:directory] %>/<%= node[:hiway][:variantcall][:annovardb][:file] %>';
 
 // workflow definition
-fa = '<%= node[:hiway][:variantcall][:hg38][:reference][:directory] %>/<%= node[:hiway][:variantcall][:hg38][:reference][:file1] %>' '<%= node[:hiway][:variantcall][:hg38][:reference][:directory] %>/<%= node[:hiway][:variantcall][:hg38][:reference][:file2] %>';
+fa = '<%= node[:hiway][:variantcall][:reference][:directory] %>/<%= node[:hiway][:variantcall][:reference][:file1] %>' '<%= node[:hiway][:variantcall][:reference][:directory] %>/<%= node[:hiway][:variantcall][:reference][:file2] %>';
 
 fun exonicfun = per-sample(
   fa:     fa

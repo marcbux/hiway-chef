@@ -1,18 +1,12 @@
 # install XWindows for cfide and logview
-case node[:platform_family]
-  when "debian"
-    package "maven" do
-      options "--force-yes"
-    end
-    package "xorg" do
-      options "--force-yes"
-    end
-    package "graphviz" do
-      options "--force-yes"
-    end
-    package "r-base" do
-      options "--force-yes"
-    end
+package "xorg" do
+  options "--force-yes"
+end
+package "graphviz" do
+  options "--force-yes"
+end
+package "r-base" do
+  options "--force-yes"
 end
 
 # enable X11 forwarding
@@ -37,25 +31,55 @@ end
 #  not_if "grep -q #{node[:hiway][:resolution]} /etc/default/grub && grep -q #{node[:hiway][:resolution]} /etc/grub.d/00_header"
 #end
 
-# git clone Cuneiform
-git "/tmp/cuneiform" do
-  repository node[:hiway][:cuneiform][:github_url]
-  reference "master"
-  user node[:hiway][:user]
-  group node[:hadoop][:group]
-  action :sync
-end
+if node[:hiway][:release] == "true"
+  # download Cuneiform binaries
+  remote_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:cuneiform][:release][:zip]}" do
+    source node[:hiway][:cuneiform][:release][:url]
+    owner node[:hiway][:user]
+    group node[:hadoop][:group]
+    mode "775"
+    action :create_if_missing
+  end
+  
+  # install Cuneiform binaries
+  bash "install_bowtie2" do
+    user node[:hiway][:user]
+    group node[:hadoop][:group]
+    code <<-EOH
+    set -e && set -o pipefail
+      unzip #{Chef::Config[:file_cache_path]}/#{node[:hiway][:cuneiform][:release][:zip]} -d #{node[:hiway][:software][:dir]}
+    EOH
+    not_if { ::File.exist?("#{node[:hiway][:cuneiform][:home]}") }
+  end
+else
+  # install Git
+  include_recipe "git"
+  
+  # install Maven
+  package "maven" do
+    options "--force-yes"
+  end
+  
+  # git clone Cuneiform
+  git "/tmp/cuneiform" do
+    repository node[:hiway][:cuneiform][:github_url]
+    reference "master"
+    user node[:hiway][:user]
+    group node[:hadoop][:group]
+    action :sync
+  end
 
-# maven build Cuneiform
-bash 'build-cuneiform' do
-  user node[:hiway][:user]
-  group node[:hadoop][:group]
-  code <<-EOH
-  set -e && set -o pipefail
-    mvn -f /tmp/cuneiform/pom.xml package
-    cp -r /tmp/cuneiform/cuneiform-dist/target/cuneiform-dist-#{node[:hiway][:cuneiform][:version]}/cuneiform-#{node[:hiway][:cuneiform][:version]} #{node[:hiway][:cuneiform][:home]}
-  EOH
-  not_if { ::File.exist?("#{node[:hiway][:cuneiform][:home]}") }
+  # maven build Cuneiform
+  bash 'build-cuneiform' do
+    user node[:hiway][:user]
+    group node[:hadoop][:group]
+    code <<-EOH
+    set -e && set -o pipefail
+      mvn -f /tmp/cuneiform/pom.xml package
+      cp -r /tmp/cuneiform/cuneiform-dist/target/cuneiform-dist-#{node[:hiway][:cuneiform][:snapshot][:version]}/cuneiform-#{node[:hiway][:cuneiform][:snapshot][:version]} #{node[:hiway][:cuneiform][:home]}
+    EOH
+    not_if { ::File.exist?("#{node[:hiway][:cuneiform][:home]}") }
+  end
 end
 
 # add script for calling Cuneiform IDE
@@ -83,11 +107,6 @@ template "#{node[:hiway][:cuneiform][:home]}/logview" do
   group node[:hadoop][:group]
   mode "755"
   action :create_if_missing
-end
-
-# add symbolic link to Cuneiform dir
-link "#{node[:hadoop][:dir]}/cuneiform" do
-  to node[:hiway][:cuneiform][:home]
 end
 
 # add CUNEIFORM_HOME environment variable

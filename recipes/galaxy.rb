@@ -1,26 +1,23 @@
 # install required packages
-case node[:platform_family]
-  when "debian"
-    # required for cloning galaxy form the repository
-    package "mercurial" do
-      options "--force-yes"
-    end
-    # required to interface with Galaxy via http requests
-    package "curl" do
-      options "--force-yes"
-    end
-    # required as a dependency for certain galaxy tools
-    package "python-dev" do
-      options "--force-yes"
-    end
-    # required by Hi-WAY to interpret galaxy tools
-    package "python-cheetah" do
-      options "--force-yes"
-    end
-    # required for downloading boto
-    package "python-pip" do
-      options "--force-yes"
-    end
+# required for cloning galaxy form the repository
+package "mercurial" do
+  options "--force-yes"
+end
+# required to interface with Galaxy via http requests
+package "curl" do
+  options "--force-yes"
+end
+# required as a dependency for certain galaxy tools
+package "python-dev" do
+  options "--force-yes"
+end
+# required by Hi-WAY to interpret galaxy tools
+package "python-cheetah" do
+  options "--force-yes"
+end
+# required for downloading boto
+package "python-pip" do
+  options "--force-yes"
 end
 
 # install boto and bioblend, which are required for upgrading Galaxy

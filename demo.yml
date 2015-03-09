@@ -1,8 +1,8 @@
 name: hiway
 ec2:
-    type: m3.medium
-    image: ami-9a562df2
-    region: us-east-1
+    type: m3.large
+    image: ami-234ecc54
+    region: eu-west-1
     username: hiway
     price: 0.1
 

@@ -60,11 +60,8 @@ bash 'update_env_variables' do
 end
 
 # install libcurses, which is required for building samtools
-case node[:platform_family]
-  when "debian"
-    package "libncurses5-dev" do
-      options "--force-yes"
-    end
+package "libncurses5-dev" do
+  options "--force-yes"
 end
 
 # download samtools sources

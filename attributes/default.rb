@@ -1,24 +1,39 @@
 include_attribute "hadoop"
 
-#default[:hiway][:resolution]                        = "1024x768x32"
-
+#default[:hiway][:resolution]                       = "1024x768x32"
+default[:hiway][:release]                           = "true"
 default[:hiway][:user]                              = "hiway"
 default[:hiway][:home]                              = "/home/#{node[:hiway][:user]}"
 default[:hiway][:software][:dir]                    = node[:hadoop][:dir]
 
-default[:hiway][:hiway][:hdfs][:basedir]            = "/"
-default[:hiway][:hiway][:version]                   = "1.0.0-SNAPSHOT"
-default[:hiway][:hiway][:home]                      = "#{node[:hiway][:software][:dir]}/hiway-#{node[:hiway][:hiway][:version]}"
+default[:hiway][:hiway][:release][:version]         = "1.0.0-beta"
+default[:hiway][:hiway][:release][:zip]             = "hiway-dist-#{node[:hiway][:hiway][:release][:version]}.zip"
+default[:hiway][:hiway][:release][:url]             = "https://github.com/joergen7/cuneiform/releases/download/#{node[:hiway][:hiway][:release][:version]}/#{node[:hiway][:hiway][:release][:zip]}"
+default[:hiway][:hiway][:snapshot][:version]        = "1.0.1-SNAPSHOT"
 default[:hiway][:hiway][:github_url]                = "https://github.com/marcbux/Hi-WAY.git"
-default[:hiway][:hiway][:am][:memory]               = 512
+if node[:hiway][:release] == "true"
+  default[:hiway][:hiway][:home]                  = "#{node[:hiway][:software][:dir]}/hiway-#{node[:hiway][:hiway][:release][:version]}"
+else
+  default[:hiway][:hiway][:home]                  = "#{node[:hiway][:software][:dir]}/hiway-#{node[:hiway][:hiway][:snapshot][:version]}"
+end
+default[:hiway][:hiway][:hdfs][:basedir]            = "/"
+default[:hiway][:hiway][:am][:memory_mb]            = 512
 default[:hiway][:hiway][:am][:vcores]               = 1
-default[:hiway][:hiway][:worker][:memory]           = 1024
+default[:hiway][:hiway][:worker][:memory_mb]        = 1024
 default[:hiway][:hiway][:worker][:vcores]           = 1
 default[:hiway][:hiway][:scheduler]                 = "placementAware"
 
-default[:hiway][:cuneiform][:version]               = "2.0.0-SNAPSHOT"
-default[:hiway][:cuneiform][:home]                  = "#{node[:hiway][:software][:dir]}/cuneiform-#{node[:hiway][:cuneiform][:version]}"
+default[:hiway][:cuneiform][:release][:version]     = "2.0.0-beta"
+default[:hiway][:cuneiform][:release][:zip]         = "cuneiform-dist-#{node[:hiway][:cuneiform][:release][:version]}.zip"
+default[:hiway][:cuneiform][:release][:url]         = "https://github.com/joergen7/cuneiform/releases/download/#{node[:hiway][:cuneiform][:release][:version]}/#{node[:hiway][:cuneiform][:release][:zip]}"
+default[:hiway][:cuneiform][:snapshot][:version]    = "2.0.1-SNAPSHOT"
 default[:hiway][:cuneiform][:github_url]            = "https://github.com/joergen7/cuneiform.git"
+if node[:hiway][:release] == "true"
+  default[:hiway][:cuneiform][:home]                  = "#{node[:hiway][:software][:dir]}/cuneiform-#{node[:hiway][:cuneiform][:release][:version]}"
+else
+  default[:hiway][:cuneiform][:home]                  = "#{node[:hiway][:software][:dir]}/cuneiform-#{node[:hiway][:cuneiform][:snapshot][:version]}"
+end
+
 default[:hiway][:cuneiform][:r_packages]            = "node[:hiway][:software][:dir]/r_packages"
 default[:hiway][:cuneiform][:cache]                 = "/tmp/cf-cache"
 
@@ -34,32 +49,25 @@ default[:hiway][:wordcount][:input][:url]           = "http://stateoftheunion.on
 default[:hiway][:wordcount][:input][:zip]           = "stateoftheunion1790-2014.zip"
 default[:hiway][:wordcount][:input][:txt]           = "stateoftheunion1790-2014.txt"
 
-default[:hiway][:variantcall][:hg19][:setupworkflow]       = "variantcall.setup.cf"
-default[:hiway][:variantcall][:hg19][:workflow]            = "variantcall.cf"
-default[:hiway][:variantcall][:hg19][:splitsize_reference] = 12000
-default[:hiway][:variantcall][:hg19][:paired_read_files]   = 1
-default[:hiway][:variantcall][:hg19][:iterations]          = 1
-default[:hiway][:variantcall][:hg19][:threads]             = 1
-default[:hiway][:variantcall][:hg19][:memory]              = 4096000000
-
-default[:hiway][:variantcall][:hg38][:workflow]              = "variantcall.hg38.cf"
-default[:hiway][:variantcall][:hg38][:reads][:directory]     = "1000genomes"
-default[:hiway][:variantcall][:hg38][:reads][:gz1]           = "SRR062634_1.filt.fastq.gz"
-default[:hiway][:variantcall][:hg38][:reads][:gz2]           = "SRR062634_2.filt.fastq.gz"
-default[:hiway][:variantcall][:hg38][:reads][:file1]         = "SRR062634_1.filt.part.fastq"
-default[:hiway][:variantcall][:hg38][:reads][:file2]         = "SRR062634_2.filt.part.fastq"
-default[:hiway][:variantcall][:hg38][:reads][:url]           = "ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/HG00096/sequence_read"
-default[:hiway][:variantcall][:hg38][:reads][:lines]         = 400000
-default[:hiway][:variantcall][:hg38][:reference][:directory] = "hg38"
-default[:hiway][:variantcall][:hg38][:reference][:gz1]       = "chrY.fa.gz"
-default[:hiway][:variantcall][:hg38][:reference][:gz2]       = "chr22.fa.gz"
-default[:hiway][:variantcall][:hg38][:reference][:file1]     = "chrY.fa"
-default[:hiway][:variantcall][:hg38][:reference][:file2]     = "chr22.fa"
-default[:hiway][:variantcall][:hg38][:reference][:url]       = "ftp://hgdownload.soe.ucsc.edu/apache/htdocs/goldenPath/hg38/chromosomes"
-default[:hiway][:variantcall][:hg38][:annovardb][:directory] = "annodb"
-default[:hiway][:variantcall][:hg38][:annovardb][:file]      = "hg38db.tar"
-
-default[:hiway][:variantcall][:bowtie2][:version]   = "2.2.4"
+default[:hiway][:variantcall][:workflow]              = "variantcall.cf"
+default[:hiway][:variantcall][:threads]               = "#{node[:hiway][:hiway][:worker][:vcores]}"
+default[:hiway][:variantcall][:memory_mb]             = "#{node[:hiway][:hiway][:worker][:memory_mb]}"
+default[:hiway][:variantcall][:reads][:directory]     = "1000genomes"
+default[:hiway][:variantcall][:reads][:gz1]           = "SRR062634_1.filt.fastq.gz"
+default[:hiway][:variantcall][:reads][:gz2]           = "SRR062634_2.filt.fastq.gz"
+default[:hiway][:variantcall][:reads][:file1]         = "SRR062634_1.filt.part.fastq"
+default[:hiway][:variantcall][:reads][:file2]         = "SRR062634_2.filt.part.fastq"
+default[:hiway][:variantcall][:reads][:url]           = "ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/HG00096/sequence_read"
+default[:hiway][:variantcall][:reads][:lines]         = 400000
+default[:hiway][:variantcall][:reference][:directory] = "hg38"
+default[:hiway][:variantcall][:reference][:gz1]       = "chrY.fa.gz"
+default[:hiway][:variantcall][:reference][:gz2]       = "chr22.fa.gz"
+default[:hiway][:variantcall][:reference][:file1]     = "chrY.fa"
+default[:hiway][:variantcall][:reference][:file2]     = "chr22.fa"
+default[:hiway][:variantcall][:reference][:url]       = "ftp://hgdownload.soe.ucsc.edu/apache/htdocs/goldenPath/hg38/chromosomes"
+default[:hiway][:variantcall][:annovardb][:directory] = "annodb"
+default[:hiway][:variantcall][:annovardb][:file]      = "hg38db.tar"
+default[:hiway][:variantcall][:bowtie2][:version]   = "2.2.5"
 default[:hiway][:variantcall][:bowtie2][:zip]       = "bowtie2-#{node[:hiway][:variantcall][:bowtie2][:version]}-linux-x86_64.zip"
 default[:hiway][:variantcall][:bowtie2][:home]      = "#{node[:hiway][:software][:dir]}/bowtie2-#{node[:hiway][:variantcall][:bowtie2][:version]}"
 default[:hiway][:variantcall][:bowtie2][:url]       = "http://ufpr.dl.sourceforge.net/project/bowtie-bio/bowtie2/#{node[:hiway][:variantcall][:bowtie2][:version]}/#{node[:hiway][:variantcall][:bowtie2][:zip]}"
