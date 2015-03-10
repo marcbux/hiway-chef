@@ -7,15 +7,16 @@ default[:hiway][:home]                              = "/home/#{node[:hiway][:use
 default[:hiway][:software][:dir]                    = node[:hadoop][:dir]
 
 default[:hiway][:hiway][:release][:version]         = "1.0.0-beta"
-default[:hiway][:hiway][:release][:zip]             = "hiway-dist-#{node[:hiway][:hiway][:release][:version]}.zip"
-default[:hiway][:hiway][:release][:url]             = "https://github.com/joergen7/cuneiform/releases/download/#{node[:hiway][:hiway][:release][:version]}/#{node[:hiway][:hiway][:release][:zip]}"
 default[:hiway][:hiway][:snapshot][:version]        = "1.0.1-SNAPSHOT"
-default[:hiway][:hiway][:github_url]                = "https://github.com/marcbux/Hi-WAY.git"
 if node[:hiway][:release] == "true"
-  default[:hiway][:hiway][:home]                  = "#{node[:hiway][:software][:dir]}/hiway-#{node[:hiway][:hiway][:release][:version]}"
+  default[:hiway][:hiway][:version]                 = "#{node[:hiway][:hiway][:release][:version]}"
 else
-  default[:hiway][:hiway][:home]                  = "#{node[:hiway][:software][:dir]}/hiway-#{node[:hiway][:hiway][:snapshot][:version]}"
+  default[:hiway][:hiway][:version]                 = "#{node[:hiway][:hiway][:snapshot][:version]}"
 end
+default[:hiway][:hiway][:release][:targz]           = "hiway-dist-#{node[:hiway][:hiway][:release][:version]}.tar.gz"
+default[:hiway][:hiway][:release][:url]             = "https://github.com/marcbux/Hi-WAY/releases/download/#{node[:hiway][:hiway][:release][:version]}/#{node[:hiway][:hiway][:release][:targz]}"
+default[:hiway][:hiway][:github_url]                = "https://github.com/marcbux/Hi-WAY.git"
+default[:hiway][:hiway][:home]                      = "#{node[:hiway][:software][:dir]}/hiway-#{node[:hiway][:hiway][:version]}"
 default[:hiway][:hiway][:hdfs][:basedir]            = "/"
 default[:hiway][:hiway][:am][:memory_mb]            = 512
 default[:hiway][:hiway][:am][:vcores]               = 1
@@ -24,23 +25,27 @@ default[:hiway][:hiway][:worker][:vcores]           = 1
 default[:hiway][:hiway][:scheduler]                 = "placementAware"
 
 default[:hiway][:cuneiform][:release][:version]     = "2.0.0-beta"
-default[:hiway][:cuneiform][:release][:zip]         = "cuneiform-dist-#{node[:hiway][:cuneiform][:release][:version]}.zip"
-default[:hiway][:cuneiform][:release][:url]         = "https://github.com/joergen7/cuneiform/releases/download/#{node[:hiway][:cuneiform][:release][:version]}/#{node[:hiway][:cuneiform][:release][:zip]}"
 default[:hiway][:cuneiform][:snapshot][:version]    = "2.0.1-SNAPSHOT"
-default[:hiway][:cuneiform][:github_url]            = "https://github.com/joergen7/cuneiform.git"
 if node[:hiway][:release] == "true"
-  default[:hiway][:cuneiform][:home]                  = "#{node[:hiway][:software][:dir]}/cuneiform-#{node[:hiway][:cuneiform][:release][:version]}"
+  default[:hiway][:cuneiform][:version]             = "#{node[:hiway][:cuneiform][:release][:version]}"
 else
-  default[:hiway][:cuneiform][:home]                  = "#{node[:hiway][:software][:dir]}/cuneiform-#{node[:hiway][:cuneiform][:snapshot][:version]}"
+  default[:hiway][:cuneiform][:version]             = "#{node[:hiway][:cuneiform][:snapshot][:version]}"
 end
-
+default[:hiway][:cuneiform][:release][:targz]       = "cuneiform-dist-#{node[:hiway][:cuneiform][:release][:version]}.tar.gz"
+default[:hiway][:cuneiform][:release][:url]         = "https://github.com/joergen7/cuneiform/releases/download/#{node[:hiway][:cuneiform][:release][:version]}/#{node[:hiway][:cuneiform][:release][:targz]}"
+default[:hiway][:cuneiform][:github_url]            = "https://github.com/joergen7/cuneiform.git"
+default[:hiway][:cuneiform][:home]                  = "#{node[:hiway][:software][:dir]}/cuneiform-#{node[:hiway][:cuneiform][:version]}"
 default[:hiway][:cuneiform][:r_packages]            = "node[:hiway][:software][:dir]/r_packages"
 default[:hiway][:cuneiform][:cache]                 = "/tmp/cf-cache"
 
 default[:hiway][:galaxy][:repository]               = "https://bitbucket.org/galaxy/galaxy-dist/"
-default[:hiway][:galaxy][:home]                     = "#{node[:hiway][:software][:dir]}/galaxy" 
-default[:hiway][:galaxy][:master_api_key]           = "hiway"
-default[:hiway][:galaxy][:admin_users]              = "hiway@hiway.com"
+default[:hiway][:galaxy][:home]                     = "#{node[:hiway][:software][:dir]}/galaxy"
+default[:hiway][:galaxy][:master_api_key]           = "reverse"
+# name of at least four lower-case characters, numbers, or the "-" character
+default[:hiway][:galaxy][:user][:name]              = "#{node[:hiway][:user]}"
+# password of at least six characters
+default[:hiway][:galaxy][:user][:password]          = "#{node[:hiway][:galaxy][:master_api_key]}"
+default[:hiway][:galaxy][:user][:email]             = "hiway@hiway.com"
 
 default[:hiway][:helloworld][:workflow]             = "helloworld.cf"
 

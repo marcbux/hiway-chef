@@ -65,6 +65,7 @@ end
 bash "stage_out_input_data" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
+  timeout 604800
   code <<-EOH
   set -e && set -o pipefail
     tar xzvf #{Chef::Config[:file_cache_path]}/#{node[:hiway][:RNASeq][:ref_annotation][:targz]} -C #{node[:hiway][:home]}

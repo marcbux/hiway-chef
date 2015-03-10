@@ -24,7 +24,7 @@ end
 
 if node[:hiway][:release] == "true"
   # download Hi-WAY binaries
-  remote_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:hiway][:release][:zip]}" do
+  remote_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:hiway][:release][:targz]}" do
     source node[:hiway][:hiway][:release][:url]
     owner node[:hiway][:user]
     group node[:hadoop][:group]
@@ -33,12 +33,12 @@ if node[:hiway][:release] == "true"
   end
   
   # install Hi-WAY binaries
-  bash "install_bowtie2" do
+  bash "install_hiway" do
     user node[:hiway][:user]
     group node[:hadoop][:group]
     code <<-EOH
     set -e && set -o pipefail
-      unzip #{Chef::Config[:file_cache_path]}/#{node[:hiway][:hiway][:release][:zip]} -d #{node[:hiway][:software][:dir]}
+      tar xvfz #{Chef::Config[:file_cache_path]}/#{node[:hiway][:hiway][:release][:targz]} -C #{node[:hiway][:software][:dir]}
     EOH
     not_if { ::File.exist?("#{node[:hiway][:hiway][:home]}") }
   end
@@ -67,7 +67,7 @@ else
     code <<-EOH
     set -e && set -o pipefail
       mvn -f /tmp/hiway/pom.xml package
-      cp -r /tmp/hiway/hiway-dist/target/hiway-dist-#{node[:hiway][:hiway][:snapshot][:version]}/hiway-#{node[:hiway][:hiway][:snapshot][:version]} #{node[:hiway][:hiway][:home]}
+      cp -r /tmp/hiway/hiway-dist/target/hiway-dist-#{node[:hiway][:hiway][:version]}/hiway-#{node[:hiway][:hiway][:version]} #{node[:hiway][:hiway][:home]}
     EOH
     not_if { ::File.exist?("#{node[:hiway][:hiway][:home]}") }
   end

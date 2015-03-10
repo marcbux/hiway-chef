@@ -37,7 +37,7 @@ end
 #  group node[:hadoop][:group]
 #  code <<-EOF
 #  set -e && set -o pipefail
-#  #{node[:hadoop][:home]}/bin/yarn jar #{node[:hiway][:hiway][:home]}/hiway-core-#{node[:hiway][:hiway][:snapshot][:version]}.jar -w #{node[:hiway][:hiway][:home]}/#{node[:hiway][:montage_m17_4][:workflow]} -l dax
+#  #{node[:hadoop][:home]}/bin/yarn jar #{node[:hiway][:hiway][:home]}/hiway-core-#{node[:hiway][:hiway][:version]}.jar -w #{node[:hiway][:hiway][:home]}/#{node[:hiway][:montage_m17_4][:workflow]} -l dax
 #  touch #{ran_montage_m17_4}
 #  EOF
 #    not_if { ::File.exists?( "#{ran_montage_m17_4}" ) }

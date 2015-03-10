@@ -57,7 +57,7 @@ bash "configure_galaxy" do
     sed -i 's%#tool_config_file = config/tool_conf.xml,shed_tool_conf.xml%tool_config_file = config/tool_conf.xml,config/shed_tool_conf.xml%g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
     sed -i 's/#host = 127.0.0.1/host = 0.0.0.0/g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
     sed -i 's/#master_api_key = changethis/master_api_key = #{node[:hiway][:galaxy][:master_api_key]}/g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
-    sed -i 's/#admin_users = None/admin_users = #{node[:hiway][:galaxy][:admin_users]}/g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
+    sed -i 's/#admin_users = None/admin_users = #{node[:hiway][:galaxy][:user][:email]}/g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
     sed -i 's/#tool_dependency_dir = None/tool_dependency_dir = dependencies/g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
     sed -i 's%#shed_tool_data_table_config = config/shed_tool_data_table_conf.xml%shed_tool_data_table_config = config/shed_tool_data_table_conf.xml%g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
   EOH
@@ -88,7 +88,7 @@ bash "generate_api_key" do
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
-    curl --data "username=#{node[:hiway][:user]}&password=#{node[:hiway][:galaxy][:master_api_key]}&email=#{node[:hiway][:galaxy][:admin_users]}" "http://localhost:8080/api/users?key=#{node[:hiway][:galaxy][:master_api_key]}" | grep "id" | sed 's/[\", ]//g' | sed 's/id://' > #{node[:hiway][:galaxy][:home]}/id
+    curl --data "username=#{node[:hiway][:galaxy][:user][:name]}&password=#{node[:hiway][:galaxy][:user][:password]}&email=#{node[:hiway][:galaxy][:user][:email]}" "http://localhost:8080/api/users?key=#{node[:hiway][:galaxy][:master_api_key]}" | grep "id" | sed 's/[\", ]//g' | sed 's/id://' > #{node[:hiway][:galaxy][:home]}/id
     curl -X POST http://localhost:8080/api/users/`cat #{node[:hiway][:galaxy][:home]}/id`/api_key?key=#{node[:hiway][:galaxy][:master_api_key]} | sed 's/\"//g' > #{node[:hiway][:galaxy][:home]}/api
   EOH
   not_if { ::File.exists?( "#{node[:hiway][:galaxy][:home]}/api" ) }

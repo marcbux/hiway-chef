@@ -33,7 +33,7 @@ end
 
 if node[:hiway][:release] == "true"
   # download Cuneiform binaries
-  remote_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:cuneiform][:release][:zip]}" do
+  remote_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:cuneiform][:release][:targz]}" do
     source node[:hiway][:cuneiform][:release][:url]
     owner node[:hiway][:user]
     group node[:hadoop][:group]
@@ -42,12 +42,12 @@ if node[:hiway][:release] == "true"
   end
   
   # install Cuneiform binaries
-  bash "install_bowtie2" do
+  bash "install_cuneiform" do
     user node[:hiway][:user]
     group node[:hadoop][:group]
     code <<-EOH
     set -e && set -o pipefail
-      unzip #{Chef::Config[:file_cache_path]}/#{node[:hiway][:cuneiform][:release][:zip]} -d #{node[:hiway][:software][:dir]}
+      tar xvfz #{Chef::Config[:file_cache_path]}/#{node[:hiway][:cuneiform][:release][:targz]} -C #{node[:hiway][:software][:dir]}
     EOH
     not_if { ::File.exist?("#{node[:hiway][:cuneiform][:home]}") }
   end
@@ -76,7 +76,7 @@ else
     code <<-EOH
     set -e && set -o pipefail
       mvn -f /tmp/cuneiform/pom.xml package
-      cp -r /tmp/cuneiform/cuneiform-dist/target/cuneiform-dist-#{node[:hiway][:cuneiform][:snapshot][:version]}/cuneiform-#{node[:hiway][:cuneiform][:snapshot][:version]} #{node[:hiway][:cuneiform][:home]}
+      cp -r /tmp/cuneiform/cuneiform-dist/target/cuneiform-dist-#{node[:hiway][:cuneiform][:version]}/cuneiform-#{node[:hiway][:cuneiform][:version]} #{node[:hiway][:cuneiform][:home]}
     EOH
     not_if { ::File.exist?("#{node[:hiway][:cuneiform][:home]}") }
   end
