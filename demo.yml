@@ -34,12 +34,12 @@ groups:
         - hiway::helloworld_run_loc
         - hiway::wordcount_client
         - hiway::wordcount_run_loc
-        - hiway::variantcall_hg38_client
-        - hiway::variantcall_hg38_run_hw
         - hiway::montage_synth_client
         - hiway::montage_synth_run_hw
         - hiway::galaxy101_client
         - hiway::galaxy101_run_hw
+        - hiway::variantcall_client
+        - hiway::variantcall_run_hw
 
   workerslaves:
     size: 2
@@ -49,5 +49,5 @@ groups:
         - hiway::nm
         - hiway::galaxy
         - hiway::cuneiform
-        - hiway::variantcall_hg38_worker
         - hiway::galaxy101_worker
+        - hiway::variantcall_worker

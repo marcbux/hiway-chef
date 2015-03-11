@@ -1,7 +1,7 @@
 include_attribute "hadoop"
 
 #default[:hiway][:resolution]                       = "1024x768x32"
-default[:hiway][:release]                           = "true"
+default[:hiway][:release]                           = "false"
 default[:hiway][:user]                              = "hiway"
 default[:hiway][:home]                              = "/home/#{node[:hiway][:user]}"
 default[:hiway][:software][:dir]                    = node[:hadoop][:dir]
