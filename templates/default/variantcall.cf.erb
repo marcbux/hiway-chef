@@ -1,35 +1,18 @@
-// tar
-deftask untar( <out( File )> : tar( File ) )in bash *{
-  tar xf $tar
-  if [ "$?" -ne "0" ]
-  then
-    echo untar returned error. >&2
-    exit -1
-  fi
-  out=`tar tf $tar`
-}*
+// (1) Task Definitions
 
-// gzip
-deftask gunzip( out( File ) : gz( File ) )in bash *{
-  gzip -c -d $gz > $out
-}*
-
-// bwa
-deftask bwa-build( idx( File ) : fa( File ) )
-in bash *{
+// BWA
+deftask bwa-build( idx( File ) : fa( File ) )in bash *{
   bwa index -p bwa-index $fa
   tar cf $idx --remove-files bwa-index.*
 }*
 
-deftask bwa-align( sam( File ) : idx( File ) [fastq1( File ) fastq2( File )] )
-in bash *{
+deftask bwa-align( sam( File ) : idx( File ) [fastq1( File ) fastq2( File )] )in bash *{
   tar xf $idx
-  bwa mem bwa-index $fastq1 $fastq2 > $sam
+  bwa mem -t <%= node[:hiway][:variantcall][:threads] %> bwa-index $fastq1 $fastq2 > $sam
 }*
 
-// bowtie2
-deftask bowtie2-build( idx( File ) : fa( File ) )
-in bash *{
+// Bowtie 2
+deftask bowtie2-build( idx( File ) : fa( File ) )in bash *{
   bowtie2-build $fa bt2idx
   if [ "$?" -ne "0" ]
   then
@@ -47,7 +30,7 @@ deftask bowtie2-align( sam( File ) : idx( File ) [fastq1( File ) fastq2( File )]
     exit -1
   fi
   bowtie2 -D 5 -R 1 -N 0 -L 22 -i S,0,2.50 \
-  -p 2 \
+  -p <%= node[:hiway][:variantcall][:threads] %> \
   --no-unal -x bt2idx -1 $fastq1 -2 $fastq2 -S $sam
   if [ "$?" -ne "0" ]
   then
@@ -57,11 +40,11 @@ deftask bowtie2-align( sam( File ) : idx( File ) [fastq1( File ) fastq2( File )]
   rm bt2idx.*
 }*
 
+// SAMtools
 deftask samtools-view( bam( File ) : sam( File ) )in bash *{
   samtools view -bS $sam > $bam
 }*
 
-// samtools
 deftask samtools-faidx( fai( File ) : fa( File ) )in bash *{
   samtools faidx $fa
   fai=$fa.fai
@@ -77,12 +60,27 @@ deftask samtools-mpileup( mpileup( File ) : sortedbam( File ) [fa( File ) fai( F
   samtools mpileup -f $fa $sortedbam > $mpileup
 }*
 
-// varscan
+deftask samtools-merge( merged( File ) : <bam( File )> )in bash *{
+  if [ ${#bam[@]} -eq "0" ]
+  then
+    echo "No files to merge." >&2
+    exit -1
+  else
+    if [ ${#bam[@]} -eq "1" ]
+    then
+      merged=$bam
+    else
+      samtools merge -f $merged ${bam[@]}
+    fi
+  fi
+}*
+
+// VarScan
 deftask varscan( vcf( File ) : mpileup( File ) )in bash *{
   varscan mpileup2snp $mpileup --output-vcf --p-value 99e-02 > $vcf
 }*
 
-// annovar
+// ANNOVAR
 deftask annovar( fun( File ) exonicfun( File ) : <vcf( File )> db( File ) buildver )in bash *{
   fun=table.variant_function
   exonicfun=table.exonic_variant_function
@@ -92,58 +90,50 @@ deftask annovar( fun( File ) exonicfun( File ) : <vcf( File )> db( File ) buildv
   annotate_variation.pl -buildver $buildver -geneanno -outfile table - db/
 }*
 
-deftask per-chromosome(
-    vcf( File )
-  : fa( File ) [fastq1( File ) fastq2( File )] ) {
-
-  idx = bwa-build( fa: fa );
-  fai = samtools-faidx( fa: fa );
-
-  sam = bwa-align(
-    idx:    idx
-    fastq1: fastq1
-    fastq2: fastq2 );
-
-  bam = samtools-view( sam: sam );
-
-  sortedbam = samtools-sort( bam: bam );
-
-  mpileup = samtools-mpileup(
-    sortedbam: sortedbam
-    fa:        fa
-    fai:       fai );
-
-  vcf = varscan( mpileup: mpileup );
-}
-
-deftask per-sample(
-    fun exonicfun
-  : <fa( File )> [fastq1( File ) fastq2( File )] db( File ) ) {
-
-  vcf = per-chromosome(
+deftask per-chromosome( fun( File ) exonicfun( File ) : [fa( File ) fai( File ) bt2idx( File )] <fastq1( File )> <fastq2( File )> db( File ) ) {
+  sortedbam = per-fastq(
     fa:     fa
+    fai:    fai
     fastq1: fastq1
-    fastq2: fastq2 );
-
+    fastq2: fastq2
+    db:     db );
+  mergedbam = samtools-merge( bam: sortedbam );
+  mpileup = samtools-mpileup(
+    bam: mergedbam
+    fa:  fa
+    fai: fai );
+  vcf = varscan( mpileup: mpileup );
   fun exonicfun = annovar(
-    vcf: vcf
-    db: db
+    vcf:      vcf
+    db:       db
     buildver: 'hg38' );
 }
 
-fastq1 = '<%= node[:hiway][:variantcall][:reads][:directory] %>/<%= node[:hiway][:variantcall][:reads][:file1] %>';
-fastq2 = '<%= node[:hiway][:variantcall][:reads][:directory] %>/<%= node[:hiway][:variantcall][:reads][:file2] %>';
+deftask per-fastq( sortedbam : fa( File ) [fastq1( File ) fastq2( File )] db( File ) ) {
+  sam = bowtie2-align(
+    idx:    bt2idx
+    fastq1: fastq1
+    fastq2: fastq2 );
+  bam = samtools-view( sam: sam );
+  sortedbam = samtools-sort( bam: bam );
+}
 
+// (2) Input Files
+fastq1 =<% @run_ids.each do |run_id| -%> '<%= node[:hiway][:variantcall][:reads][:sample_id] %>/<%= run_id %>_1.filt.fastq'<% end -%>;
+fastq2 =<% @run_ids.each do |run_id| -%> '<%= node[:hiway][:variantcall][:reads][:sample_id] %>/<%= run_id %>_2.filt.fastq'<% end -%>;
+fa =<% @chromosomes.each do |chromosome| -%> '<%= node[:hiway][:variantcall][:reference][:id] %>/<%= chromosome %>.fa'<% end -%>;
 db = '<%= node[:hiway][:variantcall][:annovardb][:directory] %>/<%= node[:hiway][:variantcall][:annovardb][:file] %>';
 
-// workflow definition
-fa = '<%= node[:hiway][:variantcall][:reference][:directory] %>/<%= node[:hiway][:variantcall][:reference][:file1] %>' '<%= node[:hiway][:variantcall][:reference][:directory] %>/<%= node[:hiway][:variantcall][:reference][:file2] %>';
-
-fun exonicfun = per-sample(
+// (3) Workflow Definition
+bt2idx = bowtie2-build( fa: fa );
+fai = samtools-faidx( fa: fa );
+fun exonicfun = per-chromosome(
   fa:     fa
+  bt2idx: bt2idx
+  fai:    fai
   fastq1: fastq1
   fastq2: fastq2
   db:     db );
 
-// query
+// (4) Query
 fun exonicfun;

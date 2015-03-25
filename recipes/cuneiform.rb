@@ -2,9 +2,13 @@
 package "xorg" do
   options "--force-yes"
 end
+
+# install GraphViz for the cfide
 package "graphviz" do
   options "--force-yes"
 end
+
+# install R for Cuneiform
 package "r-base" do
   options "--force-yes"
 end

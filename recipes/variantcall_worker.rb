@@ -1,8 +1,3 @@
-# install unzip
-package "unzip" do
-  options "--force-yes"
-end
-
 # download bowtie2 binaries
 remote_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:variantcall][:bowtie2][:zip]}" do
   source node[:hiway][:variantcall][:bowtie2][:url]

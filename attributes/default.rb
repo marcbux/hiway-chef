@@ -1,7 +1,7 @@
 include_attribute "hadoop"
 
 #default[:hiway][:resolution]                       = "1024x768x32"
-default[:hiway][:release]                           = "false"
+default[:hiway][:release]                           = "true"
 default[:hiway][:user]                              = "hiway"
 default[:hiway][:home]                              = "/home/#{node[:hiway][:user]}"
 default[:hiway][:software][:dir]                    = node[:hadoop][:dir]
@@ -57,19 +57,15 @@ default[:hiway][:wordcount][:input][:txt]           = "stateoftheunion1790-2014.
 default[:hiway][:variantcall][:workflow]              = "variantcall.cf"
 default[:hiway][:variantcall][:threads]               = "#{node[:hiway][:hiway][:worker][:vcores]}"
 default[:hiway][:variantcall][:memory_mb]             = "#{node[:hiway][:hiway][:worker][:memory_mb]}"
-default[:hiway][:variantcall][:reads][:directory]     = "1000genomes"
-default[:hiway][:variantcall][:reads][:gz1]           = "SRR062634_1.filt.fastq.gz"
-default[:hiway][:variantcall][:reads][:gz2]           = "SRR062634_2.filt.fastq.gz"
-default[:hiway][:variantcall][:reads][:file1]         = "SRR062634_1.filt.part.fastq"
-default[:hiway][:variantcall][:reads][:file2]         = "SRR062634_2.filt.part.fastq"
-default[:hiway][:variantcall][:reads][:url]           = "ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/HG00096/sequence_read"
-default[:hiway][:variantcall][:reads][:lines]         = 400000
-default[:hiway][:variantcall][:reference][:directory] = "hg38"
-default[:hiway][:variantcall][:reference][:gz1]       = "chrY.fa.gz"
-default[:hiway][:variantcall][:reference][:gz2]       = "chr22.fa.gz"
-default[:hiway][:variantcall][:reference][:file1]     = "chrY.fa"
-default[:hiway][:variantcall][:reference][:file2]     = "chr22.fa"
-default[:hiway][:variantcall][:reference][:url]       = "ftp://hgdownload.soe.ucsc.edu/apache/htdocs/goldenPath/hg38/chromosomes"
+
+default[:hiway][:variantcall][:reads][:sample_id]     = "HG02025"
+default[:hiway][:variantcall][:reads][:run_ids]       = ["SRR359188", "SRR359195"]
+default[:hiway][:variantcall][:reads][:url_base]      = "ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/#{node[:hiway][:variantcall][:reads][:sample_id]}/sequence_read"
+
+default[:hiway][:variantcall][:reference][:id]          = "hg38" 
+default[:hiway][:variantcall][:reference][:chromosomes] = ["chr22", "chrY"]
+default[:hiway][:variantcall][:reference][:url_base]    = "ftp://hgdownload.soe.ucsc.edu/apache/htdocs/goldenPath/#{node[:hiway][:variantcall][:reference][:id]}/chromosomes"
+
 default[:hiway][:variantcall][:annovardb][:directory] = "annodb"
 default[:hiway][:variantcall][:annovardb][:file]      = "hg38db.tar"
 default[:hiway][:variantcall][:bowtie2][:version]   = "2.2.5"
@@ -90,7 +86,7 @@ default[:hiway][:variantcall][:varscan][:home]      = "#{node[:hiway][:software]
 default[:hiway][:variantcall][:varscan][:url]       = "http://downloads.sourceforge.net/project/varscan/#{node[:hiway][:variantcall][:varscan][:jar]}"
 default[:hiway][:variantcall][:annovar][:targz]     = "annovar.latest.tar.gz"
 default[:hiway][:variantcall][:annovar][:home]      = "#{node[:hiway][:software][:dir]}/annovar"
-default[:hiway][:variantcall][:annovar][:url]       = "http://www.openbioinformatics.org/annovar/download/g4EUwyphi9/#{node[:hiway][:variantcall][:annovar][:targz]}"
+default[:hiway][:variantcall][:annovar][:url]       = "http://www.openbioinformatics.org/annovar/download/0wgxR2rIVP/#{node[:hiway][:variantcall][:annovar][:targz]}"
 
 default[:hiway][:montage_synthetic][:workflow]       = "Montage_25.xml"
 default[:hiway][:montage_synthetic][:url]            = "https://confluence.pegasus.isi.edu/download/attachments/2490624/#{node[:hiway][:montage_synthetic][:workflow]}"
