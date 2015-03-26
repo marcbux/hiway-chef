@@ -27,11 +27,11 @@ attrs:
   hiway:
     variantcall:
       reads:
-        run_ids: ["SRR359188", "SRR359195"]
+        run_ids: ['SRR359188', 'SRR359195']
   hiway:
     variantcall:
       reference:
-        chromosomes: ["chr22", "chrY"]
+        chromosomes: ['chr22', 'chrY']
     
 groups:
   clientmaster:
@@ -41,7 +41,7 @@ groups:
         - hadoop::rm
         - hadoop::jhs
         - hiway::hiway_client
-        - hiway::cuneiform
+        - hiway::cuneiform_client
         - hiway::variantcall_client
         - hiway::variantcall_run_hw
 
@@ -51,4 +51,5 @@ groups:
         - hadoop::dn
         - hadoop::nm
         - hiway::hiway_worker
+        - hiway::cuneiform_worker
         - hiway::variantcall_worker

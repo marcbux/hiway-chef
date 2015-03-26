@@ -8,10 +8,16 @@ dependencies:
   - recipe: hiway::hiway_worker
     local: 
       - hadoop::nm
+  - recipe: hiway::cuneiform_client
+    local: 
+      - hiway::hiway_client
+  - recipe: hiway::cuneiform_worker
+    local: 
+      - hiway::hiway_worker
   - recipe: hiway::helloworld_run_loc
     local: 
       - hiway::helloworld_client
-      - hiway::cuneiform
+      - hiway::cuneiform_client
   - recipe: hiway::wordcount_client
     global: 
       - hadoop::dn
@@ -19,7 +25,7 @@ dependencies:
   - recipe: hiway::wordcount_run_loc
     local: 
       - hiway::wordcount_client
-      - hiway::cuneiform
+      - hiway::cuneiform_client
   - recipe: hiway::montage_synth_run_hw
     local: 
       - hiway::montage_synth_client
@@ -32,14 +38,14 @@ dependencies:
       - hadoop::nn
   - recipe: hiway::galaxy101_worker
     local: 
-      - hiway::galaxy
+      - hiway::galaxy_worker
   - recipe: hiway::galaxy101_run_hw
     local: 
       - hiway::galaxy101_client
     global:
       - hiway::hiway_client
       - hiway::hiway_worker
-      - hiway::galaxy
+      - hiway::galaxy_worker
       - hiway::galaxy101_worker
   - recipe: hiway::variantcall_client
     global: 
@@ -51,7 +57,7 @@ dependencies:
     global:
       - hiway::hiway_client
       - hiway::hiway_worker
-      - hiway::cuneiform
+      - hiway::cuneiform_worker
       - hiway::variantcall_worker
   - recipe: hiway::RNASeq_client
     global: 
@@ -59,4 +65,4 @@ dependencies:
       - hadoop::nn
   - recipe: hiway::RNASeq_worker
     local: 
-      - hiway::galaxy
+      - hiway::galaxy_worker

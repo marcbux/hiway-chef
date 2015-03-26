@@ -29,7 +29,7 @@ groups:
         - hadoop::rm
         - hadoop::jhs
         - hiway::hiway_client
-        - hiway::cuneiform
+        - hiway::cuneiform_client
         - hiway::helloworld_client
         - hiway::helloworld_run_loc
         - hiway::wordcount_client
@@ -47,7 +47,7 @@ groups:
         - hadoop::dn
         - hadoop::nm
         - hiway::hiway_worker
-        - hiway::galaxy
-        - hiway::cuneiform
+        - hiway::galaxy_worker
+        - hiway::cuneiform_worker
         - hiway::galaxy101_worker
         - hiway::variantcall_worker
