@@ -99,7 +99,7 @@ deftask per-chromosome( fun( File ) exonicfun( File ) : [fa( File ) fai( File ) 
     db:     db );
   mergedbam = samtools-merge( bam: sortedbam );
   mpileup = samtools-mpileup(
-    bam: mergedbam
+    sortedbam: mergedbam
     fa:  fa
     fai: fai );
   vcf = varscan( mpileup: mpileup );

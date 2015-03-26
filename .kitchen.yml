@@ -49,7 +49,7 @@ suites:
 #      - recipe[hiway::galaxy101_run_hw]
       - recipe[hiway::variantcall_client]
       - recipe[hiway::variantcall_worker]
-#      - recipe[hiway::variantcall_run_hw]
+      - recipe[hiway::variantcall_run_hw]
 #      - recipe[hiway::RNASeq_client]
 #      - recipe[hiway::RNASeq_worker]
 #      - recipe[hiway::RNASeq_run_hw]

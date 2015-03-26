@@ -35,6 +35,7 @@ end
 bash "install_galaxy" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
+  timeout 604800
   environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"
   code <<-EOH
   set -e && set -o pipefail
