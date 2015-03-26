@@ -53,10 +53,8 @@ suites:
       - recipe[hiway::variantcall_run_hw]
 #      - recipe[hiway::RNASeq_client]
 #      - recipe[hiway::RNASeq_worker]
-#      - recipe[hiway::RNASeq_run_hw]
 #      - recipe[hiway::montage_m17_4_client]
 #      - recipe[hiway::montage_m17_4_worker]
-#      - recipe[hiway::montage_m17_4_run_hw]
 
 
     attributes:
