@@ -42,6 +42,11 @@ remote_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:variantcall][:bwa
   action :create_if_missing
 end
 
+# install gcc
+package "gcc" do
+  options "--force-yes"
+end
+
 # compile and install bwa
 bash "install_bwa" do
   user node[:hiway][:user]
