@@ -15,8 +15,8 @@ recipe           "hadoop::dn", "Installs a Hadoop Namenode"
 recipe           "hadoop::nm", "Installs a YARN NodeManager"
 recipe           "hadoop::jhs", "Installs a MapReduce History Server for YARN"
 recipe           "hiway::install", "Installs and sets up Hi-WAY"
-recipe           "hiway::rm", "Configures Hadoop to support Hi-WAY on the RM"
-recipe           "hiway::nm", "Configures Hadoop to support Hi-WAY on the NMs"
+recipe           "hiway::hiway_client", "Configures Hadoop to support Hi-WAY on the Client"
+recipe           "hiway::hiway_worker", "Configures Hadoop to support Hi-WAY on the Workers"
 recipe           "hiway::galaxy", "Installs, configures and updates Galaxy"
 recipe           "hiway::cuneiform", "Installs Cuneiform with all its dependencies"
 recipe           "hiway::helloworld_client", "Prepares the Hello World Cuneiform workflow on the Client"
@@ -33,10 +33,8 @@ recipe           "hiway::variantcall_worker", "Prepares the Variant Calling Cune
 recipe           "hiway::variantcall_run_hw", "Runs the Variant Calling Cuneiform on Hi-WAY from the Client"
 recipe           "hiway::RNASeq_client", "Prepares the TRAPLINE RNASeq Galaxy Workflow on the Client"
 recipe           "hiway::RNASeq_worker", "Runs the TRAPLINE RNASeq Galaxy Workflow on Hi-WAY from the Client"
-#recipe           "hiway::RNASeq_run_hw", "Prepares the TRAPLINE RNASeq Galaxy Workflow on the Workers"
 #recipe           "hiway::montage_m17_4_client", "Prepares the Montage DAX Workflow on the Client"
 #recipe           "hiway::montage_m17_4_worker", "Prepares the Montage DAX Workflow on the Workers"
-#recipe           "hiway::montage_m17_4_run_hw", "Runs the Montage DAX Workflow on Hi-WAY from the Client"
 
 depends 'hadoop'
 
@@ -79,3 +77,21 @@ attribute "hiway/hiway/scheduler",
 :description => "valid values: c3po, cloning, conservative, greedyQueue, heft, outlooking, placementAware, staticRoundRobin",
 :type => 'string',
 :default => "placementAware"
+
+attribute "hiway/variantcall/reads/sample_id",
+:display_name => "1000 Genomes Sample Id",
+:description => "The Sample Id of sequence data from the 1000 Genomes project that is to be aligned",
+:type => 'string',
+:default => "HG02025"
+
+attribute "hiway/variantcall/reads/run_ids",
+:display_name => "1000 Genomes Run Ids",
+:description => "The Run Ids of sequence data from the 1000 Genomes project that is to be aligned",
+:type => 'array',
+:default => ["SRR359188", "SRR359195"]
+
+attribute "hiway/variantcall/reference/chromosomes",
+:display_name => "HG38 chromosomes",
+:description => "The chromosomes of the HG38 reference against which sequence data is to be aligned",
+:type => 'array',
+:default => ["chr22", "chrY"]

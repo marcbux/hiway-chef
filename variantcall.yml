@@ -20,6 +20,18 @@ attrs:
       nm:
         memory_mbs: '6656'
       vcores: '7'
+  hiway:
+    variantcall:
+      reads:
+        sample_id: 'HG02025'
+  hiway:
+    variantcall:
+      reads:
+        run_ids: ["SRR359188", "SRR359195"]
+  hiway:
+    variantcall:
+      reference:
+        chromosomes: ["chr22", "chrY"]
     
 groups:
   clientmaster:
@@ -30,14 +42,6 @@ groups:
         - hadoop::jhs
         - hiway::hiway_client
         - hiway::cuneiform
-        - hiway::helloworld_client
-        - hiway::helloworld_run_loc
-        - hiway::wordcount_client
-        - hiway::wordcount_run_loc
-        - hiway::montage_synth_client
-        - hiway::montage_synth_run_hw
-        - hiway::galaxy101_client
-        - hiway::galaxy101_run_hw
         - hiway::variantcall_client
         - hiway::variantcall_run_hw
 
@@ -47,7 +51,4 @@ groups:
         - hadoop::dn
         - hadoop::nm
         - hiway::hiway_worker
-        - hiway::galaxy
-        - hiway::cuneiform
-        - hiway::galaxy101_worker
         - hiway::variantcall_worker

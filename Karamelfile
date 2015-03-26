@@ -1,11 +1,11 @@
 dependencies:
-  - recipe: hiway::rm
+  - recipe: hiway::hiway_client
     local: 
       - hadoop::rm
     global: 
       - hadoop::dn
       - hadoop::nn
-  - recipe: hiway::nm
+  - recipe: hiway::hiway_worker
     local: 
       - hadoop::nm
   - recipe: hiway::helloworld_run_loc
@@ -24,8 +24,8 @@ dependencies:
     local: 
       - hiway::montage_synth_client
     global:
-      - hiway::rm
-      - hiway::nm
+      - hiway::hiway_client
+      - hiway::hiway_worker
   - recipe: hiway::galaxy101_client
     global: 
       - hadoop::dn
@@ -37,8 +37,8 @@ dependencies:
     local: 
       - hiway::galaxy101_client
     global:
-      - hiway::rm
-      - hiway::nm
+      - hiway::hiway_client
+      - hiway::hiway_worker
       - hiway::galaxy
       - hiway::galaxy101_worker
   - recipe: hiway::variantcall_client
@@ -49,8 +49,8 @@ dependencies:
     local: 
       - hiway::variantcall_client
     global:
-      - hiway::rm
-      - hiway::nm
+      - hiway::hiway_client
+      - hiway::hiway_worker
       - hiway::cuneiform
       - hiway::variantcall_worker
   - recipe: hiway::RNASeq_client
