@@ -42,8 +42,11 @@ remote_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:variantcall][:bwa
   action :create_if_missing
 end
 
-# install gcc
-package "gcc" do
+# install g++ and zlib, which are required for building bwa
+package "g++" do
+  options "--force-yes"
+end
+package "zlib1g-dev" do
   options "--force-yes"
 end
 
