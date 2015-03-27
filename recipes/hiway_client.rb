@@ -60,6 +60,7 @@ else
     group node[:hadoop][:group]
     code <<-EOH
     set -e && set -o pipefail
+      sed -i 's%<hadoop.version>[^<]*</hadoop.version>%<hadoop.version>#{node[:hadoop][:version]}</hadoop.version>%g' /tmp/hiway/hiway-core/pom.xml
       mvn -f /tmp/hiway/pom.xml package
       cp -r /tmp/hiway/hiway-dist/target/hiway-dist-#{node[:hiway][:hiway][:version]}/hiway-#{node[:hiway][:hiway][:version]} #{node[:hiway][:hiway][:home]}
     EOH
