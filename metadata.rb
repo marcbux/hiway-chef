@@ -50,8 +50,8 @@ attribute "hiway/user",
 :default => "hiway"
 
 attribute "hiway/release",
-:display_name => "Install Release (or snaphsot)",
-:description => "Install Hi-WAY release (as opposed to the latest snapshot version)",
+:display_name => "Release or snaphsot",
+:description => "Install Hi-WAY release as opposed to the latest snapshot version",
 :type => 'string',
 :default => "true"
 
