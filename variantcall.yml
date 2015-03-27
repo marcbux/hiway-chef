@@ -20,16 +20,14 @@ attrs:
       nm:
         memory_mbs: '6656'
       vcores: '7'
+    mr:
+      tmp_dir: '/mnt/tmp/hadoop'
+    data_dir: '/mnt/data/hadoop'
   hiway:
     variantcall:
       reads:
         sample_id: 'HG02025'
-#  hiway:
-#    variantcall:
-#      reads:
 #        run_ids: ['SRR359188', 'SRR359195']
-#  hiway:
-#    variantcall:
 #      reference:
 #        chromosomes: ['chr22', 'chrY']
     
