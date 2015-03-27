@@ -49,6 +49,12 @@ attribute "hiway/user",
 :type => 'string',
 :default => "hiway"
 
+attribute "hiway/release",
+:display_name => "Install Release (or snaphsot)",
+:description => "Install Hi-WAY release (as opposed to the latest snapshot version)",
+:type => 'string',
+:default => "true"
+
 attribute "hiway/hiway/am/memory",
 :display_name => "Hi-WAY Application Master Memory in MB",
 :description => "Amount of memory in MB to be requested to run the application master.",
