@@ -55,7 +55,7 @@ attribute "hiway/release",
 :type => 'string',
 :default => "true"
 
-attribute "hiway/hiway/am/memory",
+attribute "hiway/hiway/am/memory_mb",
 :display_name => "Hi-WAY Application Master Memory in MB",
 :description => "Amount of memory in MB to be requested to run the application master.",
 :type => 'string',
@@ -67,7 +67,7 @@ attribute "hiway/hiway/am/vcores",
 :type => 'string',
 :default => 1
 
-attribute "hiway/hiway/worker/memory",
+attribute "hiway/hiway/worker/memory_mb",
 :display_name => "Hi-WAY Worker Memory in MB",
 :description => "Hi-WAY Worker Memory in MB",
 :type => 'string',
