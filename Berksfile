@@ -4,5 +4,5 @@ metadata
 
 cookbook 'java'
 cookbook 'git'
-cookbook 'hadoop', github: 'marcbux/apache-hadoop-chef'
+cookbook 'hadoop', github: 'hopshadoop/apache-hadoop-chef'
 cookbook 'kagent', github: 'karamelchef/kagent-chef'
