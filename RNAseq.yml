@@ -8,7 +8,7 @@ ec2:
 
 cookbooks:
   hadoop:
-    github: "hopshadoop/apache-hadoop-chef"
+    github: "marcbux/apache-hadoop-chef"
     branch: "master"
   hiway:
     github: "marcbux/hiway-chef"
