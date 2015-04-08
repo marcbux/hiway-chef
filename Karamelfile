@@ -68,9 +68,9 @@ dependencies:
       - hiway::hiway_worker
       - hiway::cuneiform_worker
       - hiway::variantcall_worker
-  - recipe: hiway::RNASeq_client
+  - recipe: hiway::RNAseq_client
     local: 
       - hiway::hiway_client
-  - recipe: hiway::RNASeq_worker
+  - recipe: hiway::RNAseq_worker
     local: 
       - hiway::galaxy_worker

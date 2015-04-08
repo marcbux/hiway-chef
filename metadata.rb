@@ -32,8 +32,8 @@ recipe           "hiway::galaxy101_run_hw", "Runs the Galaxy 101 Galaxy workflow
 recipe           "hiway::variantcall_client", "Prepares the Variant Calling Cuneiform workflow on the Client"
 recipe           "hiway::variantcall_worker", "Prepares the Variant Calling Cuneiform workflow on the Workers"
 recipe           "hiway::variantcall_run_hw", "Runs the Variant Calling Cuneiform on Hi-WAY from the Client"
-recipe           "hiway::RNASeq_client", "Prepares the TRAPLINE RNASeq Galaxy Workflow on the Client"
-recipe           "hiway::RNASeq_worker", "Runs the TRAPLINE RNASeq Galaxy Workflow on Hi-WAY from the Client"
+recipe           "hiway::RNAseq_client", "Prepares the TRAPLINE RNAseq Galaxy Workflow on the Client"
+recipe           "hiway::RNAseq_worker", "Runs the TRAPLINE RNAseq Galaxy Workflow on Hi-WAY from the Client"
 #recipe           "hiway::montage_m17_4_client", "Prepares the Montage DAX Workflow on the Client"
 #recipe           "hiway::montage_m17_4_worker", "Prepares the Montage DAX Workflow on the Workers"
 
