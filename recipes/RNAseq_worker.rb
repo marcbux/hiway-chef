@@ -126,6 +126,17 @@ directory "#{node[:hiway][:data]}/indices" do
   action :create
 end
 
+# prevent rsync from timing out
+bash 'enable_x11_forwarding' do
+  user "root"
+  code <<-EOH
+  set -e && set -o pipefail
+    echo "KeepAlive yes" >> /etc/ssh/ssh_config
+    echo "ServerAliveInterval 20" >> /etc/ssh/ssh_config
+  EOH
+  not_if "grep -q \"ServerAliveInterval 20\" /etc/ssh/ssh_config"
+end
+
 # download and register bowtie 2 index mm9
 bash "download_bowtie2_index" do
   user node[:hiway][:user]
