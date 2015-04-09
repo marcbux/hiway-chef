@@ -13,7 +13,7 @@ end
 directory "#{node[:hiway][:data]}" do
   owner node[:hiway][:user]
   group node[:hadoop][:group]
-  mode "775"
+  mode "755"
   action :create
 end
 
