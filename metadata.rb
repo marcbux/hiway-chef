@@ -49,6 +49,12 @@ attribute "hiway/user",
 :type => 'string',
 :default => "hiway"
 
+attribute "hiway/data",
+:display_name => "Data directory",
+:description => "Directory in which to store large data, e.g., input data of the workflow",
+:type => 'string',
+:default => "/home/hiway"
+
 attribute "hiway/release",
 :display_name => "Release or snaphsot",
 :description => "Install Hi-WAY release as opposed to the latest snapshot version",

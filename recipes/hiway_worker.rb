@@ -9,6 +9,14 @@ user node[:hiway][:user] do
   not_if "getent passwd #{node[:hiway][:user]}"
 end
 
+# create data directory
+directory "#{node[:hiway][:data]}" do
+  owner node[:hiway][:user]
+  group node[:hadoop][:group]
+  mode "775"
+  action :create
+end
+
 # add user hiway to group hadoop
 group node[:hadoop][:group] do
   action :modify

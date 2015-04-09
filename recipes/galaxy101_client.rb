@@ -1,5 +1,5 @@
 # prepare the galaxy 101 workflow file
-template "#{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:workflow]}" do
+template "#{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:workflow]}" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   source "#{node[:hiway][:galaxy101][:workflow]}.erb"
@@ -30,12 +30,12 @@ bash "stage_out_input_data" do
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
-    tar xzvf #{Chef::Config[:file_cache_path]}/#{node[:hiway][:galaxy101][:exons][:targz]} -C #{node[:hiway][:home]}
-    tar xzvf #{Chef::Config[:file_cache_path]}/#{node[:hiway][:galaxy101][:snps][:targz]} -C #{node[:hiway][:home]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:exons][:bed]} #{node[:hiway][:hiway][:hdfs][:basedir]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:snps][:bed]} #{node[:hiway][:hiway][:hdfs][:basedir]}
-    rm #{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:exons][:bed]}
-    rm #{node[:hiway][:home]}/#{node[:hiway][:galaxy101][:snps][:bed]}
+    tar xzvf #{Chef::Config[:file_cache_path]}/#{node[:hiway][:galaxy101][:exons][:targz]} -C #{node[:hiway][:data]}
+    tar xzvf #{Chef::Config[:file_cache_path]}/#{node[:hiway][:galaxy101][:snps][:targz]} -C #{node[:hiway][:data]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:exons][:bed]} #{node[:hiway][:hiway][:hdfs][:basedir]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:snps][:bed]} #{node[:hiway][:hiway][:hdfs][:basedir]}
+    rm #{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:exons][:bed]}
+    rm #{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:snps][:bed]}
   EOH
   not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:galaxy101][:snps]}"
 end

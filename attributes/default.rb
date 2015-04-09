@@ -4,6 +4,7 @@ include_attribute "hadoop"
 default[:hiway][:release]                           = "true"
 default[:hiway][:user]                              = "hiway"
 default[:hiway][:home]                              = "/home/#{node[:hiway][:user]}"
+default[:hiway][:data]                              = node[:hiway][:home]
 default[:hiway][:software][:dir]                    = node[:hadoop][:dir]
 
 default[:hiway][:hiway][:release][:version]         = "1.0.0-beta"

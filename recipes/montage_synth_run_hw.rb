@@ -4,8 +4,8 @@ bash "run_montage_synthetic" do
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
-    hiway -w "#{node[:hiway][:home]}/#{node[:hiway][:montage_synthetic][:workflow]}" -l dax -s "#{node[:hiway][:home]}/montage_synthetic_summary.json"
-    stage "#{node[:hiway][:home]}/montage_synthetic_summary.json" "#{node[:hiway][:home]}/"
+    hiway -w "#{node[:hiway][:data]}/#{node[:hiway][:montage_synthetic][:workflow]}" -l dax -s "#{node[:hiway][:data]}/montage_synthetic_summary.json"
+    stage "#{node[:hiway][:data]}/montage_synthetic_summary.json" "#{node[:hiway][:data]}/"
   EOH
-  not_if { ::File.exists?( "#{node[:hiway][:home]}/montage_synthetic_summary.json" ) }
+  not_if { ::File.exists?( "#{node[:hiway][:data]}/montage_synthetic_summary.json" ) }
 end

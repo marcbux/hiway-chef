@@ -34,7 +34,7 @@ bash 'update_env_variables' do
 end
 
 # prepare the variant call workflow file
-template "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:workflow]}" do
+template "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:workflow]}" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   source "#{node[:hiway][:variantcall][:workflow]}.erb"
@@ -46,7 +46,7 @@ template "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:workflow]}" do
 end
 
 # create reads directory
-directory "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:reads][:sample_id]}" do
+directory "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reads][:sample_id]}" do
   owner node[:hiway][:user]
   group node[:hadoop][:group]
   mode "755"
@@ -54,7 +54,7 @@ directory "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:reads][:sample_i
 end
 
 # create reference directory
-directory "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:reference][:id]}" do
+directory "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reference][:id]}" do
   owner node[:hiway][:user]
   group node[:hadoop][:group]
   mode "755"
@@ -62,7 +62,7 @@ directory "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:reference][:id]}
 end
 
 # create annovar database directory
-directory "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:annovardb][:directory]}" do
+directory "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}" do
   owner node[:hiway][:user]
   group node[:hadoop][:group]
   mode "755"
@@ -87,9 +87,9 @@ node[:hiway][:variantcall][:reads][:run_ids].each do |run_id|
       group node[:hadoop][:group]
       code <<-EOH
       set -e
-        gzip -c -d "#{Chef::Config[:file_cache_path]}/#{gz}" > "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:reads][:sample_id]}/#{fq}"
+        gzip -c -d "#{Chef::Config[:file_cache_path]}/#{gz}" > "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reads][:sample_id]}/#{fq}"
       EOH
-      not_if { ::File.exists?( "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:reads][:sample_id]}/#{fq}" ) }
+      not_if { ::File.exists?( "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reads][:sample_id]}/#{fq}" ) }
     end
   end
 end
@@ -111,9 +111,9 @@ node[:hiway][:variantcall][:reference][:chromosomes].each do |ref|
     group node[:hadoop][:group]
     code <<-EOH
     set -e
-      gzip -c -d "#{Chef::Config[:file_cache_path]}/#{gz}" > "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:reference][:id]}/#{fa}"
+      gzip -c -d "#{Chef::Config[:file_cache_path]}/#{gz}" > "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reference][:id]}/#{fa}"
     EOH
-    not_if { ::File.exists?( "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:reference][:id]}/#{fa}" ) }
+    not_if { ::File.exists?( "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reference][:id]}/#{fa}" ) }
   end
 end
 
@@ -123,10 +123,10 @@ bash 'download_input_data' do
   group node[:hadoop][:group]
   code <<-EOH
   set -e
-    annotate_variation.pl -downdb -webfrom annovar refGene -buildver hg38 "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:annovardb][:directory]}/db/"
-    tar cf "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:annovardb][:directory]}/#{node[:hiway][:variantcall][:annovardb][:file]}" -C "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:annovardb][:directory]}" db
+    annotate_variation.pl -downdb -webfrom annovar refGene -buildver hg38 "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}/db/"
+    tar cf "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}/#{node[:hiway][:variantcall][:annovardb][:file]}" -C "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}" db
   EOH
-  not_if { ::File.exists?( "#{node[:hiway][:home]}/#{node[:hiway][:variantcall][:annovardb][:directory]}/#{node[:hiway][:variantcall][:annovardb][:file]}" ) }
+  not_if { ::File.exists?( "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}/#{node[:hiway][:variantcall][:annovardb][:file]}" ) }
 end
 
 # copy input data into HDFS
@@ -135,12 +135,12 @@ bash "copy_input_data_to_hdfs" do
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:annovardb][:directory]} #{node[:hiway][:hiway][:hdfs][:basedir]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:reads][:sample_id]} #{node[:hiway][:hiway][:hdfs][:basedir]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:reference][:id]} #{node[:hiway][:hiway][:hdfs][:basedir]}
-    rm -r #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:annovardb][:directory]}
-    rm -r #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:reads][:sample_id]}
-    rm -r #{node[:hiway][:home]}/#{node[:hiway][:variantcall][:reference][:id]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]} #{node[:hiway][:hiway][:hdfs][:basedir]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reads][:sample_id]} #{node[:hiway][:hiway][:hdfs][:basedir]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reference][:id]} #{node[:hiway][:hiway][:hdfs][:basedir]}
+    rm -r #{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}
+    rm -r #{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reads][:sample_id]}
+    rm -r #{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reference][:id]}
   EOH
   not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e /#{node[:hiway][:variantcall][:reference][:id]}"
 end

@@ -23,7 +23,9 @@ attrs:
     mr:
       tmp_dir: '/mnt/tmp/hadoop'
     data_dir: '/mnt/data/hadoop'
+    num_replicas: '1'
   hiway:
+    data: '/mnt/data'
     release: 'false'
     hiway:
       am:
@@ -44,7 +46,7 @@ groups:
         - hiway::RNAseq_client
 
   workers:
-    size: 7
+    size: 3
     recipes:
         - hadoop::dn
         - hadoop::nm
