@@ -133,9 +133,9 @@ bash "download_bowtie2_index" do
   environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"
   code <<-EOH
   set -e && set -o pipefail
-    rsync -avzP rsync://datacache.g2.bx.psu.edu/indexes/mm9/mm9full/bowtie2_index/*.bt2 #{node[:hiway][:data]/galaxy/indices
-    rsync -avzP rsync://datacache.g2.bx.psu.edu/indexes/mm9/seq/mm9full.fa #{node[:hiway][:data]/galaxy/indices
-    echo -e "mm9\\tmm9\\tMouse (Mus musculus): mm9\\t#{node[:hiway][:data]/galaxy/indices/mm9full" >> #{node[:hiway][:galaxy][:home]}/tool-data/toolshed.g2.bx.psu.edu/repos/devteam/#{node[:hiway][:RNAseq][:tophat2][:name]}/#{node[:hiway][:RNAseq][:tophat2][:revision]}/bowtie2_indices.loc
+    rsync -avzP rsync://datacache.g2.bx.psu.edu/indexes/mm9/mm9full/bowtie2_index/*.bt2 #{node[:hiway][:data]}/galaxy/indices
+    rsync -avzP rsync://datacache.g2.bx.psu.edu/indexes/mm9/seq/mm9full.fa #{node[:hiway][:data]}/galaxy/indices
+    echo -e "mm9\\tmm9\\tMouse (Mus musculus): mm9\\t#{node[:hiway][:data]}/galaxy/indices/mm9full" >> #{node[:hiway][:galaxy][:home]}/tool-data/toolshed.g2.bx.psu.edu/repos/devteam/#{node[:hiway][:RNAseq][:tophat2][:name]}/#{node[:hiway][:RNAseq][:tophat2][:revision]}/bowtie2_indices.loc
   EOH
   not_if "grep -q \"indices/mm9full\" #{node[:hiway][:galaxy][:home]}/tool-data/toolshed.g2.bx.psu.edu/repos/devteam/#{node[:hiway][:RNAseq][:tophat2][:name]}/#{node[:hiway][:RNAseq][:tophat2][:revision]}/bowtie2_indices.loc"
 end
