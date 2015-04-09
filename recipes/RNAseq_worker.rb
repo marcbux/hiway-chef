@@ -1,5 +1,5 @@
 # update tool shed: install fastq_trimmer_by_quality
-bash "update_tool_shed" do
+bash "intall_fastq_trimmer_by_quality" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"
@@ -11,7 +11,7 @@ bash "update_tool_shed" do
 end
 
 # update tool shed: install fastqc
-bash "update_tool_shed" do
+bash "intall_fastqc" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"
@@ -23,7 +23,7 @@ bash "update_tool_shed" do
 end
 
 # update tool shed: install fastx_clipper
-bash "update_tool_shed" do
+bash "intall_fastx_clipper" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"
@@ -35,7 +35,7 @@ bash "update_tool_shed" do
 end
 
 # update tool shed: install tophat2
-bash "update_tool_shed" do
+bash "intall_tophat2" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"
@@ -47,7 +47,7 @@ bash "update_tool_shed" do
 end
 
 # update tool shed: install picard
-bash "update_tool_shed" do
+bash "intall_picard" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"
@@ -59,7 +59,7 @@ bash "update_tool_shed" do
 end
 
 # update tool shed: install cufflinks
-bash "update_tool_shed" do
+bash "intall_cufflinks" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"
@@ -71,7 +71,7 @@ bash "update_tool_shed" do
 end
 
 # update tool shed: install cuffmerge
-bash "update_tool_shed" do
+bash "intall_cuffmerge" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"
@@ -83,7 +83,7 @@ bash "update_tool_shed" do
 end
 
 # update tool shed: install cuffcompare
-bash "update_tool_shed" do
+bash "intall_cuffcompare" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"
@@ -95,7 +95,7 @@ bash "update_tool_shed" do
 end
 
 # update tool shed: install cuffdiff
-bash "update_tool_shed" do
+bash "intall_cuffdiff" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"
@@ -107,7 +107,7 @@ bash "update_tool_shed" do
 end
 
 # update tool shed: install column_maker
-bash "update_tool_shed" do
+bash "intall_column_maker" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"

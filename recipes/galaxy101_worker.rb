@@ -1,5 +1,5 @@
-# update tool shed
-bash "update_tool_shed" do
+# update tool shed: install join
+bash "intall_join" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   environment "PYTHON_EGG_CACHE" => "#{node[:hiway][:home]}/.python-eggs"

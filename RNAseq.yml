@@ -24,6 +24,7 @@ attrs:
       tmp_dir: '/mnt/tmp/hadoop'
     data_dir: '/mnt/data/hadoop'
     num_replicas: '1'
+    container_cleanup_delay_sec: '86400'
   hiway:
     data: '/mnt/data'
     release: 'false'
