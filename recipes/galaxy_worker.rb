@@ -55,7 +55,7 @@ bash "configure_galaxy" do
   set -e && set -o pipefail
     cp #{node[:hiway][:galaxy][:home]}/config/galaxy.ini.sample #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
     cp #{node[:hiway][:galaxy][:home]}/config/tool_conf.xml.main #{node[:hiway][:galaxy][:home]}/config/tool_conf.xml
-    sed -i 's%#tool_config_file = config/tool_conf.xml,shed_tool_conf.xml%tool_config_file = config/tool_conf.xml,config/shed_tool_conf.xml%g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
+    sed -i 's%#tool_config_file = config/tool_conf.xml,config/shed_tool_conf.xml%tool_config_file = config/tool_conf.xml,config/shed_tool_conf.xml%g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
     sed -i 's/#host = 127.0.0.1/host = 0.0.0.0/g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
     sed -i 's/#master_api_key = changethis/master_api_key = #{node[:hiway][:galaxy][:master_api_key]}/g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
     sed -i 's/#admin_users = None/admin_users = #{node[:hiway][:galaxy][:user][:email]}/g' #{node[:hiway][:galaxy][:home]}/config/galaxy.ini
