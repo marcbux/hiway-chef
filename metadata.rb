@@ -6,9 +6,9 @@ description      'Chef recipes for installing Hi-WAY, its dependencies, and seve
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "1.0.0"
 
-#recipe           "kagent::install", "Installs the Karamel agent"
+recipe           "kagent::install", "Installs the Karamel agent"
 recipe           "hadoop::install", "Installs Hadoop 2 on the machines"
-#recipe           "kagent::default", "Configures the Karamel agent"
+recipe           "kagent::default", "Configures the Karamel agent"
 recipe           "hadoop::nn", "Installs a Hadoop Namenode"
 recipe           "hadoop::rm", "Installs a YARN ResourceManager"
 recipe           "hadoop::dn", "Installs a Hadoop Namenode"
@@ -37,7 +37,10 @@ recipe           "hiway::RNAseq_worker", "Runs the TRAPLINE RNAseq Galaxy Workfl
 #recipe           "hiway::montage_m17_4_client", "Prepares the Montage DAX Workflow on the Client"
 #recipe           "hiway::montage_m17_4_worker", "Prepares the Montage DAX Workflow on the Workers"
 
+depends 'java'
+depends 'git'
 depends 'hadoop'
+depends 'kagent'
 
 %w{ ubuntu debian rhel centos }.each do |os|
   supports os
