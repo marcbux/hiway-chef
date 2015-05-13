@@ -36,7 +36,7 @@ default[:hiway][:cuneiform][:release][:targz]       = "cuneiform-dist-#{node[:hi
 default[:hiway][:cuneiform][:release][:url]         = "https://github.com/joergen7/cuneiform/releases/download/#{node[:hiway][:cuneiform][:release][:version]}/#{node[:hiway][:cuneiform][:release][:targz]}"
 default[:hiway][:cuneiform][:github_url]            = "https://github.com/joergen7/cuneiform.git"
 default[:hiway][:cuneiform][:home]                  = "#{node[:hiway][:software][:dir]}/cuneiform-#{node[:hiway][:cuneiform][:version]}"
-default[:hiway][:cuneiform][:r_packages]            = "node[:hiway][:software][:dir]/r_packages"
+default[:hiway][:cuneiform][:r_packages]            = "#{node[:hiway][:software][:dir]}/r_packages"
 default[:hiway][:cuneiform][:cache]                 = "/tmp/cf-cache"
 
 default[:hiway][:galaxy][:repository]               = "https://bitbucket.org/galaxy/galaxy-dist/"
