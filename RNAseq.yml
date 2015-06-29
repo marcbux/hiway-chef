@@ -1,8 +1,7 @@
 name: hiway
 ec2:
     type: c3.2xlarge
-    image: ami-1ecae776
-    region: us-east-1
+    region: eu-west-1
     username: hiway
     price: 1
 
