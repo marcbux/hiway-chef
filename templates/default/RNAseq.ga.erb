@@ -2,7 +2,7 @@
     "a_galaxy_workflow": "true", 
     "annotation": "RNA sequencing data analysis in a Transparent Reproducible and Automated PipeLINE - TRAPLINE.", 
     "format-version": "0.1", 
-    "name": "RNAseq.ga", 
+    "name": "RNAseqTRAPLINE 150304 no DAVID", 
     "steps": {
         "0": {
             "annotation": "Each experiment was done in triplicates, so each workflow will handle two conditions. Please assign the first experiment under condition 1.", 
@@ -18,12 +18,12 @@
             "name": "Input dataset", 
             "outputs": [], 
             "position": {
-                "left": 199.98957872390747, 
-                "top": 199.9896092414856
+                "left": 191.78125, 
+                "top": 262.46875
             }, 
             "tool_errors": null, 
             "tool_id": null, 
-            "tool_state": "{\"name\": \"<%= node[:hiway][:RNAseq][:input1][:replicate1][:fastq] %>\"}", 
+            "tool_state": "{\"name\": \"<%= node[:hiway][:RNAseq][:input1][:replicate1][:fastq] %>\"}",
             "tool_version": null, 
             "type": "data_input", 
             "user_outputs": [], 
@@ -43,8 +43,8 @@
             "name": "Input dataset", 
             "outputs": [], 
             "position": {
-                "left": 199.98957872390747, 
-                "top": 284.7639012336731
+                "left": 194.8125, 
+                "top": 403.234375
             }, 
             "tool_errors": null, 
             "tool_id": null, 
@@ -68,8 +68,8 @@
             "name": "Input dataset", 
             "outputs": [], 
             "position": {
-                "left": 199.98957872390747, 
-                "top": 369.5382237434387
+                "left": 193.84375, 
+                "top": 542.046875
             }, 
             "tool_errors": null, 
             "tool_id": null, 
@@ -93,8 +93,8 @@
             "name": "Input dataset", 
             "outputs": [], 
             "position": {
-                "left": 199.98957872390747, 
-                "top": 454.31254625320435
+                "left": 194.84375, 
+                "top": 679.828125
             }, 
             "tool_errors": null, 
             "tool_id": null, 
@@ -118,8 +118,8 @@
             "name": "Input dataset", 
             "outputs": [], 
             "position": {
-                "left": 199.98957872390747, 
-                "top": 539.0868382453918
+                "left": 192.84375, 
+                "top": 824.59375
             }, 
             "tool_errors": null, 
             "tool_id": null, 
@@ -143,8 +143,8 @@
             "name": "Input dataset", 
             "outputs": [], 
             "position": {
-                "left": 199.99305725097656, 
-                "top": 623.8820037841797
+                "left": 194.84375, 
+                "top": 962.390625
             }, 
             "tool_errors": null, 
             "tool_id": null, 
@@ -168,8 +168,8 @@
             "name": "Input dataset", 
             "outputs": [], 
             "position": {
-                "left": 199.98957872390747, 
-                "top": 708.6528172492981
+                "left": 1956.78125, 
+                "top": 868.09375
             }, 
             "tool_errors": null, 
             "tool_id": null, 
@@ -180,7 +180,7 @@
             "uuid": "None"
         }, 
         "7": {
-            "annotation": "fastq data pre processing step with significant downstream impact", 
+            "annotation": "Module to evaluate the fastq raw data - before data pre processing.", 
             "id": 7, 
             "input_connections": {
                 "input_file": {
@@ -190,34 +190,28 @@
             }, 
             "inputs": [], 
             "label": null, 
-            "name": "FASTQ Quality Trimmer", 
+            "name": "FastQC:Read QC", 
             "outputs": [
                 {
-                    "name": "output_file", 
-                    "type": "input"
+                    "name": "html_file", 
+                    "type": "html"
                 }
             ], 
             "position": {
-                "left": 435.75346422195435, 
-                "top": 199.9896092414856
+                "left": 463.53125, 
+                "top": 253.234375
             }, 
-            "post_job_actions": {
-                "HideDatasetActionoutput_file": {
-                    "action_arguments": {}, 
-                    "action_type": "HideDatasetAction", 
-                    "output_name": "output_file"
-                }
-            }, 
+            "post_job_actions": {}, 
             "tool_errors": null, 
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastq_trimmer_by_quality/fastq_quality_trimmer/1.0.0", 
-            "tool_state": "{\"__page__\": 0, \"score_comparison\": \"\\\">=\\\"\", \"window_size\": \"\\\"1\\\"\", \"trim_ends\": \"\\\"53\\\"\", \"input_file\": \"null\", \"__rerun_remap_job_id__\": null, \"aggregation_action\": \"\\\"min\\\"\", \"quality_score\": \"\\\"20.0\\\"\", \"step_size\": \"\\\"1\\\"\", \"keep_zero_length\": \"\\\"False\\\"\", \"exclude_count\": \"\\\"0\\\"\"}", 
-            "tool_version": "1.0.0", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/0.52", 
+            "tool_state": "{\"__page__\": 0, \"contaminants\": \"null\", \"__rerun_remap_job_id__\": null, \"out_prefix\": \"\\\"FastQC\\\"\", \"input_file\": \"null\"}", 
+            "tool_version": "0.52", 
             "type": "tool", 
             "user_outputs": [], 
             "uuid": "None"
         }, 
         "8": {
-            "annotation": "Module to evaluate the fastq raw data - before data pre processing.", 
+            "annotation": "fastq data pre processing step with significant downstream impact", 
             "id": 8, 
             "input_connections": {
                 "input_file": {
@@ -227,28 +221,34 @@
             }, 
             "inputs": [], 
             "label": null, 
-            "name": "FastQC:Read QC", 
+            "name": "FASTQ Quality Trimmer", 
             "outputs": [
                 {
-                    "name": "html_file", 
-                    "type": "html"
+                    "name": "output_file", 
+                    "type": "input"
                 }
             ], 
             "position": {
-                "left": 435.75346422195435, 
-                "top": 311.76042222976685
+                "left": 761.46875, 
+                "top": 353.40625
             }, 
-            "post_job_actions": {}, 
+            "post_job_actions": {
+                "HideDatasetActionoutput_file": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_file"
+                }
+            }, 
             "tool_errors": null, 
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/0.52", 
-            "tool_state": "{\"__page__\": 0, \"contaminants\": \"null\", \"__rerun_remap_job_id__\": null, \"out_prefix\": \"\\\"FastQC\\\"\", \"input_file\": \"null\"}", 
-            "tool_version": "0.52", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastq_trimmer_by_quality/fastq_quality_trimmer/1.0.0", 
+            "tool_state": "{\"__page__\": 0, \"score_comparison\": \"\\\">=\\\"\", \"window_size\": \"\\\"1\\\"\", \"trim_ends\": \"\\\"53\\\"\", \"input_file\": \"null\", \"__rerun_remap_job_id__\": null, \"aggregation_action\": \"\\\"min\\\"\", \"quality_score\": \"\\\"20.0\\\"\", \"step_size\": \"\\\"1\\\"\", \"keep_zero_length\": \"\\\"False\\\"\", \"exclude_count\": \"\\\"0\\\"\"}", 
+            "tool_version": "1.0.0", 
             "type": "tool", 
             "user_outputs": [], 
             "uuid": "None"
         }, 
         "9": {
-            "annotation": "fastq data pre processing step with significant downstream impact", 
+            "annotation": "Module to evaluate the fastq raw data - before data pre processing.", 
             "id": 9, 
             "input_connections": {
                 "input_file": {
@@ -258,34 +258,28 @@
             }, 
             "inputs": [], 
             "label": null, 
-            "name": "FASTQ Quality Trimmer", 
+            "name": "FastQC:Read QC", 
             "outputs": [
                 {
-                    "name": "output_file", 
-                    "type": "input"
+                    "name": "html_file", 
+                    "type": "html"
                 }
             ], 
             "position": {
-                "left": 435.75346422195435, 
-                "top": 467.54167222976685
+                "left": 463.53125, 
+                "top": 393.78125
             }, 
-            "post_job_actions": {
-                "HideDatasetActionoutput_file": {
-                    "action_arguments": {}, 
-                    "action_type": "HideDatasetAction", 
-                    "output_name": "output_file"
-                }
-            }, 
+            "post_job_actions": {}, 
             "tool_errors": null, 
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastq_trimmer_by_quality/fastq_quality_trimmer/1.0.0", 
-            "tool_state": "{\"__page__\": 0, \"score_comparison\": \"\\\">=\\\"\", \"window_size\": \"\\\"1\\\"\", \"trim_ends\": \"\\\"53\\\"\", \"input_file\": \"null\", \"__rerun_remap_job_id__\": null, \"aggregation_action\": \"\\\"min\\\"\", \"quality_score\": \"\\\"20.0\\\"\", \"step_size\": \"\\\"1\\\"\", \"keep_zero_length\": \"\\\"False\\\"\", \"exclude_count\": \"\\\"0\\\"\"}", 
-            "tool_version": "1.0.0", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/0.52", 
+            "tool_state": "{\"__page__\": 0, \"contaminants\": \"null\", \"__rerun_remap_job_id__\": null, \"out_prefix\": \"\\\"FastQC\\\"\", \"input_file\": \"null\"}", 
+            "tool_version": "0.52", 
             "type": "tool", 
             "user_outputs": [], 
             "uuid": "None"
         }, 
         "10": {
-            "annotation": "Module to evaluate the fastq raw data - before data pre processing.", 
+            "annotation": "fastq data pre processing step with significant downstream impact", 
             "id": 10, 
             "input_connections": {
                 "input_file": {
@@ -295,28 +289,34 @@
             }, 
             "inputs": [], 
             "label": null, 
-            "name": "FastQC:Read QC", 
+            "name": "FASTQ Quality Trimmer", 
             "outputs": [
                 {
-                    "name": "html_file", 
-                    "type": "html"
+                    "name": "output_file", 
+                    "type": "input"
                 }
             ], 
             "position": {
-                "left": 435.75346422195435, 
-                "top": 579.3125462532043
+                "left": 761.546875, 
+                "top": 494.046875
             }, 
-            "post_job_actions": {}, 
+            "post_job_actions": {
+                "HideDatasetActionoutput_file": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_file"
+                }
+            }, 
             "tool_errors": null, 
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/0.52", 
-            "tool_state": "{\"__page__\": 0, \"contaminants\": \"null\", \"__rerun_remap_job_id__\": null, \"out_prefix\": \"\\\"FastQC\\\"\", \"input_file\": \"null\"}", 
-            "tool_version": "0.52", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastq_trimmer_by_quality/fastq_quality_trimmer/1.0.0", 
+            "tool_state": "{\"__page__\": 0, \"score_comparison\": \"\\\">=\\\"\", \"window_size\": \"\\\"1\\\"\", \"trim_ends\": \"\\\"53\\\"\", \"input_file\": \"null\", \"__rerun_remap_job_id__\": null, \"aggregation_action\": \"\\\"min\\\"\", \"quality_score\": \"\\\"20.0\\\"\", \"step_size\": \"\\\"1\\\"\", \"keep_zero_length\": \"\\\"False\\\"\", \"exclude_count\": \"\\\"0\\\"\"}", 
+            "tool_version": "1.0.0", 
             "type": "tool", 
             "user_outputs": [], 
             "uuid": "None"
         }, 
         "11": {
-            "annotation": "fastq data pre processing step with significant downstream impact", 
+            "annotation": "Module to evaluate the fastq raw data - before data pre processing.", 
             "id": 11, 
             "input_connections": {
                 "input_file": {
@@ -326,34 +326,28 @@
             }, 
             "inputs": [], 
             "label": null, 
-            "name": "FASTQ Quality Trimmer", 
+            "name": "FastQC:Read QC", 
             "outputs": [
                 {
-                    "name": "output_file", 
-                    "type": "input"
+                    "name": "html_file", 
+                    "type": "html"
                 }
             ], 
             "position": {
-                "left": 435.75346422195435, 
-                "top": 735.0937962532043
+                "left": 463.546875, 
+                "top": 533.34375
             }, 
-            "post_job_actions": {
-                "HideDatasetActionoutput_file": {
-                    "action_arguments": {}, 
-                    "action_type": "HideDatasetAction", 
-                    "output_name": "output_file"
-                }
-            }, 
+            "post_job_actions": {}, 
             "tool_errors": null, 
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastq_trimmer_by_quality/fastq_quality_trimmer/1.0.0", 
-            "tool_state": "{\"__page__\": 0, \"score_comparison\": \"\\\">=\\\"\", \"window_size\": \"\\\"1\\\"\", \"trim_ends\": \"\\\"53\\\"\", \"input_file\": \"null\", \"__rerun_remap_job_id__\": null, \"aggregation_action\": \"\\\"min\\\"\", \"quality_score\": \"\\\"20.0\\\"\", \"step_size\": \"\\\"1\\\"\", \"keep_zero_length\": \"\\\"False\\\"\", \"exclude_count\": \"\\\"0\\\"\"}", 
-            "tool_version": "1.0.0", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/0.52", 
+            "tool_state": "{\"__page__\": 0, \"contaminants\": \"null\", \"__rerun_remap_job_id__\": null, \"out_prefix\": \"\\\"FastQC\\\"\", \"input_file\": \"null\"}", 
+            "tool_version": "0.52", 
             "type": "tool", 
             "user_outputs": [], 
             "uuid": "None"
         }, 
         "12": {
-            "annotation": "Module to evaluate the fastq raw data - before data pre processing.", 
+            "annotation": "fastq data pre processing step with significant downstream impact", 
             "id": 12, 
             "input_connections": {
                 "input_file": {
@@ -363,28 +357,34 @@
             }, 
             "inputs": [], 
             "label": null, 
-            "name": "FastQC:Read QC", 
+            "name": "FASTQ Quality Trimmer", 
             "outputs": [
                 {
-                    "name": "html_file", 
-                    "type": "html"
+                    "name": "output_file", 
+                    "type": "input"
                 }
             ], 
             "position": {
-                "left": 435.75346422195435, 
-                "top": 846.8646092414856
+                "left": 762.5625, 
+                "top": 634.625
             }, 
-            "post_job_actions": {}, 
+            "post_job_actions": {
+                "HideDatasetActionoutput_file": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_file"
+                }
+            }, 
             "tool_errors": null, 
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/0.52", 
-            "tool_state": "{\"__page__\": 0, \"contaminants\": \"null\", \"__rerun_remap_job_id__\": null, \"out_prefix\": \"\\\"FastQC\\\"\", \"input_file\": \"null\"}", 
-            "tool_version": "0.52", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastq_trimmer_by_quality/fastq_quality_trimmer/1.0.0", 
+            "tool_state": "{\"__page__\": 0, \"score_comparison\": \"\\\">=\\\"\", \"window_size\": \"\\\"1\\\"\", \"trim_ends\": \"\\\"53\\\"\", \"input_file\": \"null\", \"__rerun_remap_job_id__\": null, \"aggregation_action\": \"\\\"min\\\"\", \"quality_score\": \"\\\"20.0\\\"\", \"step_size\": \"\\\"1\\\"\", \"keep_zero_length\": \"\\\"False\\\"\", \"exclude_count\": \"\\\"0\\\"\"}", 
+            "tool_version": "1.0.0", 
             "type": "tool", 
             "user_outputs": [], 
             "uuid": "None"
         }, 
         "13": {
-            "annotation": "fastq data pre processing step with significant downstream impact", 
+            "annotation": "Module to evaluate the fastq raw data - before data pre processing.", 
             "id": 13, 
             "input_connections": {
                 "input_file": {
@@ -394,34 +394,28 @@
             }, 
             "inputs": [], 
             "label": null, 
-            "name": "FASTQ Quality Trimmer", 
+            "name": "FastQC:Read QC", 
             "outputs": [
                 {
-                    "name": "output_file", 
-                    "type": "input"
+                    "name": "html_file", 
+                    "type": "html"
                 }
             ], 
             "position": {
-                "left": 435.75346422195435, 
-                "top": 1002.6458592414856
+                "left": 463.546875, 
+                "top": 671.90625
             }, 
-            "post_job_actions": {
-                "HideDatasetActionoutput_file": {
-                    "action_arguments": {}, 
-                    "action_type": "HideDatasetAction", 
-                    "output_name": "output_file"
-                }
-            }, 
+            "post_job_actions": {}, 
             "tool_errors": null, 
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastq_trimmer_by_quality/fastq_quality_trimmer/1.0.0", 
-            "tool_state": "{\"__page__\": 0, \"score_comparison\": \"\\\">=\\\"\", \"window_size\": \"\\\"1\\\"\", \"trim_ends\": \"\\\"53\\\"\", \"input_file\": \"null\", \"__rerun_remap_job_id__\": null, \"aggregation_action\": \"\\\"min\\\"\", \"quality_score\": \"\\\"20.0\\\"\", \"step_size\": \"\\\"1\\\"\", \"keep_zero_length\": \"\\\"False\\\"\", \"exclude_count\": \"\\\"0\\\"\"}", 
-            "tool_version": "1.0.0", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/0.52", 
+            "tool_state": "{\"__page__\": 0, \"contaminants\": \"null\", \"__rerun_remap_job_id__\": null, \"out_prefix\": \"\\\"FastQC\\\"\", \"input_file\": \"null\"}", 
+            "tool_version": "0.52", 
             "type": "tool", 
             "user_outputs": [], 
             "uuid": "None"
         }, 
         "14": {
-            "annotation": "Module to evaluate the fastq raw data - before data pre processing.", 
+            "annotation": "fastq data pre processing step with significant downstream impact", 
             "id": 14, 
             "input_connections": {
                 "input_file": {
@@ -431,28 +425,34 @@
             }, 
             "inputs": [], 
             "label": null, 
-            "name": "FastQC:Read QC", 
+            "name": "FASTQ Quality Trimmer", 
             "outputs": [
                 {
-                    "name": "html_file", 
-                    "type": "html"
+                    "name": "output_file", 
+                    "type": "input"
                 }
             ], 
             "position": {
-                "left": 435.75346422195435, 
-                "top": 1114.434067249298
+                "left": 761.5625, 
+                "top": 772.140625
             }, 
-            "post_job_actions": {}, 
+            "post_job_actions": {
+                "HideDatasetActionoutput_file": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_file"
+                }
+            }, 
             "tool_errors": null, 
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/0.52", 
-            "tool_state": "{\"__page__\": 0, \"contaminants\": \"null\", \"__rerun_remap_job_id__\": null, \"out_prefix\": \"\\\"FastQC\\\"\", \"input_file\": \"null\"}", 
-            "tool_version": "0.52", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastq_trimmer_by_quality/fastq_quality_trimmer/1.0.0", 
+            "tool_state": "{\"__page__\": 0, \"score_comparison\": \"\\\">=\\\"\", \"window_size\": \"\\\"1\\\"\", \"trim_ends\": \"\\\"53\\\"\", \"input_file\": \"null\", \"__rerun_remap_job_id__\": null, \"aggregation_action\": \"\\\"min\\\"\", \"quality_score\": \"\\\"20.0\\\"\", \"step_size\": \"\\\"1\\\"\", \"keep_zero_length\": \"\\\"False\\\"\", \"exclude_count\": \"\\\"0\\\"\"}", 
+            "tool_version": "1.0.0", 
             "type": "tool", 
             "user_outputs": [], 
             "uuid": "None"
         }, 
         "15": {
-            "annotation": "", 
+            "annotation": "Module to evaluate the fastq raw data - before data pre processing.", 
             "id": 15, 
             "input_connections": {
                 "input_file": {
@@ -462,34 +462,28 @@
             }, 
             "inputs": [], 
             "label": null, 
-            "name": "FASTQ Quality Trimmer", 
+            "name": "FastQC:Read QC", 
             "outputs": [
                 {
-                    "name": "output_file", 
-                    "type": "input"
+                    "name": "html_file", 
+                    "type": "html"
                 }
             ], 
             "position": {
-                "left": 435.75346422195435, 
-                "top": 1270.197983264923
+                "left": 463.5625, 
+                "top": 813.453125
             }, 
-            "post_job_actions": {
-                "HideDatasetActionoutput_file": {
-                    "action_arguments": {}, 
-                    "action_type": "HideDatasetAction", 
-                    "output_name": "output_file"
-                }
-            }, 
+            "post_job_actions": {}, 
             "tool_errors": null, 
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastq_trimmer_by_quality/fastq_quality_trimmer/1.0.0", 
-            "tool_state": "{\"__page__\": 0, \"score_comparison\": \"\\\">=\\\"\", \"window_size\": \"\\\"1\\\"\", \"trim_ends\": \"\\\"53\\\"\", \"input_file\": \"null\", \"__rerun_remap_job_id__\": null, \"aggregation_action\": \"\\\"min\\\"\", \"quality_score\": \"\\\"20.0\\\"\", \"step_size\": \"\\\"1\\\"\", \"keep_zero_length\": \"\\\"False\\\"\", \"exclude_count\": \"\\\"0\\\"\"}", 
-            "tool_version": "1.0.0", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/0.52", 
+            "tool_state": "{\"__page__\": 0, \"contaminants\": \"null\", \"__rerun_remap_job_id__\": null, \"out_prefix\": \"\\\"FastQC\\\"\", \"input_file\": \"null\"}", 
+            "tool_version": "0.52", 
             "type": "tool", 
             "user_outputs": [], 
             "uuid": "None"
         }, 
         "16": {
-            "annotation": "Module to evaluate the fastq raw data - before data pre processing.", 
+            "annotation": "", 
             "id": 16, 
             "input_connections": {
                 "input_file": {
@@ -499,37 +493,6 @@
             }, 
             "inputs": [], 
             "label": null, 
-            "name": "FastQC:Read QC", 
-            "outputs": [
-                {
-                    "name": "html_file", 
-                    "type": "html"
-                }
-            ], 
-            "position": {
-                "left": 435.75346422195435, 
-                "top": 1381.9861912727356
-            }, 
-            "post_job_actions": {}, 
-            "tool_errors": null, 
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/0.52", 
-            "tool_state": "{\"__page__\": 0, \"contaminants\": \"null\", \"__rerun_remap_job_id__\": null, \"out_prefix\": \"\\\"FastQC\\\"\", \"input_file\": \"null\"}", 
-            "tool_version": "0.52", 
-            "type": "tool", 
-            "user_outputs": [], 
-            "uuid": "None"
-        }, 
-        "17": {
-            "annotation": "fastq data pre processing step with significant downstream impact", 
-            "id": 17, 
-            "input_connections": {
-                "input_file": {
-                    "id": 5, 
-                    "output_name": "output"
-                }
-            }, 
-            "inputs": [], 
-            "label": null, 
             "name": "FASTQ Quality Trimmer", 
             "outputs": [
                 {
@@ -538,8 +501,8 @@
                 }
             ], 
             "position": {
-                "left": 435.75346422195435, 
-                "top": 1537.7674412727356
+                "left": 761.5625, 
+                "top": 910.6875
             }, 
             "post_job_actions": {
                 "HideDatasetActionoutput_file": {
@@ -556,9 +519,9 @@
             "user_outputs": [], 
             "uuid": "None"
         }, 
-        "18": {
+        "17": {
             "annotation": "Module to evaluate the fastq raw data - before data pre processing.", 
-            "id": 18, 
+            "id": 17, 
             "input_connections": {
                 "input_file": {
                     "id": 5, 
@@ -575,8 +538,8 @@
                 }
             ], 
             "position": {
-                "left": 435.75346422195435, 
-                "top": 1649.538315296173
+                "left": 461.5625, 
+                "top": 953.015625
             }, 
             "post_job_actions": {}, 
             "tool_errors": null, 
@@ -587,12 +550,49 @@
             "user_outputs": [], 
             "uuid": "None"
         }, 
+        "18": {
+            "annotation": "fastq data pre processing step with significant downstream impact", 
+            "id": 18, 
+            "input_connections": {
+                "input_file": {
+                    "id": 5, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "FASTQ Quality Trimmer", 
+            "outputs": [
+                {
+                    "name": "output_file", 
+                    "type": "input"
+                }
+            ], 
+            "position": {
+                "left": 760.5625, 
+                "top": 1051.234375
+            }, 
+            "post_job_actions": {
+                "HideDatasetActionoutput_file": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_file"
+                }
+            }, 
+            "tool_errors": null, 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastq_trimmer_by_quality/fastq_quality_trimmer/1.0.0", 
+            "tool_state": "{\"__page__\": 0, \"score_comparison\": \"\\\">=\\\"\", \"window_size\": \"\\\"1\\\"\", \"trim_ends\": \"\\\"53\\\"\", \"input_file\": \"null\", \"__rerun_remap_job_id__\": null, \"aggregation_action\": \"\\\"min\\\"\", \"quality_score\": \"\\\"20.0\\\"\", \"step_size\": \"\\\"1\\\"\", \"keep_zero_length\": \"\\\"False\\\"\", \"exclude_count\": \"\\\"0\\\"\"}", 
+            "tool_version": "1.0.0", 
+            "type": "tool", 
+            "user_outputs": [], 
+            "uuid": "None"
+        }, 
         "19": {
             "annotation": "Clipping of Illumina adapter sequences. Step could be discarded if an other sequencing system than Illumina was used.", 
             "id": 19, 
             "input_connections": {
                 "input": {
-                    "id": 7, 
+                    "id": 8, 
                     "output_name": "output_file"
                 }
             }, 
@@ -606,8 +606,8 @@
                 }
             ], 
             "position": {
-                "left": 763.5312962532043, 
-                "top": 199.9896092414856
+                "left": 1061.375, 
+                "top": 381.5
             }, 
             "post_job_actions": {
                 "HideDatasetActionoutput": {
@@ -629,7 +629,7 @@
             "id": 20, 
             "input_connections": {
                 "input": {
-                    "id": 9, 
+                    "id": 10, 
                     "output_name": "output_file"
                 }
             }, 
@@ -643,8 +643,8 @@
                 }
             ], 
             "position": {
-                "left": 763.5312962532043, 
-                "top": 311.76042222976685
+                "left": 1064.375, 
+                "top": 523.265625
             }, 
             "post_job_actions": {
                 "HideDatasetActionoutput": {
@@ -666,7 +666,7 @@
             "id": 21, 
             "input_connections": {
                 "input": {
-                    "id": 11, 
+                    "id": 12, 
                     "output_name": "output_file"
                 }
             }, 
@@ -680,8 +680,8 @@
                 }
             ], 
             "position": {
-                "left": 763.5312962532043, 
-                "top": 423.5312657356262
+                "left": 1063.375, 
+                "top": 663.03125
             }, 
             "post_job_actions": {
                 "HideDatasetActionoutput": {
@@ -703,7 +703,7 @@
             "id": 22, 
             "input_connections": {
                 "input": {
-                    "id": 13, 
+                    "id": 14, 
                     "output_name": "output_file"
                 }
             }, 
@@ -717,8 +717,8 @@
                 }
             ], 
             "position": {
-                "left": 763.5312962532043, 
-                "top": 535.3194432258606
+                "left": 1063.375, 
+                "top": 801.8125
             }, 
             "post_job_actions": {
                 "HideDatasetActionoutput": {
@@ -740,7 +740,7 @@
             "id": 23, 
             "input_connections": {
                 "input": {
-                    "id": 15, 
+                    "id": 16, 
                     "output_name": "output_file"
                 }
             }, 
@@ -754,8 +754,8 @@
                 }
             ], 
             "position": {
-                "left": 763.5312962532043, 
-                "top": 647.0903172492981
+                "left": 1062.359375, 
+                "top": 940.5625
             }, 
             "post_job_actions": {
                 "HideDatasetActionoutput": {
@@ -777,7 +777,7 @@
             "id": 24, 
             "input_connections": {
                 "input": {
-                    "id": 17, 
+                    "id": 18, 
                     "output_name": "output_file"
                 }
             }, 
@@ -791,8 +791,8 @@
                 }
             ], 
             "position": {
-                "left": 763.5312962532043, 
-                "top": 758.8785252571106
+                "left": 1063.375, 
+                "top": 1080.375
             }, 
             "post_job_actions": {
                 "HideDatasetActionoutput": {
@@ -848,8 +848,8 @@
                 }
             ], 
             "position": {
-                "left": 999.3124852180481, 
-                "top": 199.9896092414856
+                "left": 1332.15625, 
+                "top": 255.484375
             }, 
             "post_job_actions": {
                 "HideDatasetActiondeletions": {
@@ -900,8 +900,8 @@
                 }
             ], 
             "position": {
-                "left": 999.3124852180481, 
-                "top": 445.7535252571106
+                "left": 1623.109375, 
+                "top": 432.1875
             }, 
             "post_job_actions": {}, 
             "tool_errors": null, 
@@ -951,8 +951,8 @@
                 }
             ], 
             "position": {
-                "left": 999.3124852180481, 
-                "top": 601.5347752571106
+                "left": 1335.140625, 
+                "top": 484.984375
             }, 
             "post_job_actions": {
                 "HideDatasetActionaccepted_hits": {
@@ -1008,8 +1008,8 @@
                 }
             ], 
             "position": {
-                "left": 999.3124852180481, 
-                "top": 847.3160252571106
+                "left": 1623.15625, 
+                "top": 665.828125
             }, 
             "post_job_actions": {}, 
             "tool_errors": null, 
@@ -1059,8 +1059,8 @@
                 }
             ], 
             "position": {
-                "left": 999.3124852180481, 
-                "top": 1003.0972752571106
+                "left": 1335.15625, 
+                "top": 713.609375
             }, 
             "post_job_actions": {
                 "HideDatasetActionaccepted_hits": {
@@ -1116,8 +1116,8 @@
                 }
             ], 
             "position": {
-                "left": 999.3124852180481, 
-                "top": 1248.8785252571106
+                "left": 1623.140625, 
+                "top": 893.390625
             }, 
             "post_job_actions": {}, 
             "tool_errors": null, 
@@ -1167,8 +1167,8 @@
                 }
             ], 
             "position": {
-                "left": 999.3124852180481, 
-                "top": 1404.6424412727356
+                "left": 1335.140625, 
+                "top": 947.09375
             }, 
             "post_job_actions": {
                 "HideDatasetActiondeletions": {
@@ -1219,8 +1219,8 @@
                 }
             ], 
             "position": {
-                "left": 999.3124852180481, 
-                "top": 1650.4236912727356
+                "left": 1625.140625, 
+                "top": 1125.890625
             }, 
             "post_job_actions": {}, 
             "tool_errors": null, 
@@ -1270,8 +1270,8 @@
                 }
             ], 
             "position": {
-                "left": 999.3124852180481, 
-                "top": 1806.2049412727356
+                "left": 1335.125, 
+                "top": 1405.640625
             }, 
             "post_job_actions": {
                 "HideDatasetActionaccepted_hits": {
@@ -1327,8 +1327,8 @@
                 }
             ], 
             "position": {
-                "left": 999.3124852180481, 
-                "top": 2051.9861912727356
+                "left": 1625.125, 
+                "top": 1357.40625
             }, 
             "post_job_actions": {}, 
             "tool_errors": null, 
@@ -1378,8 +1378,8 @@
                 }
             ], 
             "position": {
-                "left": 999.3124852180481, 
-                "top": 2207.7674412727356
+                "left": 1333.125, 
+                "top": 1178.171875
             }, 
             "post_job_actions": {
                 "HideDatasetActionaccepted_hits": {
@@ -1440,8 +1440,8 @@
                 }
             ], 
             "position": {
-                "left": 999.3124852180481, 
-                "top": 2453.5313572883606
+                "left": 1623.109375, 
+                "top": 1582.984375
             }, 
             "post_job_actions": {}, 
             "tool_errors": null, 
@@ -1475,8 +1475,8 @@
                 }
             ], 
             "position": {
-                "left": 1327.090317249298, 
-                "top": 199.9896092414856
+                "left": 1924.828125, 
+                "top": 255.421875
             }, 
             "post_job_actions": {
                 "HideDatasetActionout_file": {
@@ -1516,8 +1516,8 @@
                 }
             ], 
             "position": {
-                "left": 1327.090317249298, 
-                "top": 355.75349473953247
+                "left": 1923.859375, 
+                "top": 488.171875
             }, 
             "post_job_actions": {
                 "HideDatasetActionout_file": {
@@ -1557,8 +1557,8 @@
                 }
             ], 
             "position": {
-                "left": 1327.090317249298, 
-                "top": 511.5347752571106
+                "left": 1924.828125, 
+                "top": 715.9375
             }, 
             "post_job_actions": {
                 "HideDatasetActionout_file": {
@@ -1598,8 +1598,8 @@
                 }
             ], 
             "position": {
-                "left": 1327.090317249298, 
-                "top": 667.3160252571106
+                "left": 1924.875, 
+                "top": 948.78125
             }, 
             "post_job_actions": {
                 "HideDatasetActionout_file": {
@@ -1639,8 +1639,8 @@
                 }
             ], 
             "position": {
-                "left": 1327.090317249298, 
-                "top": 823.0972752571106
+                "left": 1925.84375, 
+                "top": 1406.515625
             }, 
             "post_job_actions": {
                 "HideDatasetActionout_file": {
@@ -1680,8 +1680,8 @@
                 }
             ], 
             "position": {
-                "left": 1327.090317249298, 
-                "top": 978.8785252571106
+                "left": 1925.875, 
+                "top": 1177.34375
             }, 
             "post_job_actions": {
                 "HideDatasetActionout_file": {
@@ -1733,8 +1733,8 @@
                 }
             ], 
             "position": {
-                "left": 1654.868149280548, 
-                "top": 199.9896092414856
+                "left": 2224.640625, 
+                "top": 251.4375
             }, 
             "post_job_actions": {
                 "HideDatasetActiontotal_map_mass": {
@@ -1786,8 +1786,8 @@
                 }
             ], 
             "position": {
-                "left": 1654.868149280548, 
-                "top": 461.76042222976685
+                "left": 2226.6875, 
+                "top": 494.25
             }, 
             "post_job_actions": {
                 "HideDatasetActiontotal_map_mass": {
@@ -1839,8 +1839,8 @@
                 }
             ], 
             "position": {
-                "left": 1654.868149280548, 
-                "top": 723.5312962532043
+                "left": 2233.640625, 
+                "top": 740.953125
             }, 
             "post_job_actions": {
                 "HideDatasetActiontotal_map_mass": {
@@ -1892,8 +1892,8 @@
                 }
             ], 
             "position": {
-                "left": 1654.868149280548, 
-                "top": 985.3194432258606
+                "left": 2235.671875, 
+                "top": 982.796875
             }, 
             "post_job_actions": {
                 "HideDatasetActiontotal_map_mass": {
@@ -1945,8 +1945,8 @@
                 }
             ], 
             "position": {
-                "left": 1654.868149280548, 
-                "top": 1247.090317249298
+                "left": 2235.640625, 
+                "top": 1473.53125
             }, 
             "post_job_actions": {
                 "HideDatasetActiontotal_map_mass": {
@@ -1998,8 +1998,8 @@
                 }
             ], 
             "position": {
-                "left": 1654.868149280548, 
-                "top": 1508.8785252571106
+                "left": 2236.671875, 
+                "top": 1227.375
             }, 
             "post_job_actions": {
                 "HideDatasetActiontotal_map_mass": {
@@ -2047,8 +2047,8 @@
                 }
             ], 
             "position": {
-                "left": 1982.645981311798, 
-                "top": 199.9896092414856
+                "left": 2529.484375, 
+                "top": 516.46875
             }, 
             "post_job_actions": {}, 
             "tool_errors": null, 
@@ -2114,8 +2114,8 @@
                 }
             ], 
             "position": {
-                "left": 1982.645981311798, 
-                "top": 425.75349473953247
+                "left": 2838.453125, 
+                "top": 419.203125
             }, 
             "post_job_actions": {
                 "HideDatasetActioninput1_refmap": {
@@ -2178,8 +2178,8 @@
                 }
             ], 
             "position": {
-                "left": 1982.645981311798, 
-                "top": 811.5347752571106
+                "left": 2535.46875, 
+                "top": 1246
             }, 
             "post_job_actions": {}, 
             "tool_errors": null, 
@@ -2245,8 +2245,8 @@
                 }
             ], 
             "position": {
-                "left": 1982.645981311798, 
-                "top": 1037.3160252571106
+                "left": 2835.484375, 
+                "top": 1165.8125
             }, 
             "post_job_actions": {
                 "HideDatasetActioninput1_refmap": {
@@ -2377,8 +2377,8 @@
                 }
             ], 
             "position": {
-                "left": 2310.423813343048, 
-                "top": 199.9896092414856
+                "left": 3138.1875, 
+                "top": 259.421875
             }, 
             "post_job_actions": {
                 "HideDatasetActioncds_diff": {
@@ -2524,8 +2524,8 @@
                 }
             ], 
             "position": {
-                "left": 2310.423813343048, 
-                "top": 945.7535252571106
+                "left": 3135.25, 
+                "top": 992.21875
             }, 
             "post_job_actions": {
                 "HideDatasetActioncds_diff": {
@@ -2596,8 +2596,8 @@
                 }
             ], 
             "position": {
-                "left": 2638.201401233673, 
-                "top": 199.9896092414856
+                "left": 3444.03125, 
+                "top": 840.484375
             }, 
             "post_job_actions": {
                 "RenameDatasetActionout_file1": {
@@ -2635,8 +2635,8 @@
                 }
             ], 
             "position": {
-                "left": 2638.201401233673, 
-                "top": 311.76042222976685
+                "left": 3439.015625, 
+                "top": 1576.234375
             }, 
             "post_job_actions": {
                 "RenameDatasetActionout_file1": {
@@ -2674,8 +2674,8 @@
                 }
             ], 
             "position": {
-                "left": 2873.982895374298, 
-                "top": 199.9896092414856
+                "left": 3718.78125, 
+                "top": 868.484375
             }, 
             "post_job_actions": {
                 "RenameDatasetActionout_file1": {
@@ -2713,8 +2713,8 @@
                 }
             ], 
             "position": {
-                "left": 2873.982895374298, 
-                "top": 311.76042222976685
+                "left": 3714.796875, 
+                "top": 1605.21875
             }, 
             "post_job_actions": {
                 "RenameDatasetActionout_file1": {
@@ -2752,8 +2752,8 @@
                 }
             ], 
             "position": {
-                "left": 3109.764145374298, 
-                "top": 199.9896092414856
+                "left": 3997.609375, 
+                "top": 898.46875
             }, 
             "post_job_actions": {}, 
             "tool_errors": null, 
@@ -2765,7 +2765,7 @@
             "uuid": "None"
         }, 
         "60": {
-            "annotation": "This step filters the significantly up regulated genes.", 
+            "annotation": "This step filters the significantly down regulated genes.", 
             "id": 60, 
             "input_connections": {
                 "input": {
@@ -2783,20 +2783,20 @@
                 }
             ], 
             "position": {
-                "left": 3345.545395374298, 
-                "top": 199.9896092414856
+                "left": 4269.375, 
+                "top": 828.265625
             }, 
             "post_job_actions": {}, 
             "tool_errors": null, 
             "tool_id": "Filter1", 
-            "tool_state": "{\"input\": \"null\", \"__rerun_remap_job_id__\": null, \"header_lines\": \"\\\"0\\\"\", \"cond\": \"\\\"c15>=1\\\"\", \"__page__\": 0}", 
+            "tool_state": "{\"input\": \"null\", \"__rerun_remap_job_id__\": null, \"header_lines\": \"\\\"0\\\"\", \"cond\": \"\\\"c15<=-1\\\"\", \"__page__\": 0}", 
             "tool_version": "1.1.0", 
             "type": "tool", 
             "user_outputs": [], 
             "uuid": "None"
         }, 
         "61": {
-            "annotation": "This step filters the significantly down regulated genes.", 
+            "annotation": "This step filters the significantly up regulated genes.", 
             "id": 61, 
             "input_connections": {
                 "input": {
@@ -2814,20 +2814,20 @@
                 }
             ], 
             "position": {
-                "left": 3345.545395374298, 
-                "top": 311.76042222976685
+                "left": 4268.390625, 
+                "top": 927.5
             }, 
             "post_job_actions": {}, 
             "tool_errors": null, 
             "tool_id": "Filter1", 
-            "tool_state": "{\"input\": \"null\", \"__rerun_remap_job_id__\": null, \"header_lines\": \"\\\"0\\\"\", \"cond\": \"\\\"c15<=-1\\\"\", \"__page__\": 0}", 
+            "tool_state": "{\"input\": \"null\", \"__rerun_remap_job_id__\": null, \"header_lines\": \"\\\"0\\\"\", \"cond\": \"\\\"c15>=1\\\"\", \"__page__\": 0}", 
             "tool_version": "1.1.0", 
             "type": "tool", 
             "user_outputs": [], 
             "uuid": "None"
         }, 
         "62": {
-            "annotation": "If there are too many significantly up regulated genes there might me an error during the DAVID process. We can overcome this by selecting less genes. You can also put in your gene list directly to the DAVID web-page.", 
+            "annotation": "If there are too many significantly down regulated genes there might me an error during the DAVID process. We can overcome this by selecting less genes. You can also put in your gene list directly to the DAVID web-page.", 
             "id": 62, 
             "input_connections": {
                 "input": {
@@ -2845,8 +2845,8 @@
                 }
             ], 
             "position": {
-                "left": 3581.309311389923, 
-                "top": 199.9896092414856
+                "left": 4546.109375, 
+                "top": 758.796875
             }, 
             "post_job_actions": {
                 "HideDatasetActionout_file1": {
@@ -2864,76 +2864,8 @@
             "uuid": "None"
         }, 
         "63": {
-            "annotation": "", 
+            "annotation": "If there are too many significantly up regulated genes there might me an error during the DAVID process. We can overcome this by selecting less genes. You can also put in your gene list directly to the DAVID web-page.", 
             "id": 63, 
-            "input_connections": {
-                "input": {
-                    "id": 60, 
-                    "output_name": "out_file1"
-                }
-            }, 
-            "inputs": [], 
-            "label": null, 
-            "name": "DAVID", 
-            "outputs": [
-                {
-                    "name": "out_file1", 
-                    "type": "html"
-                }
-            ], 
-            "position": {
-                "left": 3581.309311389923, 
-                "top": 311.76042222976685
-            }, 
-            "post_job_actions": {
-                "RenameDatasetActionout_file1": {
-                    "action_arguments": null, 
-                    "action_type": "RenameDatasetAction", 
-                    "output_name": "out_file1"
-                }
-            }, 
-            "tool_errors": null, 
-            "tool_id": "hgv_david", 
-            "tool_state": "{\"input\": \"null\", \"__rerun_remap_job_id__\": null, \"numerical_column\": \"{\\\"__class__\\\": \\\"UnvalidatedValue\\\", \\\"value\\\": null}\", \"type\": \"\\\"GENE_SYMBOL\\\"\", \"__page__\": 0}", 
-            "tool_version": "1.0.0", 
-            "type": "tool", 
-            "user_outputs": [], 
-            "uuid": "None"
-        }, 
-        "64": {
-            "annotation": "", 
-            "id": 64, 
-            "input_connections": {
-                "input": {
-                    "id": 61, 
-                    "output_name": "out_file1"
-                }
-            }, 
-            "inputs": [], 
-            "label": null, 
-            "name": "DAVID", 
-            "outputs": [
-                {
-                    "name": "out_file1", 
-                    "type": "html"
-                }
-            ], 
-            "position": {
-                "left": 3581.309311389923, 
-                "top": 423.5312657356262
-            }, 
-            "post_job_actions": {}, 
-            "tool_errors": null, 
-            "tool_id": "hgv_david", 
-            "tool_state": "{\"input\": \"null\", \"__rerun_remap_job_id__\": null, \"numerical_column\": \"{\\\"__class__\\\": \\\"UnvalidatedValue\\\", \\\"value\\\": null}\", \"type\": \"\\\"GENE_SYMBOL\\\"\", \"__page__\": 0}", 
-            "tool_version": "1.0.0", 
-            "type": "tool", 
-            "user_outputs": [], 
-            "uuid": "None"
-        }, 
-        "65": {
-            "annotation": "If there are too many significantly down regulated genes there might me an error during the DAVID process. We can overcome this by selecting less genes. You can also put in your gene list directly to the DAVID web-page.", 
-            "id": 65, 
             "input_connections": {
                 "input": {
                     "id": 61, 
@@ -2950,8 +2882,8 @@
                 }
             ], 
             "position": {
-                "left": 3581.309311389923, 
-                "top": 535.3194432258606
+                "left": 4550.109375, 
+                "top": 1054.46875
             }, 
             "post_job_actions": {
                 "HideDatasetActionout_file1": {
@@ -2967,69 +2899,7 @@
             "type": "tool", 
             "user_outputs": [], 
             "uuid": "None"
-        }, 
-        "66": {
-            "annotation": "", 
-            "id": 66, 
-            "input_connections": {
-                "input": {
-                    "id": 62, 
-                    "output_name": "out_file1"
-                }
-            }, 
-            "inputs": [], 
-            "label": null, 
-            "name": "DAVID", 
-            "outputs": [
-                {
-                    "name": "out_file1", 
-                    "type": "html"
-                }
-            ], 
-            "position": {
-                "left": 3817.090561389923, 
-                "top": 199.9896092414856
-            }, 
-            "post_job_actions": {}, 
-            "tool_errors": null, 
-            "tool_id": "hgv_david", 
-            "tool_state": "{\"input\": \"null\", \"__rerun_remap_job_id__\": null, \"numerical_column\": \"{\\\"__class__\\\": \\\"UnvalidatedValue\\\", \\\"value\\\": null}\", \"type\": \"\\\"GENE_SYMBOL\\\"\", \"__page__\": 0}", 
-            "tool_version": "1.0.0", 
-            "type": "tool", 
-            "user_outputs": [], 
-            "uuid": "None"
-        }, 
-        "67": {
-            "annotation": "", 
-            "id": 67, 
-            "input_connections": {
-                "input": {
-                    "id": 65, 
-                    "output_name": "out_file1"
-                }
-            }, 
-            "inputs": [], 
-            "label": null, 
-            "name": "DAVID", 
-            "outputs": [
-                {
-                    "name": "out_file1", 
-                    "type": "html"
-                }
-            ], 
-            "position": {
-                "left": 3817.090561389923, 
-                "top": 311.76042222976685
-            }, 
-            "post_job_actions": {}, 
-            "tool_errors": null, 
-            "tool_id": "hgv_david", 
-            "tool_state": "{\"input\": \"null\", \"__rerun_remap_job_id__\": null, \"numerical_column\": \"{\\\"__class__\\\": \\\"UnvalidatedValue\\\", \\\"value\\\": null}\", \"type\": \"\\\"GENE_SYMBOL\\\"\", \"__page__\": 0}", 
-            "tool_version": "1.0.0", 
-            "type": "tool", 
-            "user_outputs": [], 
-            "uuid": "None"
         }
     }, 
-    "uuid": "3294fdd0-bc84-4866-a102-f8f48416e072"
+    "uuid": "9138390d-5b98-423f-bbc0-890b62501761"
 }

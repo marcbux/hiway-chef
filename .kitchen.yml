@@ -36,13 +36,13 @@ suites:
       - recipe[hiway::install]
       - recipe[hiway::hiway_client]
       - recipe[hiway::hiway_worker]
-      - recipe[hiway::galaxy_worker]
+#      - recipe[hiway::galaxy_worker]
       - recipe[hiway::cuneiform_client]
       - recipe[hiway::cuneiform_worker]
       - recipe[hiway::helloworld_client]
-      - recipe[hiway::helloworld_run_loc]
-      - recipe[hiway::wordcount_client]
-      - recipe[hiway::wordcount_run_loc]
+#      - recipe[hiway::helloworld_run_loc]
+#      - recipe[hiway::wordcount_client]
+#      - recipe[hiway::wordcount_run_loc]
 #      - recipe[hiway::montage_synth_client]
 #      - recipe[hiway::montage_synth_run_hw]
 #      - recipe[hiway::galaxy101_client]
@@ -70,6 +70,14 @@ suites:
             jhs:
                private_ips: ["10.0.2.15"]
             cluster: vagrant
+            yarn:
+              user: "hiway"
+            mr:
+              user: "hiway"
+         hiway:
+           user: "hiway"
+         hdfs:
+           user: "hiway"
          kmon:
             private_ips: ["10.0.2.15"]
             public_ips: ["10.0.2.15"]
