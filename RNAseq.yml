@@ -19,8 +19,8 @@ attrs:
       nm:
         memory_mbs: '13312'
       vcores: '8'
-    mr:
-      tmp_dir: '/mnt/tmp/hadoop'
+      max_vcores: '8'
+    tmp_dir: '/mnt/tmp/hadoop'
     data_dir: '/mnt/data/hadoop'
     #num_replicas: '1'
     container_cleanup_delay_sec: '86400'
