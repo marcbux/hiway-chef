@@ -21,12 +21,12 @@ attrs:
         memory_mbs: '12288'
       vcores: '8'
       #max_vcores: '1'
-    #tmp_dir: '/mnt/hadoop'
+    tmp_dir: '/mnt/hadoop'
     data_dir: '/mnt/hadoop'
     #num_replicas: '1'
     #container_cleanup_delay_sec: '86400'
   hiway:
-    #data: '/mnt/data'
+    data: '/mnt/data'
     release: 'false'
     hiway:
       am:
