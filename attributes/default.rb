@@ -61,7 +61,7 @@ default[:hiway][:variantcall][:memory_mb]             = "#{node[:hiway][:hiway][
 
 default[:hiway][:variantcall][:reads][:sample_id]     = "HG02025"
 default[:hiway][:variantcall][:reads][:run_ids]       = ["SRR359188", "SRR359195"]
-default[:hiway][:variantcall][:reads][:url_base]      = "ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/#{node[:hiway][:variantcall][:reads][:sample_id]}/sequence_read"
+default[:hiway][:variantcall][:reads][:url_base]      = "ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/#{node[:hiway][:variantcall][:reads][:sample_id]}/sequence_read"
 
 default[:hiway][:variantcall][:reference][:id]          = "hg38" 
 default[:hiway][:variantcall][:reference][:chromosomes] = ["chr22", "chrY"]
