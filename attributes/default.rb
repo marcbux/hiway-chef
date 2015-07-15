@@ -8,16 +8,10 @@ default[:hiway][:data]                              = "#{node[:hiway][:home]}/da
 default[:hiway][:software][:dir]                    = node[:hadoop][:dir]
 
 default[:hiway][:hiway][:release][:version]         = "1.0.0-beta"
-default[:hiway][:hiway][:snapshot][:version]        = "1.0.1-SNAPSHOT"
-if node[:hiway][:release] == "true"
-  default[:hiway][:hiway][:version]                 = "#{node[:hiway][:hiway][:release][:version]}"
-else
-  default[:hiway][:hiway][:version]                 = "#{node[:hiway][:hiway][:snapshot][:version]}"
-end
 default[:hiway][:hiway][:release][:targz]           = "hiway-dist-#{node[:hiway][:hiway][:release][:version]}.tar.gz"
 default[:hiway][:hiway][:release][:url]             = "https://github.com/marcbux/Hi-WAY/releases/download/#{node[:hiway][:hiway][:release][:version]}/#{node[:hiway][:hiway][:release][:targz]}"
 default[:hiway][:hiway][:github_url]                = "https://github.com/marcbux/Hi-WAY.git"
-default[:hiway][:hiway][:home]                      = "#{node[:hiway][:software][:dir]}/hiway-#{node[:hiway][:hiway][:version]}"
+default[:hiway][:hiway][:home]                      = "#{node[:hiway][:software][:dir]}/hiway"
 default[:hiway][:hiway][:hdfs][:basedir]            = "/"
 default[:hiway][:hiway][:am][:memory_mb]            = 512
 default[:hiway][:hiway][:am][:vcores]               = 1
@@ -26,16 +20,10 @@ default[:hiway][:hiway][:worker][:vcores]           = 1
 default[:hiway][:hiway][:scheduler]                 = "placementAware"
 
 default[:hiway][:cuneiform][:release][:version]     = "2.0.0-beta"
-default[:hiway][:cuneiform][:snapshot][:version]    = "2.0.1-SNAPSHOT"
-if node[:hiway][:release] == "true"
-  default[:hiway][:cuneiform][:version]             = "#{node[:hiway][:cuneiform][:release][:version]}"
-else
-  default[:hiway][:cuneiform][:version]             = "#{node[:hiway][:cuneiform][:snapshot][:version]}"
-end
 default[:hiway][:cuneiform][:release][:targz]       = "cuneiform-dist-#{node[:hiway][:cuneiform][:release][:version]}.tar.gz"
 default[:hiway][:cuneiform][:release][:url]         = "https://github.com/joergen7/cuneiform/releases/download/#{node[:hiway][:cuneiform][:release][:version]}/#{node[:hiway][:cuneiform][:release][:targz]}"
 default[:hiway][:cuneiform][:github_url]            = "https://github.com/joergen7/cuneiform.git"
-default[:hiway][:cuneiform][:home]                  = "#{node[:hiway][:software][:dir]}/cuneiform-#{node[:hiway][:cuneiform][:version]}"
+default[:hiway][:cuneiform][:home]                  = "#{node[:hiway][:software][:dir]}/cuneiform"
 default[:hiway][:cuneiform][:r_packages]            = "#{node[:hiway][:software][:dir]}/r_packages"
 default[:hiway][:cuneiform][:cache]                 = "/tmp/cf-cache"
 

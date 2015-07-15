@@ -70,7 +70,9 @@ else
     set -e && set -o pipefail
       sed -i 's%<hadoop.version>[^<]*</hadoop.version>%<hadoop.version>#{node[:hadoop][:version]}</hadoop.version>%g' /tmp/hiway/hiway-core/pom.xml
       mvn -f /tmp/hiway/pom.xml package
-      cp -r /tmp/hiway/hiway-dist/target/hiway-dist-#{node[:hiway][:hiway][:version]}/hiway-#{node[:hiway][:hiway][:version]} #{node[:hiway][:hiway][:home]}
+      version=$(grep -Po '(?<=^\t<version>)[^<]*(?=</version>)' /tmp/hiway/pom.xml)
+      cp -r /tmp/hiway/hiway-dist/target/hiway-dist-$version/hiway-$version #{node[:hiway][:hiway][:home]}
+      mv #{node[:hiway][:hiway][:home]}/hiway-core-$version.jar #{node[:hiway][:hiway][:home]}/hiway-core.jar
     EOH
     not_if { ::File.exist?("#{node[:hiway][:hiway][:home]}") }
   end

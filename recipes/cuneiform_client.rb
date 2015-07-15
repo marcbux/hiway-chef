@@ -80,7 +80,8 @@ else
     code <<-EOH
     set -e && set -o pipefail
       mvn -f /tmp/cuneiform/pom.xml package
-      cp -r /tmp/cuneiform/cuneiform-dist/target/cuneiform-dist-#{node[:hiway][:cuneiform][:version]}/cuneiform-#{node[:hiway][:cuneiform][:version]} #{node[:hiway][:cuneiform][:home]}
+      version=$(grep -Po '(?<=^\t<version>)[^<]*(?=</version>)' /tmp/cuneiform/pom.xml)
+      cp -r /tmp/cuneiform/cuneiform-dist/target/cuneiform-dist-$version/cuneiform-$version #{node[:hiway][:cuneiform][:home]}
     EOH
     not_if { ::File.exist?("#{node[:hiway][:cuneiform][:home]}") }
   end
