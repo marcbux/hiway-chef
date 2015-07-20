@@ -1,7 +1,7 @@
-# node.default['java']['jdk_version'] = 7
-# node.default['java']['install_flavor'] = "openjdk"
+node.default['java']['jdk_version'] = 7
+node.default['java']['install_flavor'] = "openjdk"
 
 # install Java 1.7
-# include_recipe "java"
+include_recipe "java"
 
-package "openjdk-7-jdk"
+# package "openjdk-7-jdk"
