@@ -1,6 +1,6 @@
 name: hiway
 baremetal:
-    username: ubuntu
+    username: vagrant
 
 cookbooks:
   hadoop:
@@ -18,7 +18,7 @@ attrs:
       vcores: '2'
     
 groups:
-  clientmaster:
+  masterslave:
     size: 1
     baremetal:
         ip: 192.168.33.11
@@ -35,12 +35,8 @@ groups:
         - hiway::cuneiform_client
         - hiway::helloworld_client
 
-  workers:
+  slaves:
     size: 0
-    baremetal:
-        ips: 
-            - 192.168.33.12
-            - 192.168.33.13
     recipes:
         - hadoop::dn
         - hadoop::nm
