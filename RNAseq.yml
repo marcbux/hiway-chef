@@ -50,7 +50,7 @@ groups:
         - hiway::RNAseq_client
 
   workers:
-    size: 1
+    size: 5
     recipes:
         - hadoop::dn
         - hadoop::nm
