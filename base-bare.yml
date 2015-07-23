@@ -1,6 +1,6 @@
 name: hiway
 baremetal:
-    username: vagrant
+    username: hiway
 
 cookbooks:
   hadoop:
@@ -21,7 +21,7 @@ groups:
   masterslave:
     size: 1
     baremetal:
-        ip: 192.168.33.11
+        ip: 127.0.0.1
     recipes:
         - hadoop::nn
         - hadoop::rm
