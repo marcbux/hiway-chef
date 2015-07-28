@@ -1,0 +1,61 @@
+name: hiway
+ec2:
+    type: c3.2xlarge
+    ami: ami-d05e75b8
+    region: us-east-1
+    username: hiway
+    price: 1
+
+cookbooks:
+  hadoop:
+    github: "marcbux/apache-hadoop-chef"
+    branch: "master"
+  hiway:
+    github: "marcbux/hiway-chef"
+    branch: "master"
+
+attrs:
+  hiway:
+    user: 'hiway'
+    data: '/mnt/data'
+    hiway:
+      am:
+        memory_mb: '1024'
+      worker:
+        memory_mb: '11264'
+  hadoop:
+    yarn:
+      nm:
+        memory_mbs: '12288'
+      vcores: '8'
+      user: 'hiway'
+    mr:
+      user: 'hiway'
+    tmp_dir: '/mnt/hadoop'
+    data_dir: '/mnt/hadoop'
+  hdfs:
+    user: 'hiway'
+    
+groups:
+  masterworker:
+    size: 1
+    recipes:
+      - hadoop::nn
+      - hadoop::rm
+      - hadoop::dn
+      - hadoop::nm
+      - hadoop::jhs
+      - hiway::hiway_client
+      - hiway::RNAseq_client
+      - hiway::hiway_worker
+      - hiway::galaxy_worker
+      - hiway::RNAseq_worker
+
+  workers:
+    size: 5
+    recipes:
+      - hadoop::dn
+      - hadoop::nm
+      - hiway::hiway_worker
+      - hiway::galaxy_worker
+      - hiway::RNAseq_worker

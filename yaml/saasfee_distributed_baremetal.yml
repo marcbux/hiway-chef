@@ -1,0 +1,54 @@
+name: hiway
+baremetal:
+    username: hiway
+
+cookbooks:
+  hadoop:
+    github: "marcbux/apache-hadoop-chef"
+    branch: "master"
+  hiway:
+    github: "marcbux/hiway-chef"
+    branch: "master"
+
+attrs:
+  hiway:
+    user: 'hiway'
+    data: '/home/hiway'
+  hadoop:
+    yarn:
+      nm:
+        memory_mbs: '4096'
+      vcores: '4'
+      user: 'hiway'
+    mr:
+      user: 'hiway'
+    num_replicas: '2'
+  hdfs:
+    user: 'hiway'
+    
+groups:
+  master:
+    size: 1
+    baremetal:
+      ip: 127.0.0.1
+    recipes:
+      - hadoop::nn
+      - hadoop::rm
+      - hadoop::jhs
+      - hiway::cuneiform_client
+      - hiway::hiway_client
+      - hiway::helloworld_client
+
+  workers:
+    size: 4
+    baremetal:
+      ips:
+        - 127.0.0.2
+        - 127.0.0.3
+        - 127.0.0.4
+        - 127.0.0.5
+    recipes:
+      - hadoop::dn
+      - hadoop::nm
+      - hiway::cuneiform_worker
+      - hiway::hiway_worker
