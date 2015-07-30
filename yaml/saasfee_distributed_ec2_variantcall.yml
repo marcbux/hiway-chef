@@ -21,9 +21,9 @@ attrs:
     variantcall:
       reads:
         sample_id: 'HG02025'
-#        run_ids: ['SRR359188', 'SRR359195']
-#      reference:
-#        chromosomes: ['chr22', 'chrY']
+        run_ids: ['SRR359188', 'SRR359195']
+      reference:
+        chromosomes: ['chr22', 'chrY']
   hadoop:
     yarn:
       nm:
