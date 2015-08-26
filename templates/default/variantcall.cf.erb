@@ -52,7 +52,7 @@ deftask samtools-faidx( fai( File ) : fa( File ) )in bash *{
 
 deftask samtools-sort( sortedbam( File ) : bam( File ) )in bash *{
   sortedbam=alignment-sorted.bam
-  samtools sort -m `expr <%= node[:hiway][:variantcall][:memory_mb] %> \* 1024 \* 1024` $bam alignment-sorted
+  samtools sort -m `expr <%= node[:hiway][:variantcall][:memory_mb] %> \* 512 \* 1024` $bam alignment-sorted
 }*
 
 deftask samtools-mpileup( mpileup( File ) : sortedbam( File ) [fa( File ) fai( File )] )in bash *{
@@ -110,7 +110,7 @@ deftask per-chromosome( fun( File ) exonicfun( File ) : [fa( File ) fai( File ) 
 }
 
 deftask per-fastq( sortedbam : fa( File ) [fastq1( File ) fastq2( File )] db( File ) ) {
-  sam = bowtie2-align(
+  sam = bwa-align(
     idx:    bt2idx
     fastq1: fastq1
     fastq2: fastq2 );
@@ -125,7 +125,7 @@ fa =<% @chromosomes.each do |chromosome| -%> '<%= node[:hiway][:variantcall][:re
 db = '<%= node[:hiway][:variantcall][:annovardb][:directory] %>/<%= node[:hiway][:variantcall][:annovardb][:file] %>';
 
 // (3) Workflow Definition
-bt2idx = bowtie2-build( fa: fa );
+bt2idx = bwa-build( fa: fa );
 fai = samtools-faidx( fa: fa );
 fun exonicfun = per-chromosome(
   fa:     fa
