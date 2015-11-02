@@ -21,8 +21,10 @@ attrs:
     hiway:
       am:
         memory_mb: '1024'
+        vcores: '1'
       worker:
         memory_mb: '11264'
+        vcores: '7'
   hadoop:
     yarn:
       nm:
