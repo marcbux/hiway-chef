@@ -75,13 +75,13 @@ bash "stage_out_input_data" do
     fastq-dump -O #{node[:hiway][:data]} #{node[:hiway][:RNAseq][:input2][:replicate1][:accession]}
     fastq-dump -O #{node[:hiway][:data]} #{node[:hiway][:RNAseq][:input2][:replicate2][:accession]}
     fastq-dump -O #{node[:hiway][:data]} #{node[:hiway][:RNAseq][:input2][:replicate3][:accession]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:ref_annotation][:gtf]} #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:RNAseq][:ref_annotation][:gtf]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate1][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:RNAseq][:input1][:replicate1][:fastq]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate2][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:RNAseq][:input1][:replicate2][:fastq]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate3][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:RNAseq][:input1][:replicate3][:fastq]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input2][:replicate1][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:RNAseq][:input2][:replicate1][:fastq]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input2][:replicate2][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:RNAseq][:input2][:replicate2][:fastq]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input2][:replicate3][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:RNAseq][:input2][:replicate3][:fastq]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:ref_annotation][:gtf]} #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:ref_annotation][:gtf]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate1][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input1][:replicate1][:fastq]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate2][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input1][:replicate2][:fastq]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate3][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input1][:replicate3][:fastq]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input2][:replicate1][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input2][:replicate1][:fastq]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input2][:replicate2][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input2][:replicate2][:fastq]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input2][:replicate3][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input2][:replicate3][:fastq]}
     rm #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:ref_annotation][:gtf]}
     rm #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate1][:accession]}.fastq
     rm #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate2][:accession]}.fastq
