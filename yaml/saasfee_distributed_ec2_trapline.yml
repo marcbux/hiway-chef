@@ -30,6 +30,7 @@ attrs:
       nm:
         memory_mbs: '12288'
       vcores: '8'
+      max_vcores: '8'
       user: 'hiway'
     mr:
       user: 'hiway'
@@ -37,7 +38,7 @@ attrs:
     data_dir: '/mnt/hadoop'
   hdfs:
     user: 'hiway'
-    
+
 groups:
   masterworker:
     size: 1
