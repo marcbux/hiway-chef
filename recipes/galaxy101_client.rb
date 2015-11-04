@@ -24,18 +24,42 @@ cookbook_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:galaxy101][:snp
   action :create_if_missing
 end
 
-# copy input data into hdfs
-bash "stage_out_input_data" do
+# untar input data
+bash "untar_input_data" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
     tar xzvf #{Chef::Config[:file_cache_path]}/#{node[:hiway][:galaxy101][:exons][:targz]} -C #{node[:hiway][:data]}
     tar xzvf #{Chef::Config[:file_cache_path]}/#{node[:hiway][:galaxy101][:snps][:targz]} -C #{node[:hiway][:data]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:exons][:bed]} #{node[:hiway][:hiway][:hdfs][:basedir]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:snps][:bed]} #{node[:hiway][:hiway][:hdfs][:basedir]}
+  EOH
+  only_if { ::File.exists?( "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:galaxy101][:exons][:targz]}" ) }
+end
+
+hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:exons][:bed]}" do
+  action :put
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}"
+  owner node[:hiway][:user]
+  group node[:hiway][:group]
+  mode "0775"
+end
+
+hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:snps][:bed]}" do
+  action :put
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}"
+  owner node[:hiway][:user]
+  group node[:hiway][:group]
+  mode "0775"
+end
+
+# copy input data into hdfs
+bash "rm_local_input_data" do
+  user node[:hiway][:user]
+  group node[:hadoop][:group]
+  code <<-EOH
+  set -e && set -o pipefail
     rm #{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:exons][:bed]}
     rm #{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:snps][:bed]}
   EOH
-  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:galaxy101][:snps]}"
+  only_if { ::File.exists?( "#{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:exons][:bed]}" ) }
 end

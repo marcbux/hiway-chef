@@ -154,7 +154,7 @@ end
 
 # create hiway user directory in HDFS (if necessary) and grant read and write rights to all users in hadoop group such that both the yarn and hiway users can use the directory
 hadoop_hdfs_directory "#{node[:hiway][:hiway][:hdfs][:basedir]}" do
-  action :create
+  action :create_as_superuser
   owner node[:hiway][:user]
   group node[:hiway][:group]
   mode "0775"

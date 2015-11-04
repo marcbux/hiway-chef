@@ -61,8 +61,8 @@ cookbook_file "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:RNAseq][:ref_an
   action :create_if_missing
 end
 
-# obtain fastq data and copy input data into hdfs
-bash "stage_out_input_data" do
+# obtain fastq data
+bash "dump_input_data" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   timeout 604800
@@ -75,13 +75,73 @@ bash "stage_out_input_data" do
     fastq-dump -O #{node[:hiway][:data]} #{node[:hiway][:RNAseq][:input2][:replicate1][:accession]}
     fastq-dump -O #{node[:hiway][:data]} #{node[:hiway][:RNAseq][:input2][:replicate2][:accession]}
     fastq-dump -O #{node[:hiway][:data]} #{node[:hiway][:RNAseq][:input2][:replicate3][:accession]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:ref_annotation][:gtf]} #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:ref_annotation][:gtf]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate1][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input1][:replicate1][:fastq]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate2][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input1][:replicate2][:fastq]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate3][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input1][:replicate3][:fastq]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input2][:replicate1][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input2][:replicate1][:fastq]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input2][:replicate2][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input2][:replicate2][:fastq]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input2][:replicate3][:accession]}.fastq #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input2][:replicate3][:fastq]}
+  EOH
+  only_if { ::File.exists?( "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:RNAseq][:ref_annotation][:targz]}" ) }
+end
+
+hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:ref_annotation][:gtf]}" do
+  action :put
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:ref_annotation][:gtf]}"
+  owner node[:hiway][:user]
+  group node[:hiway][:group]
+  mode "0775"
+end
+
+hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate1][:accession]}.fastq" do
+  action :put
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input1][:replicate1][:fastq]}"
+  owner node[:hiway][:user]
+  group node[:hiway][:group]
+  mode "0775"
+end
+
+hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate2][:accession]}.fastq" do
+  action :put
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input1][:replicate2][:fastq]}"
+  owner node[:hiway][:user]
+  group node[:hiway][:group]
+  mode "0775"
+end
+
+hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate3][:accession]}.fastq" do
+  action :put
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input1][:replicate3][:fastq]}"
+  owner node[:hiway][:user]
+  group node[:hiway][:group]
+  mode "0775"
+end
+
+hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input2][:replicate1][:accession]}.fastq" do
+  action :put
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input2][:replicate1][:fastq]}"
+  owner node[:hiway][:user]
+  group node[:hiway][:group]
+  mode "0775"
+end
+
+hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input2][:replicate2][:accession]}.fastq" do
+  action :put
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input2][:replicate2][:fastq]}"
+  owner node[:hiway][:user]
+  group node[:hiway][:group]
+  mode "0775"
+end
+
+hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input2][:replicate3][:accession]}.fastq" do
+  action :put
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:RNAseq][:input2][:replicate3][:fastq]}"
+  owner node[:hiway][:user]
+  group node[:hiway][:group]
+  mode "0775"
+end
+
+# obtain fastq data and copy input data into hdfs
+bash "rm_local_input_data" do
+  user node[:hiway][:user]
+  group node[:hadoop][:group]
+  timeout 604800
+  code <<-EOH
+  set -e && set -o pipefail
     rm #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:ref_annotation][:gtf]}
     rm #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate1][:accession]}.fastq
     rm #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input1][:replicate2][:accession]}.fastq
@@ -90,5 +150,5 @@ bash "stage_out_input_data" do
     rm #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input2][:replicate2][:accession]}.fastq
     rm #{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:input2][:replicate3][:accession]}.fastq
   EOH
-  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:RNAseq][:input2][:replicate3][:fastq]}"
+  only_if { ::File.exists?( "#{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:ref_annotation][:gtf]}" ) }
 end

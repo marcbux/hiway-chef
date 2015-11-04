@@ -22,7 +22,14 @@ bash "extract_input_data" do
   code <<-EOF
   set -e && set -o pipefail
     zcat #{Chef::Config[:file_cache_path]}/#{node[:hiway][:wordcount][:input][:zip]} > #{node[:hiway][:data]}/#{node[:hiway][:wordcount][:input][:txt]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:wordcount][:input][:txt]} #{node[:hiway][:hiway][:hdfs][:basedir]}
   EOF
-  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:wordcount][:input][:txt]}"
+  only_if { ::File.exists?( "#{Chef::Config[:file_cache_path]}/#{node[:hiway][:wordcount][:input][:zip]}" ) }
+end
+
+hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:wordcount][:input][:txt]}" do
+  action :put
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}"
+  owner node[:hiway][:user]
+  group node[:hiway][:group]
+  mode "0775"
 end
