@@ -2,16 +2,18 @@
 driver:
   name: vagrant
   customize:
-    memory: 4608
+    memory: 3072
     cpus: 2
     natdnshostresolver1: "on"
     natdnsproxy1: "on"
+    nictype1: "virtio"
   network:
   - ["forwarded_port", {guest: 8042, host: 8042}]
   - ["forwarded_port", {guest: 8080, host: 8080}]
   - ["forwarded_port", {guest: 8088, host: 8088}]
   - ["forwarded_port", {guest: 50070, host: 50070}]
   - ["forwarded_port", {guest: 50075, host: 50075}]
+  - ["private_network", ip: "192.168.0.2"]
 
 provisioner:
   name: chef_solo
@@ -27,7 +29,6 @@ suites:
     run_list:
       - recipe[kagent::install]
       - recipe[hadoop::install]
-      - recipe[kagent::default]
       - recipe[hadoop::nn]
       - recipe[hadoop::rm]
       - recipe[hadoop::dn]
@@ -56,7 +57,6 @@ suites:
 #      - recipe[hiway::montage_m17_4_client]
 #      - recipe[hiway::montage_m17_4_worker]
 
-
     attributes:
          hadoop:
             nn:
@@ -72,6 +72,7 @@ suites:
             cluster: vagrant
             yarn:
               user: "hiway"
+              vcores: "3"
             mr:
               user: "hiway"
          hiway:

@@ -9,6 +9,13 @@ user node[:hiway][:user] do
   not_if "getent passwd #{node[:hiway][:user]}"
 end
 
+# add user hiway to group hadoop
+group node[:hadoop][:group] do
+  action :modify
+  members node[:hiway][:user] 
+  append true
+end
+
 # create data directory
 directory "#{node[:hiway][:data]}" do
   owner node[:hiway][:user]
@@ -17,11 +24,13 @@ directory "#{node[:hiway][:data]}" do
   action :create
 end
 
-# add user hiway to group hadoop
-group node[:hadoop][:group] do
-  action :modify
-  members node[:hiway][:user] 
-  append true
+directory node[:hiway][:software][:dir] do
+  owner node[:hiway][:user]
+  group node[:hadoop][:group]
+  mode "0774"
+  recursive true
+  action :create
+  not_if { File.directory?("#{node[:hiway][:software][:dir]}") }
 end
 
 if node[:hiway][:release] == "true"

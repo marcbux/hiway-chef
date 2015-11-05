@@ -5,7 +5,7 @@ default[:hiway][:release]                           = "false"
 default[:hiway][:user]                              = "hiway"
 default[:hiway][:home]                              = "/home/#{node[:hiway][:user]}"
 default[:hiway][:data]                              = "#{node[:hiway][:home]}/data"
-default[:hiway][:software][:dir]                    = node[:hadoop][:dir]
+default[:hiway][:software][:dir]                    = "#{node[:hiway][:home]}/software"
 
 default[:hiway][:hiway][:release][:version]         = "1.0.0-beta"
 default[:hiway][:hiway][:release][:targz]           = "hiway-dist-#{node[:hiway][:hiway][:release][:version]}.tar.gz"
