@@ -129,39 +129,18 @@ bash 'download_input_data' do
   not_if { ::File.exists?( "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}/#{node[:hiway][:variantcall][:annovardb][:file]}" ) }
 end
 
-hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}" do
-  action :put_as_superuser
-  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:variantcall][:annovardb][:directory]}"
-  owner node[:hiway][:user]
-  group node[:hiway][:group]
-  mode "0775"
-end
-
-hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reads][:sample_id]}" do
-  action :put_as_superuser
-  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:variantcall][:reads][:sample_id]}"
-  owner node[:hiway][:user]
-  group node[:hiway][:group]
-  mode "0775"
-end
-
-hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reference][:id]}" do
-  action :put_as_superuser
-  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:variantcall][:reference][:id]}"
-  owner node[:hiway][:user]
-  group node[:hiway][:group]
-  mode "0775"
-end
-
-# remove local input data
-bash "rm_local_input_data" do
+# copy input data into HDFS
+bash "copy_input_data_to_hdfs" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]} #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:variantcall][:annovardb][:directory]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reads][:sample_id]} #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:variantcall][:reads][:sample_id]}
+    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reference][:id]} #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:variantcall][:reference][:id]}
     rm -r #{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}
     rm -r #{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reads][:sample_id]}
     rm -r #{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reference][:id]}
   EOH
-  only_if { ::File.exists?( "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}" ) }
+  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e /#{node[:hiway][:variantcall][:reference][:id]}"
 end
