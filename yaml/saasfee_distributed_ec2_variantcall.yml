@@ -18,6 +18,13 @@ attrs:
   hiway:
     user: 'hiway'
     data: '/home/hiway'
+    hiway:
+      am:
+        memory_mb: '512'
+        vcores: '1'
+      worker:
+        memory_mb: '6144'
+        vcores: '2'
     variantcall:
       reads:
         sample_id: 'HG02025'
@@ -28,7 +35,7 @@ attrs:
     yarn:
       nm:
         memory_mbs: '6656'
-      vcores: '7'
+      vcores: '3'
       user: 'hiway'
     mr:
       user: 'hiway'
