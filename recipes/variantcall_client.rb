@@ -130,7 +130,7 @@ bash 'download_input_data' do
 end
 
 hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}" do
-  action :put
+  action :put_as_superuser
   dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:variantcall][:annovardb][:directory]}"
   owner node[:hiway][:user]
   group node[:hiway][:group]
@@ -138,7 +138,7 @@ hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:anno
 end
 
 hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reads][:sample_id]}" do
-  action :put
+  action :put_as_superuser
   dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:variantcall][:reads][:sample_id]}"
   owner node[:hiway][:user]
   group node[:hiway][:group]
@@ -146,7 +146,7 @@ hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:read
 end
 
 hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reference][:id]}" do
-  action :put
+  action :put_as_superuser
   dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:variantcall][:reference][:id]}"
   owner node[:hiway][:user]
   group node[:hiway][:group]
