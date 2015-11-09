@@ -1,4 +1,4 @@
-name: hiway
+name: saasfeeDistributedEc2Trapline
 ec2:
     type: c3.2xlarge
     ami: ami-d05e75b8
@@ -36,6 +36,7 @@ attrs:
       user: 'hiway'
     tmp_dir: '/mnt/hadoop'
     data_dir: '/mnt/hadoop'
+    num_replicas: '2'
   hdfs:
     user: 'hiway'
 

@@ -1,4 +1,4 @@
-name: hiway
+name: saasfeeDistributedEc2VldbDemo
 ec2:
     type: m3.large
     ami: ami-234ecc54

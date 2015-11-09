@@ -1,4 +1,4 @@
-name: hiway
+name: saasfeeDistributedEc2Variantcall
 ec2:
     type: m3.large
     ami: ami-234ecc54
@@ -34,11 +34,12 @@ attrs:
       user: 'hiway'
     tmp_dir: '/mnt/hadoop'
     data_dir: '/mnt/hadoop'
+    num_replicas: '2'
   hdfs:
     user: 'hiway'
     
 groups:
-  clientmaster:
+  master:
     size: 1
     recipes:
         - hadoop::nn
@@ -49,7 +50,7 @@ groups:
         - hiway::variantcall_client
 
   workers:
-    size: 2
+    size: 4
     recipes:
         - hadoop::dn
         - hadoop::nm

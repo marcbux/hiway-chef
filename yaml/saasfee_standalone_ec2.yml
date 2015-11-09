@@ -1,4 +1,4 @@
-name: hiway
+name: saasfeeStandaloneEc2
 ec2:
     type: m3.large
     ami: ami-234ecc54
