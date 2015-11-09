@@ -38,7 +38,7 @@ end
 
 hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:exons][:bed]}" do
   action :put
-  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}"
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:galaxy101][:exons][:bed]}"
   owner node[:hiway][:user]
   group node[:hiway][:group]
   mode "0775"
@@ -46,7 +46,7 @@ end
 
 hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:snps][:bed]}" do
   action :put
-  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}"
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:galaxy101][:snps][:bed]}"
   owner node[:hiway][:user]
   group node[:hiway][:group]
   mode "0775"

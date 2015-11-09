@@ -131,7 +131,7 @@ end
 
 hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}" do
   action :put
-  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}"
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:variantcall][:annovardb][:directory]}"
   owner node[:hiway][:user]
   group node[:hiway][:group]
   mode "0775"
@@ -139,7 +139,7 @@ end
 
 hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reads][:sample_id]}" do
   action :put
-  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}"
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:variantcall][:reads][:sample_id]}"
   owner node[:hiway][:user]
   group node[:hiway][:group]
   mode "0775"
@@ -147,7 +147,7 @@ end
 
 hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reference][:id]}" do
   action :put
-  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}"
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:variantcall][:reference][:id]}"
   owner node[:hiway][:user]
   group node[:hiway][:group]
   mode "0775"

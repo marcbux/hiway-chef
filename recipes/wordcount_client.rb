@@ -28,7 +28,7 @@ end
 
 hadoop_hdfs_directory "#{node[:hiway][:data]}/#{node[:hiway][:wordcount][:input][:txt]}" do
   action :put
-  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}"
+  dest "#{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:wordcount][:input][:txt]}"
   owner node[:hiway][:user]
   group node[:hiway][:group]
   mode "0775"
