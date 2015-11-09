@@ -82,8 +82,8 @@ else
       mvn -f /tmp/cuneiform/pom.xml package
       version=$(grep -Po '(?<=^\t<version>)[^<]*(?=</version>)' /tmp/cuneiform/pom.xml)
       cp -r /tmp/cuneiform/cuneiform-dist/target/cuneiform-dist-$version/cuneiform-$version #{node[:hiway][:cuneiform][:home]}
-      #rm #{node[:hiway][:hiway][:home]}/lib/cuneiform-core-#{node[:hiway][:cuneiform][:release][:version]}.jar
-      #cp #{node[:hiway][:cuneiform][:home]}/cuneiform-core-$version.jar #{node[:hiway][:hiway][:home]}/lib/cuneiform-core-$version.jar
+      rm #{node[:hiway][:hiway][:home]}/lib/cuneiform-core-#{node[:hiway][:cuneiform][:release][:version]}.jar
+      cp #{node[:hiway][:cuneiform][:home]}/cuneiform-core-$version.jar #{node[:hiway][:hiway][:home]}/lib/cuneiform-core-$version.jar
     EOH
     not_if { ::File.exist?("#{node[:hiway][:cuneiform][:home]}") }
   end
