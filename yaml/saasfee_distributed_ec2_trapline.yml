@@ -24,12 +24,12 @@ attrs:
         vcores: '1'
       worker:
         memory_mb: '11264'
-        vcores: '7'
+        vcores: '8'
   hadoop:
     yarn:
       nm:
         memory_mbs: '12288'
-      vcores: '8'
+      vcores: '9'
       max_vcores: '8'
       user: 'hiway'
     mr:
