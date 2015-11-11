@@ -8,7 +8,7 @@ ec2:
 
 cookbooks:
   hadoop:
-    github: "marcbux/apache-hadoop-chef"
+    github: "hopshadoop/apache-hadoop-chef"
     branch: "master"
   hiway:
     github: "marcbux/hiway-chef"
@@ -32,6 +32,7 @@ attrs:
       reference:
         chromosomes: ['chr22', 'chrY']
   hadoop:
+    version: '2.7.1'
     yarn:
       nm:
         memory_mbs: '6656'

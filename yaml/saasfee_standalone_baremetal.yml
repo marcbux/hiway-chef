@@ -4,7 +4,7 @@ baremetal:
 
 cookbooks:
   hadoop:
-    github: "marcbux/apache-hadoop-chef"
+    github: "hopshadoop/apache-hadoop-chef"
     branch: "master"
   hiway:
     github: "marcbux/hiway-chef"
@@ -15,6 +15,7 @@ attrs:
     user: 'hiway'
     data: '/home/hiway'
   hadoop:
+    version: '2.7.1'
     yarn:
       nm:
         memory_mbs: '2048'

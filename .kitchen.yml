@@ -59,7 +59,7 @@ suites:
 
     attributes:
          hadoop:
-            version: "2.4.0"
+            version: "2.7.1"
             nn:
                private_ips: ["10.0.2.15"]
             dn:
