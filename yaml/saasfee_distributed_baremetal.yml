@@ -13,7 +13,7 @@ cookbooks:
 attrs:
   hiway:
     user: 'hiway'
-    data: '/home/hiway'
+    data: '/mnt/data'
   hadoop:
     version: '2.7.1'
     yarn:

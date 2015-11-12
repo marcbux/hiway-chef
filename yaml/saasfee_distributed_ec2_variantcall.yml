@@ -17,7 +17,7 @@ cookbooks:
 attrs:
   hiway:
     user: 'hiway'
-    data: '/home/hiway'
+    data: '/mnt/data'
     hiway:
       am:
         memory_mb: '512'
