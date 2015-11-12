@@ -16,14 +16,27 @@ group node[:hadoop][:group] do
   append true
 end
 
+# create home directory
+directory "#{node[:hiway][:home]}" do
+  owner node[:hiway][:user]
+  group node[:hadoop][:group]
+  mode "755"
+  recursive true
+  action :create
+  not_if { File.directory?("#{node[:hiway][:home]}") }
+end
+
 # create data directory
 directory "#{node[:hiway][:data]}" do
   owner node[:hiway][:user]
   group node[:hadoop][:group]
   mode "755"
+  recursive true
   action :create
+  not_if { File.directory?("#{node[:hiway][:data]}") }
 end
 
+# create software directory
 directory node[:hiway][:software][:dir] do
   owner node[:hiway][:user]
   group node[:hadoop][:group]
