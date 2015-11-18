@@ -1,0 +1,157 @@
+% VARIANT-CALL
+%
+% This workflow differs from its original at https://github.com/joergen7/variant-call
+% in the following ways:
+% 
+% (1) It does not build an index, but uses a pre-built index
+% (2) It uses only a single (large) index
+% (3) It assumes the fa, fai, index, and annodb to be present on all the worker nodes
+% (4) It computes several samples, amounting to 1 TB of read input data
+% (5) Read input data is zipped to conserve storage
+% (6) it uses multithreading and memory boundaries
+%
+% A variant calling workflow.
+%
+% Sample data can be obtained from:
+% ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/HG02025/sequence_read/
+%
+% The HG38 reference genome can be downloaded from
+% http://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/
+%
+% An Annovar HG38 database is expected to reside in
+% /opt/data/annodb_hg38
+%
+% In addition to a Cuneiform interpreter the following tools need to be
+% installed to run this analysis:
+% - FastQC 0.11.4
+% - Bowtie2 2.2.6
+% - SAMtools 1.2
+% - VarScan 2.3.9
+% - Annovar
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Task definitions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% fastqc
+deftask fastqc( zip( File ) : fastq( File ) )in bash *{
+    gzip -c -d $fastq > temp.fastq
+    fastqc -f fastq --noextract -o ./ temp.fastq
+    zip=`ls *.zip`
+}*
+
+% bowtie2
+deftask bowtie2-align(
+  bam( File )
+: [fastq1( File ) fastq2( File )] )in bash *{
+
+  gzip -c -d $fastq1 > 1.fastq
+  gzip -c -d $fastq2 > 2.fastq
+  bowtie2 -D 5 -R 1 -N 0 -L 22 -i S,0,2.50 --no-unal \
+  -p <%= node[:hiway][:variantcall][:threads] %> \
+  -x <%= node[:hiway][:variantcall][:scale][:index] %> \
+  -1 1.fastq -2 2.fastq -S - | samtools view -b - > $bam
+}*
+
+% samtools
+deftask samtools-sort( sortedbam( File ) : bam( File ) )in bash *{
+  sortedbam=alignment-sorted.bam
+  samtools sort -m `expr <%= node[:hiway][:variantcall][:memory_mb] %> \* 512 \* 1024` \
+  $bam alignment-sorted
+}*
+
+deftask samtools-mpileup(
+  mpileup( File )
+: bam( File ) )in bash *{
+
+  samtools mpileup -f <%= node[:hiway][:variantcall][:scale][:fa] %> $bam > $mpileup
+}*
+
+deftask samtools-merge( merged( File ) : <bam( File )> )in bash *{
+  if [ ${#bam[@]} -eq "0" ]
+  then
+    echo "No files to merge." >&2
+    exit -1
+  else
+    if [ ${#bam[@]} -eq "1" ]
+    then
+      merged=$bam
+    else
+      samtools merge -f $merged ${bam[@]}
+    fi
+  fi
+}*
+
+% varscan
+deftask varscan( vcf( File ) : mpileup( File ) )in bash *{
+  varscan mpileup2snp $mpileup --output-vcf --p-value 99e-02 > $vcf
+}*
+
+% annovar
+deftask annovar(
+  fun( File ) exonicfun( File )
+: <vcf( File )> )in bash *{
+
+  fun=table.variant_function
+  exonicfun=table.exonic_variant_function
+  cat ${vcf[@]} | \
+  convert2annovar.pl -format vcf4 - | \
+  annotate_variation.pl -buildver <%= node[:hiway][:variantcall][:reference][:id] %> \
+  -geneanno -outfile table - <%= node[:hiway][:variantcall][:scale][:db] %>
+}*
+
+deftask per-sample(
+    vcf( File )
+  : <fastq1( File )> <fastq2( File )> ) {
+
+  sortedbam = per-fastq(
+    fastq1: fastq1,
+    fastq2: fastq2 );
+
+  mergedbam = samtools-merge( bam: sortedbam );
+
+  mpileup = samtools-mpileup( bam: mergedbam );
+
+  vcf = varscan( mpileup: mpileup );
+}
+
+deftask per-fastq(
+    sortedbam
+  : [fastq1( File ) fastq2( File )] ) {
+
+  bam = bowtie2-align(
+    fastq1: fastq1,
+    fastq2: fastq2 );
+
+  sortedbam = samtools-sort( bam: bam );
+  sortedbam = samtools-sort( bam: bam );
+}
+<% @gz.each do |sample, runs| %>
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% <%= sample %>: Input data
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<%= sample %>_fastq1 = <% runs.each do |run| %> '<%= sample %>/<%= run %>_1.filt.fastq.gz'<% end -%>;
+
+<%= sample %>_fastq2 = <% runs.each do |run| %> '<%= sample %>/<%= run %>_2.filt.fastq.gz'<% end -%>;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% <%= sample %>: Workflow definition
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<%= sample %>_qc = fastqc( fastq: <%= sample %>_fastq1 <%= sample %>_fastq2 );
+
+<%= sample %>_vcf = per-sample(
+  fastq1: <%= sample %>_fastq1,
+  fastq2: <%= sample %>_fastq2 );
+  
+<%= sample %>_fun <%= sample %>_exonicfun = annovar( vcf: <%= sample %>_vcf );
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% <%= sample %>: Query
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<%= sample %>_fun <%= sample %>_exonicfun <%= sample %>_qc;
+
+<% end %>
