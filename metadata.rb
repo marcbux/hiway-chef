@@ -32,6 +32,8 @@ recipe           "hiway::galaxy101_run_hw", "Runs the Galaxy 101 Galaxy workflow
 recipe           "hiway::variantcall_client", "Prepares the Variant Calling Cuneiform workflow on the Client"
 recipe           "hiway::variantcall_worker", "Prepares the Variant Calling Cuneiform workflow on the Workers"
 recipe           "hiway::variantcall_run_hw", "Runs the Variant Calling Cuneiform on Hi-WAY from the Client"
+recipe           "hiway::variantcall_scale_client", "Prepares a more performant version of the Variant Calling Cuneiform workflow on the Client"
+recipe           "hiway::variantcall_scale_worker", "Prepares a more performant version of the Variant Calling Cuneiform workflow on the Workers"
 recipe           "hiway::RNAseq_client", "Prepares the TRAPLINE RNAseq Galaxy Workflow on the Client"
 recipe           "hiway::RNAseq_worker", "Runs the TRAPLINE RNAseq Galaxy Workflow on Hi-WAY from the Client"
 #recipe           "hiway::montage_m17_4_client", "Prepares the Montage DAX Workflow on the Client"
@@ -107,7 +109,13 @@ attribute "hiway/variantcall/reads/run_ids",
 :default => ["SRR359188", "SRR359195"]
 
 attribute "hiway/variantcall/reference/chromosomes",
-:display_name => "HG38 chromosomes",
-:description => "The chromosomes of the HG38 reference against which sequence data is to be aligned",
+:display_name => "Chromosomes",
+:description => "The chromosomes of the reference against which sequence data is to be aligned",
 :type => 'array',
 :default => ["chr22", "chrY"]
+
+attribute "hiway/variantcall/reference/id",
+:display_name => "Reference Id",
+:description => "The Id of the reference which is to be downloaded",
+:type => 'string',
+:default => "hg38"

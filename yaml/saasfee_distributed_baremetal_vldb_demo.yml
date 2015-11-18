@@ -42,7 +42,7 @@ groups:
       - hiway::wordcount_client
       - hiway::montage_synth_client
       - hiway::galaxy101_client
-      - hiway::variantcall_client
+      - hiway:variantcall_client
 
   workers:
     size: 4
@@ -59,4 +59,4 @@ groups:
       - hiway::hiway_worker
       - hiway::galaxy_worker
       - hiway::galaxy101_worker
-      - hiway::variantcall_worker
+      - hiway:variantcall_worker

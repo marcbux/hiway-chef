@@ -55,7 +55,7 @@ groups:
         - hadoop::jhs
         - hiway::cuneiform_client
         - hiway::hiway_client
-        - hiway::variantcall_client
+        - hiway:variantcall_client
 
   workers:
     size: 4
@@ -64,4 +64,4 @@ groups:
         - hadoop::nm
         - hiway::cuneiform_worker
         - hiway::hiway_worker
-        - hiway::variantcall_worker
+        - hiway:variantcall_worker

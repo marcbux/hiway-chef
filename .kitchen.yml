@@ -49,9 +49,11 @@ suites:
 #      - recipe[hiway::galaxy101_client]
 #      - recipe[hiway::galaxy101_worker]
 #      - recipe[hiway::galaxy101_run_hw]
-      - recipe[hiway::variantcall_client]
-      - recipe[hiway::variantcall_worker]
-      - recipe[hiway::variantcall_run_hw]
+#      - recipe[hiway::variantcall_client]
+#      - recipe[hiway::variantcall_worker]
+#      - recipe[hiway::variantcall_run_hw]
+      - recipe[hiway::variantcall_scale_client]
+      - recipe[hiway::variantcall_scale_worker]
 #      - recipe[hiway::RNAseq_client]
 #      - recipe[hiway::RNAseq_worker]
 #      - recipe[hiway::montage_m17_4_client]
@@ -73,22 +75,29 @@ suites:
             cluster: vagrant
             yarn:
               user: "hiway"
-              vcores: "3"
+              vcores: "2"
             mr:
               user: "hiway"
          hiway:
            user: "hiway"
+           hiway:
+             worker:
+               vcores: "2"
+               memory_mb: "3072"
+           variantcall:
+             reference:
+               id: "hg19"
+               chromosomes: ["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chrX", "chrY", "chrM"]
+           private_ips: ["10.0.2.15"]
+           public_ips: ["10.0.2.15"]
          hdfs:
            user: "hiway"
          kmon:
-            private_ips: ["10.0.2.15"]
-            public_ips: ["10.0.2.15"]
+           private_ips: ["10.0.2.15"]
+           public_ips: ["10.0.2.15"]
          kagent:
-            private_ips: ["10.0.2.15"]
-            public_ips: ["10.0.2.15"]
-         hiway:
-            private_ips: ["10.0.2.15"]
-            public_ips: ["10.0.2.15"]
+           private_ips: ["10.0.2.15"]
+           public_ips: ["10.0.2.15"]
          private_ips: ["10.0.2.15"]
          public_ips: ["10.0.2.15"]
          vagrant: "enabled"

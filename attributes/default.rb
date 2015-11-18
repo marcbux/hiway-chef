@@ -76,6 +76,16 @@ default[:hiway][:variantcall][:varscan][:url]       = "http://downloads.sourcefo
 default[:hiway][:variantcall][:annovar][:targz]     = "annovar.latest.tar.gz"
 default[:hiway][:variantcall][:annovar][:home]      = "#{node[:hiway][:software][:dir]}/annovar"
 default[:hiway][:variantcall][:annovar][:url]       = "http://www.openbioinformatics.org/annovar/download/0wgxR2rIVP/#{node[:hiway][:variantcall][:annovar][:targz]}"
+default[:hiway][:variantcall][:fastqc][:version]    = "0.11.4"
+default[:hiway][:variantcall][:fastqc][:zip]        = "fastqc_v#{node[:hiway][:variantcall][:fastqc][:version]}.zip"
+default[:hiway][:variantcall][:fastqc][:home]       = "#{node[:hiway][:software][:dir]}/FastQC"
+default[:hiway][:variantcall][:fastqc][:url]        = "http://www.bioinformatics.babraham.ac.uk/projects/fastqc/#{node[:hiway][:variantcall][:fastqc][:zip]}"
+
+default[:hiway][:variantcall][:scale][:workflow]    = "variantcall-scale.cf"
+default[:hiway][:variantcall][:scale][:fa]          = "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reference][:id]}/#{node[:hiway][:variantcall][:reference][:id]}.fa"
+default[:hiway][:variantcall][:scale][:index]       = "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reference][:id]}/hg19"
+default[:hiway][:variantcall][:scale][:db]          = "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reference][:id]}/db/"
+default[:hiway][:variantcall][:scale][:gz]          = { "HG02025" => ["SRR359188", "SRR359195"] }
 
 default[:hiway][:montage_synthetic][:workflow]       = "Montage_25.xml"
 default[:hiway][:montage_synthetic][:url]            = "https://confluence.pegasus.isi.edu/download/attachments/2490624/#{node[:hiway][:montage_synthetic][:workflow]}"

@@ -123,7 +123,7 @@ bash 'download_input_data' do
   group node[:hadoop][:group]
   code <<-EOH
   set -e
-    annotate_variation.pl -downdb -webfrom annovar refGene -buildver hg38 "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}/db/"
+    annotate_variation.pl -downdb -webfrom annovar refGene -buildver #{node[:hiway][:variantcall][:reference][:id]} "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}/db/"
     tar cf "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}/#{node[:hiway][:variantcall][:annovardb][:file]}" -C "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}" db
   EOH
   not_if { ::File.exists?( "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:annovardb][:directory]}/#{node[:hiway][:variantcall][:annovardb][:file]}" ) }
