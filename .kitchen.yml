@@ -2,7 +2,7 @@
 driver:
   name: vagrant
   customize:
-    memory: 3072
+    memory: 5120
     cpus: 2
     natdnshostresolver1: "on"
     natdnsproxy1: "on"
@@ -37,30 +37,31 @@ suites:
       - recipe[hiway::install]
       - recipe[hiway::hiway_client]
       - recipe[hiway::hiway_worker]
-#      - recipe[hiway::galaxy_worker]
+      - recipe[hiway::galaxy_worker]
       - recipe[hiway::cuneiform_client]
       - recipe[hiway::cuneiform_worker]
       - recipe[hiway::helloworld_client]
 #      - recipe[hiway::helloworld_run_loc]
-#      - recipe[hiway::wordcount_client]
+      - recipe[hiway::wordcount_client]
 #      - recipe[hiway::wordcount_run_loc]
-#      - recipe[hiway::montage_synth_client]
+      - recipe[hiway::montage_synth_client]
 #      - recipe[hiway::montage_synth_run_hw]
-#      - recipe[hiway::galaxy101_client]
-#      - recipe[hiway::galaxy101_worker]
+      - recipe[hiway::galaxy101_client]
+      - recipe[hiway::galaxy101_worker]
 #      - recipe[hiway::galaxy101_run_hw]
-#      - recipe[hiway::variantcall_client]
-#      - recipe[hiway::variantcall_worker]
+      - recipe[hiway::variantcall_client]
+      - recipe[hiway::variantcall_worker]
 #      - recipe[hiway::variantcall_run_hw]
-      - recipe[hiway::variantcall_scale_client]
-      - recipe[hiway::variantcall_scale_worker]
+#      - recipe[hiway::variantcall_scale_client]
+#      - recipe[hiway::variantcall_scale_worker]
 #      - recipe[hiway::RNAseq_client]
 #      - recipe[hiway::RNAseq_worker]
-#      - recipe[hiway::montage_m17_4_client]
-#      - recipe[hiway::montage_m17_4_worker]
+      - recipe[hiway::montage_m17_4_client]
+      - recipe[hiway::montage_m17_4_worker]
 
     attributes:
          hadoop:
+            container_cleanup_delay_sec: "604800"
             version: "2.7.1"
             nn:
                private_ips: ["10.0.2.15"]
@@ -76,6 +77,8 @@ suites:
             yarn:
               user: "hiway"
               vcores: "2"
+              nm:
+                memory_mbs: "5632"
             mr:
               user: "hiway"
          hiway:
@@ -83,7 +86,7 @@ suites:
            hiway:
              worker:
                vcores: "2"
-               memory_mb: "3072"
+               memory_mb: "5120"
            variantcall:
              reference:
                id: "hg19"

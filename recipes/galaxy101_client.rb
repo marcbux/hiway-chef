@@ -37,5 +37,5 @@ bash "stage_out_input_data" do
     rm #{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:exons][:bed]}
     rm #{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:snps][:bed]}
   EOH
-  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:galaxy101][:snps]}"
+  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:hiway][:hdfs][:basedir]}#{node[:hiway][:galaxy101][:snps][:bed]}"
 end
