@@ -43,9 +43,9 @@ groups:
       - hiway::wordcount_client
       - hiway::montage_synth_client
       - hiway::galaxy101_client
-      - hiway:variantcall_client
+      - hiway::variantcall_client
       - hiway::cuneiform_worker
       - hiway::hiway_worker
       - hiway::galaxy_worker
       - hiway::galaxy101_worker
-      - hiway:variantcall_worker
+      - hiway::variantcall_worker
