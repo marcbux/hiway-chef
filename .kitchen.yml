@@ -75,14 +75,14 @@ suites:
                private_ips: ["10.0.2.15"]
             cluster: vagrant
             yarn:
-              user: "hiway"
+              user: 'vagrant'
               vcores: "2"
               nm:
                 memory_mbs: "5632"
             mr:
-              user: "hiway"
+              user: 'vagrant'
          hiway:
-           user: "hiway"
+           user: 'vagrant'
            workflows: /home/hiway/workflows
            hiway:
              worker:
@@ -95,7 +95,7 @@ suites:
            private_ips: ["10.0.2.15"]
            public_ips: ["10.0.2.15"]
          hdfs:
-           user: "hiway"
+           user: 'vagrant'
          kmon:
            private_ips: ["10.0.2.15"]
            public_ips: ["10.0.2.15"]

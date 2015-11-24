@@ -26,6 +26,16 @@ directory "#{node[:hiway][:home]}" do
   not_if { File.directory?("#{node[:hiway][:home]}") }
 end
 
+# create workflows directory
+directory "#{node[:hiway][:workflows]}" do
+  owner node[:hiway][:user]
+  group node[:hadoop][:group]
+  mode "755"
+  recursive true
+  action :create
+  not_if { File.directory?("#{node[:hiway][:workflows]}") }
+end
+
 # create data directory
 directory "#{node[:hiway][:data]}" do
   owner node[:hiway][:user]
