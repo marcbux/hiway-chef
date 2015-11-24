@@ -83,6 +83,7 @@ suites:
               user: "hiway"
          hiway:
            user: "hiway"
+           workflows: /home/hiway/workflows
            hiway:
              worker:
                vcores: "2"

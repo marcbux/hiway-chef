@@ -60,6 +60,12 @@ attribute "hiway/data",
 :type => 'string',
 :default => "/home/hiway"
 
+attribute "hiway/workflows",
+:display_name => "Workflows directory",
+:description => "Directory in which to store the workflow files",
+:type => 'string',
+:default => "/home/hiway"
+
 attribute "hiway/release",
 :display_name => "Release or snaphsot",
 :description => "Install Hi-WAY release as opposed to the latest snapshot version",

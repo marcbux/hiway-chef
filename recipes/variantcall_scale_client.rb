@@ -1,5 +1,5 @@
 # prepare the variant call workflow file
-template "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:scale][:workflow]}" do
+template "#{node[:hiway][:workflows]}/#{node[:hiway][:variantcall][:scale][:workflow]}" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   source "#{node[:hiway][:variantcall][:scale][:workflow]}.erb"

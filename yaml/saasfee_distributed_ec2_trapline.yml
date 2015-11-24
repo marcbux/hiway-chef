@@ -16,7 +16,7 @@ cookbooks:
 
 attrs:
   hiway:
-    user: 'hiway'
+    user: 'ubuntu'
     data: '/mnt/data'
     hiway:
       am:
@@ -32,14 +32,14 @@ attrs:
         memory_mbs: '12288'
       vcores: '9'
       max_vcores: '8'
-      user: 'hiway'
+      user: 'ubuntu'
     mr:
-      user: 'hiway'
+      user: 'ubuntu'
     tmp_dir: '/mnt/hadoop'
     data_dir: '/mnt/hadoop'
     num_replicas: '2'
   hdfs:
-    user: 'hiway'
+    user: 'ubuntu'
 
 groups:
   masterworker:

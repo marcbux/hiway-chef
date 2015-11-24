@@ -34,7 +34,7 @@ bash 'update_env_variables' do
 end
 
 # prepare the variant call workflow file
-template "#{node[:hiway][:data]}/#{node[:hiway][:variantcall][:workflow]}" do
+template "#{node[:hiway][:workflows]}/#{node[:hiway][:variantcall][:workflow]}" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   source "#{node[:hiway][:variantcall][:workflow]}.erb"
@@ -142,5 +142,5 @@ bash "copy_input_data_to_hdfs" do
     rm -r #{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reads][:sample_id]}
     rm -r #{node[:hiway][:data]}/#{node[:hiway][:variantcall][:reference][:id]}
   EOH
-  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e /#{node[:hiway][:variantcall][:reference][:id]}"
+  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:hiway][:hdfs][:basedir]}/#{node[:hiway][:variantcall][:reference][:id]}"
 end

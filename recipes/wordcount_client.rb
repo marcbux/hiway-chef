@@ -1,5 +1,5 @@
 # prepare the word count workflow file
-template "#{node[:hiway][:data]}/#{node[:hiway][:wordcount][:workflow]}" do
+template "#{node[:hiway][:workflows]}/#{node[:hiway][:wordcount][:workflow]}" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   source "#{node[:hiway][:wordcount][:workflow]}.erb"

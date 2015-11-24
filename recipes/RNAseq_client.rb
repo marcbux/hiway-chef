@@ -45,7 +45,7 @@ template "#{node[:hiway][:home]}/.ncbi/user-settings.mkfg" do
 end
 
 # prepare the RNAseq workflow file
-template "#{node[:hiway][:data]}/#{node[:hiway][:RNAseq][:workflow]}" do
+template "#{node[:hiway][:workflows]}/#{node[:hiway][:RNAseq][:workflow]}" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   source "#{node[:hiway][:RNAseq][:workflow]}.erb"

@@ -1,5 +1,5 @@
 # prepare the galaxy 101 workflow file
-template "#{node[:hiway][:data]}/#{node[:hiway][:galaxy101][:workflow]}" do
+template "#{node[:hiway][:workflows]}/#{node[:hiway][:galaxy101][:workflow]}" do
   user node[:hiway][:user]
   group node[:hadoop][:group]
   source "#{node[:hiway][:galaxy101][:workflow]}.erb"
