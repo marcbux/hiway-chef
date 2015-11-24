@@ -4,7 +4,6 @@ ec2:
     ami: ami-234ecc54
     region: eu-west-1
     username: hiway
-    price: 0.1
 
 cookbooks:
   hadoop:
