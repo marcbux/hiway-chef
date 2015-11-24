@@ -71,10 +71,12 @@ else
     user node[:hiway][:user]
     group node[:hadoop][:group]
     action :sync
+    notifies :run, "bash[build-cuneiform]", :immediately
   end
 
   # maven build Cuneiform
   bash 'build-cuneiform' do
+    action :nothing
     user node[:hiway][:user]
     group node[:hadoop][:group]
     code <<-EOH
@@ -83,7 +85,6 @@ else
       version=$(grep -Po '(?<=^\t<version>)[^<]*(?=</version>)' /tmp/cuneiform/pom.xml)
       cp -r /tmp/cuneiform/cuneiform-dist/target/cuneiform-dist-$version/cuneiform-$version #{node[:hiway][:cuneiform][:home]}
     EOH
-    not_if { ::File.exist?("#{node[:hiway][:cuneiform][:home]}") }
   end
 end
 
