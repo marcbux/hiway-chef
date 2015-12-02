@@ -28,7 +28,7 @@ attrs:
     variantcall:
       scale:
         gz: 
-          HG02025: ["SRR359188"]
+          HG02025: ["SRR359189"]
   hadoop:
     version: '2.7.1'
     yarn:
