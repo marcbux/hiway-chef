@@ -27,7 +27,8 @@ attrs:
         vcores: '2'
     variantcall:
       scale:
-        gz: { "HG02025" => ["SRR359188", "SRR359195"] }
+        gz: 
+          HG02025: ["SRR359188"]
   hadoop:
     version: '2.7.1'
     yarn:
