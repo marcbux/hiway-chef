@@ -125,3 +125,9 @@ attribute "saasfee/variantcall/reference/id",
 :description => "The Id of the reference which is to be downloaded",
 :type => 'string',
 :default => "hg38"
+
+attribute "saasfee/variantcall/scale/gz",
+:display_name => "Runs per Sample",
+:description => "A mapping, assigning each 1000 Genomes Sample Id an array of run Ids",
+:type => 'hash',
+:default => { "HG02025" => ["SRR359188", "SRR359195"] }

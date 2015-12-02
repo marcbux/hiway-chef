@@ -1,0 +1,64 @@
+name: saasfeeDistributedEc2VariantcallScale
+ec2:
+    type: m3.large
+    ami: ami-d05e75b8
+    region: us-east-1
+    username: hiway
+    price: 1
+
+cookbooks:
+  hadoop:
+    github: "hopshadoop/apache-hadoop-chef"
+    branch: "master"
+  saasfee:
+    github: "marcbux/hiway-chef"
+    branch: "master"
+    
+attrs:
+  saasfee:
+    user: 'ubuntu'
+    data: '/mnt/data'
+    hiway:
+      am:
+        memory_mb: '512'
+        vcores: '1'
+      worker:
+        memory_mb: '6144'
+        vcores: '2'
+    variantcall:
+      scale:
+        gz: { "HG02025" => ["SRR359188", "SRR359195"] }
+  hadoop:
+    version: '2.7.1'
+    yarn:
+      nm:
+        memory_mbs: '6656'
+      vcores: '3'
+      user: 'ubuntu'
+    mr:
+      user: 'ubuntu'
+    tmp_dir: '/mnt/hadoop'
+    data_dir: '/mnt/hadoop'
+    num_replicas: '2'
+  hdfs:
+    user: 'ubuntu'
+    
+groups:
+  master:
+    size: 1
+    recipes:
+        - hadoop::nn
+        - hadoop::rm
+        - hadoop::jhs
+        - saasfee::cuneiform_client
+        - saasfee::hiway_client
+        - saasfee::variantcall_scale_client
+
+  workers:
+    size: 1
+    recipes:
+        - hadoop::dn
+        - hadoop::nm
+        - saasfee::cuneiform_worker
+        - saasfee::hiway_worker
+        - saasfee::variantcall_scale_worker
