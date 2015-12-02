@@ -8,7 +8,7 @@ deftask bwa-build( idx( File ) : fa( File ) )in bash *{
 
 deftask bwa-align( sam( File ) : idx( File ) [fastq1( File ) fastq2( File )] )in bash *{
   tar xf $idx
-  bwa mem -t <%= node[:hiway][:variantcall][:threads] %> bwa-index $fastq1 $fastq2 > $sam
+  bwa mem -t <%= node[:saasfee][:variantcall][:threads] %> bwa-index $fastq1 $fastq2 > $sam
 }*
 
 // Bowtie 2
@@ -30,7 +30,7 @@ deftask bowtie2-align( sam( File ) : idx( File ) [fastq1( File ) fastq2( File )]
     exit -1
   fi
   bowtie2 -D 5 -R 1 -N 0 -L 22 -i S,0,2.50 \
-  -p <%= node[:hiway][:variantcall][:threads] %> \
+  -p <%= node[:saasfee][:variantcall][:threads] %> \
   --no-unal -x bt2idx -1 $fastq1 -2 $fastq2 -S $sam
   if [ "$?" -ne "0" ]
   then
@@ -52,7 +52,7 @@ deftask samtools-faidx( fai( File ) : fa( File ) )in bash *{
 
 deftask samtools-sort( sortedbam( File ) : bam( File ) )in bash *{
   sortedbam=alignment-sorted.bam
-  samtools sort -m `expr <%= node[:hiway][:variantcall][:memory_mb] %> \* 512 \* 1024` $bam alignment-sorted
+  samtools sort -m `expr <%= node[:saasfee][:variantcall][:memory_mb] %> \* 512 \* 1024` $bam alignment-sorted
 }*
 
 deftask samtools-mpileup( mpileup( File ) : sortedbam( File ) [fa( File ) fai( File )] )in bash *{
@@ -106,7 +106,7 @@ deftask per-chromosome( fun( File ) exonicfun( File ) : [fa( File ) fai( File ) 
   fun exonicfun = annovar(
     vcf:      vcf
     db:       db
-    buildver: '<%= node[:hiway][:variantcall][:reference][:id] %>' );
+    buildver: '<%= node[:saasfee][:variantcall][:reference][:id] %>' );
 }
 
 deftask per-fastq( sortedbam : fa( File ) [fastq1( File ) fastq2( File )] db( File ) ) {
@@ -119,10 +119,10 @@ deftask per-fastq( sortedbam : fa( File ) [fastq1( File ) fastq2( File )] db( Fi
 }
 
 // (2) Input Files
-fastq1 =<% @run_ids.each do |run_id| -%> '<%= node[:hiway][:variantcall][:reads][:sample_id] %>/<%= run_id %>_1.filt.fastq'<% end -%>;
-fastq2 =<% @run_ids.each do |run_id| -%> '<%= node[:hiway][:variantcall][:reads][:sample_id] %>/<%= run_id %>_2.filt.fastq'<% end -%>;
-fa =<% @chromosomes.each do |chromosome| -%> '<%= node[:hiway][:variantcall][:reference][:id] %>/<%= chromosome %>.fa'<% end -%>;
-db = '<%= node[:hiway][:variantcall][:annovardb][:directory] %>/<%= node[:hiway][:variantcall][:annovardb][:file] %>';
+fastq1 =<% @run_ids.each do |run_id| -%> '<%= node[:saasfee][:variantcall][:reads][:sample_id] %>/<%= run_id %>_1.filt.fastq'<% end -%>;
+fastq2 =<% @run_ids.each do |run_id| -%> '<%= node[:saasfee][:variantcall][:reads][:sample_id] %>/<%= run_id %>_2.filt.fastq'<% end -%>;
+fa =<% @chromosomes.each do |chromosome| -%> '<%= node[:saasfee][:variantcall][:reference][:id] %>/<%= chromosome %>.fa'<% end -%>;
+db = '<%= node[:saasfee][:variantcall][:annovardb][:directory] %>/<%= node[:saasfee][:variantcall][:annovardb][:file] %>';
 
 // (3) Workflow Definition
 bt2idx = bwa-build( fa: fa );

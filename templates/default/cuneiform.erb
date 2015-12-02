@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-nice -n 19 java -cp <%= node[:hiway][:cuneiform][:home] %>:<%= node[:hiway][:cuneiform][:home] %>/lib/*:<%= node[:hiway][:cuneiform][:home] %>/bin/* de.huberlin.wbi.cuneiform.cmdline.main.Main -r <%= node[:hiway][:cuneiform][:r_packages] %> -l <%= node[:hiway][:cuneiform][:cache] %> $@
+nice -n 19 java -cp <%= node[:saasfee][:cuneiform][:home] %>:<%= node[:saasfee][:cuneiform][:home] %>/lib/*:<%= node[:saasfee][:cuneiform][:home] %>/bin/* de.huberlin.wbi.cuneiform.cmdline.main.Main -r <%= node[:saasfee][:cuneiform][:r_packages] %> -l <%= node[:saasfee][:cuneiform][:cache] %> $@

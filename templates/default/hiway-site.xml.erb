@@ -15,7 +15,7 @@
 <configuration>
     <property>
         <name>hiway.am.directory.base</name>
-        <value><%= node[:hiway][:hiway][:hdfs][:basedir] %></value>
+        <value><%= node[:saasfee][:hiway][:hdfs][:basedir] %></value>
     </property>
     <property>
         <name>hiway.am.directory.cache</name>
@@ -23,7 +23,7 @@
     </property>
     <property>
         <name>hiway.am.memory</name>
-        <value><%= node[:hiway][:hiway][:am][:memory_mb] %></value>
+        <value><%= node[:saasfee][:hiway][:am][:memory_mb] %></value>
         <description>Amount of memory in MB to be requested to run the application master. Default 1024.</description>
     </property>
     <property>
@@ -78,16 +78,16 @@
     </property>
     <property>
         <name>hiway.galaxy.path</name>
-        <value><%= node[:hiway][:galaxy][:home] %></value>
+        <value><%= node[:saasfee][:galaxy][:home] %></value>
     </property>
     <property>
         <name>hiway.scheduler</name>
-        <value><%= node[:hiway][:hiway][:scheduler] %></value>
+        <value><%= node[:saasfee][:hiway][:scheduler] %></value>
         <description>valid values: c3po, cloning, conservative, greedyQueue, heft, outlooking, placementAware, staticRoundRobin</description>
     </property>
     <property>
         <name>hiway.worker.memory</name>
-        <value><%= node[:hiway][:hiway][:worker][:memory_mb] %></value>
+        <value><%= node[:saasfee][:hiway][:worker][:memory_mb] %></value>
     </property>
     <property>
         <name>hiway.worker.priority</name>

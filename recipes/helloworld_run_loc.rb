@@ -1,11 +1,11 @@
 # run the hello world workflow locally
 bash "run_helloworld" do
-  user node[:hiway][:user]
+  user node[:saasfee][:user]
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
-    cuneiform #{node[:hiway][:workflows]}/#{node[:hiway][:helloworld][:workflow]} -s #{node[:hiway][:home]}/helloworld_summary.json
-    grep -oP '\"output\":\[\"\K[^\"]+' #{node[:hiway][:home]}/helloworld_summary.json
+    cuneiform #{node[:saasfee][:workflows]}/#{node[:saasfee][:helloworld][:workflow]} -s #{node[:saasfee][:home]}/helloworld_summary.json
+    grep -oP '\"output\":\[\"\K[^\"]+' #{node[:saasfee][:home]}/helloworld_summary.json
   EOH
-  not_if "grep -q \"Hello #{node[:hiway][:user]}\" #{node[:hiway][:home]}/helloworld_summary.json"
+  not_if "grep -q \"Hello #{node[:saasfee][:user]}\" #{node[:saasfee][:home]}/helloworld_summary.json"
 end

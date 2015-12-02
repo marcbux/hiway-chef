@@ -1,18 +1,18 @@
 # prepare the variant call workflow file
-template "#{node[:hiway][:workflows]}/#{node[:hiway][:variantcall][:scale][:workflow]}" do
-  user node[:hiway][:user]
+template "#{node[:saasfee][:workflows]}/#{node[:saasfee][:variantcall][:scale][:workflow]}" do
+  user node[:saasfee][:user]
   group node[:hadoop][:group]
-  source "#{node[:hiway][:variantcall][:scale][:workflow]}.erb"
+  source "#{node[:saasfee][:variantcall][:scale][:workflow]}.erb"
   mode "755"
   variables({
-     :gz => node[:hiway][:variantcall][:scale][:gz],
+     :gz => node[:saasfee][:variantcall][:scale][:gz],
   })
 end
 
-node[:hiway][:variantcall][:scale][:gz].each do |sample, runs|
+node[:saasfee][:variantcall][:scale][:gz].each do |sample, runs|
   # create reads directory
-  directory "#{node[:hiway][:data]}/#{sample}" do
-    owner node[:hiway][:user]
+  directory "#{node[:saasfee][:data]}/#{sample}" do
+    owner node[:saasfee][:user]
     group node[:hadoop][:group]
     mode "755"
     action :create
@@ -22,9 +22,9 @@ node[:hiway][:variantcall][:scale][:gz].each do |sample, runs|
     %w{ 1 2 }.each do |id|
       gz = "#{run}_#{id}.filt.fastq.gz"
       
-      remote_file "#{node[:hiway][:data]}/#{sample}/#{gz}" do
-        source "#{node[:hiway][:variantcall][:reads][:url_base]}/#{gz}"
-        owner node[:hiway][:user]
+      remote_file "#{node[:saasfee][:data]}/#{sample}/#{gz}" do
+        source "#{node[:saasfee][:variantcall][:reads][:url_base]}/#{gz}"
+        owner node[:saasfee][:user]
         group node[:hadoop][:group]
         mode "775"
         action :create_if_missing
@@ -34,13 +34,13 @@ node[:hiway][:variantcall][:scale][:gz].each do |sample, runs|
   
   # copy input data into HDFS
   bash "copy_input_data_to_hdfs" do
-    user node[:hiway][:user]
+    user node[:saasfee][:user]
     group node[:hadoop][:group]
     code <<-EOH
     set -e && set -o pipefail
-      #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:hiway][:data]}/#{sample} #{node[:hiway][:hiway][:hdfs][:basedir]}/#{sample}
-      #rm -r #{node[:hiway][:data]}/#{sample}
+      #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:saasfee][:data]}/#{sample} #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{sample}
+      #rm -r #{node[:saasfee][:data]}/#{sample}
     EOH
-    not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:hiway][:hiway][:hdfs][:basedir]}/#{sample}"
+    not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{sample}"
   end
 end

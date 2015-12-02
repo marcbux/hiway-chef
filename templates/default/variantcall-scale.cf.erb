@@ -48,15 +48,15 @@ deftask bowtie2-align(
   gzip -c -d $fastq1 > 1.fastq
   gzip -c -d $fastq2 > 2.fastq
   bowtie2 -D 5 -R 1 -N 0 -L 22 -i S,0,2.50 --no-unal \
-  -p <%= node[:hiway][:variantcall][:threads] %> \
-  -x <%= node[:hiway][:variantcall][:scale][:index] %> \
+  -p <%= node[:saasfee][:variantcall][:threads] %> \
+  -x <%= node[:saasfee][:variantcall][:scale][:index] %> \
   -1 1.fastq -2 2.fastq -S - | samtools view -b - > $bam
 }*
 
 % samtools
 deftask samtools-sort( sortedbam( File ) : bam( File ) )in bash *{
   sortedbam=alignment-sorted.bam
-  samtools sort -m `expr <%= node[:hiway][:variantcall][:memory_mb] %> \* 512 \* 1024` \
+  samtools sort -m `expr <%= node[:saasfee][:variantcall][:memory_mb] %> \* 512 \* 1024` \
   $bam alignment-sorted
 }*
 
@@ -64,7 +64,7 @@ deftask samtools-mpileup(
   mpileup( File )
 : bam( File ) )in bash *{
 
-  samtools mpileup -f <%= node[:hiway][:variantcall][:scale][:fa] %> $bam > $mpileup
+  samtools mpileup -f <%= node[:saasfee][:variantcall][:scale][:fa] %> $bam > $mpileup
 }*
 
 deftask samtools-merge( merged( File ) : <bam( File )> )in bash *{
@@ -96,8 +96,8 @@ deftask annovar(
   exonicfun=table.exonic_variant_function
   cat ${vcf[@]} | \
   convert2annovar.pl -format vcf4 - | \
-  annotate_variation.pl -buildver <%= node[:hiway][:variantcall][:reference][:id] %> \
-  -geneanno -outfile table - <%= node[:hiway][:variantcall][:scale][:db] %>
+  annotate_variation.pl -buildver <%= node[:saasfee][:variantcall][:reference][:id] %> \
+  -geneanno -outfile table - <%= node[:saasfee][:variantcall][:scale][:db] %>
 }*
 
 deftask per-sample(

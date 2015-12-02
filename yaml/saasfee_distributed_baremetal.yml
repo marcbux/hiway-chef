@@ -6,12 +6,12 @@ cookbooks:
   hadoop:
     github: "hopshadoop/apache-hadoop-chef"
     branch: "master"
-  hiway:
+  saasfee:
     github: "marcbux/hiway-chef"
     branch: "master"
 
 attrs:
-  hiway:
+  saasfee:
     user: 'hiway'
     data: '/mnt/data'
   hadoop:
@@ -36,9 +36,9 @@ groups:
       - hadoop::nn
       - hadoop::rm
       - hadoop::jhs
-      - hiway::cuneiform_client
-      - hiway::hiway_client
-      - hiway::helloworld_client
+      - saasfee::cuneiform_client
+      - saasfee::hiway_client
+      - saasfee::helloworld_client
 
   workers:
     size: 4
@@ -51,5 +51,5 @@ groups:
     recipes:
       - hadoop::dn
       - hadoop::nm
-      - hiway::cuneiform_worker
-      - hiway::hiway_worker
+      - saasfee::cuneiform_worker
+      - saasfee::hiway_worker
