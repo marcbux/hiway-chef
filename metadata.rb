@@ -126,8 +126,14 @@ attribute "saasfee/variantcall/reference/id",
 :type => 'string',
 :default => "hg38"
 
-attribute "saasfee/variantcall/scale/gz",
-:display_name => "Runs per Sample",
-:description => "A mapping, assigning each 1000 Genomes Sample Id an array of run Ids",
-:type => 'hash',
-:default => { "HG02025" => ["SRR359188", "SRR359195"] }
+attribute "saasfee/variantcall/scale/nsamples",
+:display_name => "Number of Samples",
+:description => "The maximum number of samples to be downloaded from the 1000 Genomes Project",
+:type => 'string',
+:default => "1"
+
+attribute "saasfee/variantcall/scale/nruns",
+:display_name => "Number of Runs",
+:description => "The maximum number of runs per sample to be downloaded from the 1000 Genomes Project",
+:type => 'string',
+:default => "1"

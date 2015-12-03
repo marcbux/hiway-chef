@@ -9,7 +9,12 @@ template "#{node[:saasfee][:workflows]}/#{node[:saasfee][:variantcall][:scale][:
   })
 end
 
+i = 1
 node[:saasfee][:variantcall][:scale][:gz].each do |sample, runs|
+  if i > "#{node[:saasfee][:variantcall][:scale][:nsamples]}".to_i then
+    break
+  end
+  
   # create reads directory
   directory "#{node[:saasfee][:data]}/#{sample}" do
     owner node[:saasfee][:user]
@@ -26,7 +31,12 @@ node[:saasfee][:variantcall][:scale][:gz].each do |sample, runs|
     mode "0775"
   end
   
+  j = 1
   runs.each do |run|
+    if j > "#{node[:saasfee][:variantcall][:scale][:nruns]}".to_i then
+      break
+    end
+    
     %w{ 1 2 }.each do |id|
       gz = "#{run}_#{id}.filt.fastq.gz"
       

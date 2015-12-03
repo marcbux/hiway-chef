@@ -86,7 +86,10 @@ default[:saasfee][:variantcall][:scale][:workflow]    = "variantcall-scale.cf"
 default[:saasfee][:variantcall][:scale][:fa]          = "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:id]}/#{node[:saasfee][:variantcall][:reference][:id]}.fa"
 default[:saasfee][:variantcall][:scale][:index]       = "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:id]}/hg19"
 default[:saasfee][:variantcall][:scale][:db]          = "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:id]}/db/"
-default[:saasfee][:variantcall][:scale][:gz]          = { "HG02025" => ["SRR359188", "SRR359195"] }
+default[:saasfee][:variantcall][:scale][:nsamples]    = "1"
+default[:saasfee][:variantcall][:scale][:nruns]       = "2"
+default[:saasfee][:variantcall][:scale][:gz]          = { "HG02025" => ["SRR359188", "SRR359195"],
+                                                          "HG01867" => ["SRR359196", "SRR359196"] }
 
 default[:saasfee][:montage_synthetic][:workflow]       = "Montage_25.xml"
 default[:saasfee][:montage_synthetic][:url]            = "https://confluence.pegasus.isi.edu/download/attachments/2490624/#{node[:saasfee][:montage_synthetic][:workflow]}"
