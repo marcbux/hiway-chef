@@ -53,12 +53,28 @@ directory "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reads][:samp
   action :create
 end
 
+# create reads directory in hdfs
+hadoop_hdfs_directory "#{node[:saasfee][:hiway][:hdfs][:basedir]}/#{node[:saasfee][:variantcall][:reads][:sample_id]}" do
+  action :create_as_superuser
+  owner node[:saasfee][:user]
+  group node[:saasfee][:group]
+  mode "0775"
+end
+
 # create reference directory
 directory "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:id]}" do
   owner node[:saasfee][:user]
   group node[:hadoop][:group]
   mode "755"
   action :create
+end
+
+# create reference directory in hdfs
+hadoop_hdfs_directory "#{node[:saasfee][:hiway][:hdfs][:basedir]}/#{node[:saasfee][:variantcall][:reference][:id]}" do
+  action :create_as_superuser
+  owner node[:saasfee][:user]
+  group node[:saasfee][:group]
+  mode "0775"
 end
 
 # create annovar database directory
@@ -91,6 +107,18 @@ node[:saasfee][:variantcall][:reads][:run_ids].each do |run_id|
       EOH
       not_if { ::File.exists?( "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reads][:sample_id]}/#{fq}" ) }
     end
+    
+    # copy reads into HDFS
+    bash "copy_reads_to_hdfs" do
+      user node[:saasfee][:user]
+      group node[:hadoop][:group]
+      code <<-EOH
+      set -e && set -o pipefail
+        #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reads][:sample_id]}/#{fq} #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{node[:saasfee][:variantcall][:reads][:sample_id]}/#{fq}
+        rm -r #{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reads][:sample_id]}/#{fq}
+      EOH
+      not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{node[:saasfee][:variantcall][:reads][:sample_id]}/#{fq}"
+    end
   end
 end
 
@@ -115,9 +143,21 @@ node[:saasfee][:variantcall][:reference][:chromosomes].each do |ref|
     EOH
     not_if { ::File.exists?( "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:id]}/#{fa}" ) }
   end
+  
+  # copy reference into HDFS
+  bash "copy_reference_to_hdfs" do
+    user node[:saasfee][:user]
+    group node[:hadoop][:group]
+    code <<-EOH
+    set -e && set -o pipefail
+      #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:id]}/#{fa} #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{node[:saasfee][:variantcall][:reference][:id]}/#{fa}
+      rm -r #{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:id]}/#{fa}
+    EOH
+    not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{node[:saasfee][:variantcall][:reference][:id]}/#{fa}"
+  end
 end
 
-# obtain workflow input data
+# obtain annovar db input data
 bash 'download_input_data' do
   user node[:saasfee][:user]
   group node[:hadoop][:group]
@@ -129,18 +169,14 @@ bash 'download_input_data' do
   not_if { ::File.exists?( "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:annovardb][:directory]}/#{node[:saasfee][:variantcall][:annovardb][:file]}" ) }
 end
 
-# copy input data into HDFS
-bash "copy_input_data_to_hdfs" do
+# copy annovar db into HDFS
+bash "copy_annovardb_to_hdfs" do
   user node[:saasfee][:user]
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
     #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:annovardb][:directory]} #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{node[:saasfee][:variantcall][:annovardb][:directory]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reads][:sample_id]} #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{node[:saasfee][:variantcall][:reads][:sample_id]}
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:id]} #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{node[:saasfee][:variantcall][:reference][:id]}
     rm -r #{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:annovardb][:directory]}
-    rm -r #{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reads][:sample_id]}
-    rm -r #{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:id]}
   EOH
-  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{node[:saasfee][:variantcall][:reference][:id]}"
+  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{node[:saasfee][:variantcall][:annovardb][:directory]}"
 end

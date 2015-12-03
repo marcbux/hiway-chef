@@ -18,6 +18,14 @@ node[:saasfee][:variantcall][:scale][:gz].each do |sample, runs|
     action :create
   end
   
+  # create reads directory in hdfs
+  hadoop_hdfs_directory "#{node[:saasfee][:hiway][:hdfs][:basedir]}/#{sample}" do
+    action :create_as_superuser
+    owner node[:saasfee][:user]
+    group node[:saasfee][:group]
+    mode "0775"
+  end
+  
   runs.each do |run|
     %w{ 1 2 }.each do |id|
       gz = "#{run}_#{id}.filt.fastq.gz"
@@ -29,18 +37,18 @@ node[:saasfee][:variantcall][:scale][:gz].each do |sample, runs|
         mode "775"
         action :create_if_missing
       end
+      
+      # copy input data into HDFS
+      bash "copy_input_data_to_hdfs" do
+        user node[:saasfee][:user]
+        group node[:hadoop][:group]
+        code <<-EOH
+        set -e && set -o pipefail
+          #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:saasfee][:data]}/#{sample}/#{gz} #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{sample}/#{gz}
+          #rm -r #{node[:saasfee][:data]}/#{sample}/#{gz}
+        EOH
+        not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{sample}/#{gz}"
+      end
     end
-  end
-  
-  # copy input data into HDFS
-  bash "copy_input_data_to_hdfs" do
-    user node[:saasfee][:user]
-    group node[:hadoop][:group]
-    code <<-EOH
-    set -e && set -o pipefail
-      #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:saasfee][:data]}/#{sample} #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{sample}
-      #rm -r #{node[:saasfee][:data]}/#{sample}
-    EOH
-    not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{sample}"
   end
 end
