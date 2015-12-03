@@ -46,6 +46,7 @@ node[:saasfee][:variantcall][:scale][:gz].each do |sample, runs|
         group node[:hadoop][:group]
         mode "775"
         action :create_if_missing
+        not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{sample}/#{gz}"
       end
       
       # copy input data into HDFS
@@ -55,7 +56,7 @@ node[:saasfee][:variantcall][:scale][:gz].each do |sample, runs|
         code <<-EOH
         set -e && set -o pipefail
           #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:saasfee][:data]}/#{sample}/#{gz} #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{sample}/#{gz}
-          #rm -r #{node[:saasfee][:data]}/#{sample}/#{gz}
+          rm -r #{node[:saasfee][:data]}/#{sample}/#{gz}
         EOH
         not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{sample}/#{gz}"
       end

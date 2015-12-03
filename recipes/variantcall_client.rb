@@ -105,7 +105,7 @@ node[:saasfee][:variantcall][:reads][:run_ids].each do |run_id|
       set -e
         gzip -c -d "#{Chef::Config[:file_cache_path]}/#{gz}" > "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reads][:sample_id]}/#{fq}"
       EOH
-      not_if { ::File.exists?( "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reads][:sample_id]}/#{fq}" ) }
+      not_if { ::File.exists?( "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reads][:sample_id]}/#{fq}" ) } or "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{node[:saasfee][:variantcall][:reads][:sample_id]}/#{fq}"
     end
     
     # copy reads into HDFS
@@ -141,7 +141,7 @@ node[:saasfee][:variantcall][:reference][:chromosomes].each do |ref|
     set -e
       gzip -c -d "#{Chef::Config[:file_cache_path]}/#{gz}" > "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:id]}/#{fa}"
     EOH
-    not_if { ::File.exists?( "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:id]}/#{fa}" ) }
+    not_if { ::File.exists?( "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:id]}/#{fa}" ) } or "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{node[:saasfee][:variantcall][:reference][:id]}/#{fa}"
   end
   
   # copy reference into HDFS
@@ -166,7 +166,7 @@ bash 'download_input_data' do
     annotate_variation.pl -downdb -webfrom annovar refGene -buildver "#{node[:saasfee][:variantcall][:reference][:id]}" "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:annovardb][:directory]}/db/"
     tar cf "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:annovardb][:directory]}/#{node[:saasfee][:variantcall][:annovardb][:file]}" -C "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:annovardb][:directory]}" db
   EOH
-  not_if { ::File.exists?( "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:annovardb][:directory]}/#{node[:saasfee][:variantcall][:annovardb][:file]}" ) }
+  not_if { ::File.exists?( "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:annovardb][:directory]}/#{node[:saasfee][:variantcall][:annovardb][:file]}" ) } or "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:saasfee][:hiway][:hdfs][:basedir]}/#{node[:saasfee][:variantcall][:annovardb][:directory]}"
 end
 
 # copy annovar db into HDFS

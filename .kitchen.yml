@@ -37,7 +37,7 @@ suites:
       - recipe[saasfee::install]
       - recipe[saasfee::hiway_client]
       - recipe[saasfee::hiway_worker]
-      - recipe[saasfee::galaxy_worker]
+#      - recipe[saasfee::galaxy_worker]
       - recipe[saasfee::cuneiform_client]
       - recipe[saasfee::cuneiform_worker]
       - recipe[saasfee::helloworld_client]
