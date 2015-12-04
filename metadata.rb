@@ -66,6 +66,12 @@ attribute "saasfee/workflows",
 :type => 'string',
 :default => "/home/hiway"
 
+attribute "saasfee/software/dir",
+:display_name => "Software directory",
+:description => "Directory in which to store software (Saasfee and executables required by the workflows)",
+:type => 'string',
+:default => "/home/hiway/software"
+
 attribute "saasfee/release",
 :display_name => "Release or snaphsot",
 :description => "Install Hi-WAY release as opposed to the latest snapshot version",
