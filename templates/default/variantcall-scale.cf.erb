@@ -9,6 +9,7 @@
 % (4) It computes several samples, amounting to 1 TB of read input data
 % (5) Read input data is zipped to conserve storage
 % (6) it uses multithreading and memory boundaries
+% (7) it does not do QC
 %
 % A variant calling workflow.
 %
@@ -140,7 +141,7 @@ deftask per-fastq(
 % <%= sample %>: Workflow definition
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-<%= sample %>_qc = fastqc( fastq: <%= sample %>_fastq1 <%= sample %>_fastq2 );
+% <%= sample %>_qc = fastqc( fastq: <%= sample %>_fastq1 <%= sample %>_fastq2 );
 
 <%= sample %>_vcf = per-sample(
   fastq1: <%= sample %>_fastq1,
@@ -152,6 +153,7 @@ deftask per-fastq(
 % <%= sample %>: Query
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-<%= sample %>_fun <%= sample %>_exonicfun <%= sample %>_qc;
+% <%= sample %>_qc;
+<%= sample %>_fun <%= sample %>_exonicfun;
 
 <% end %>

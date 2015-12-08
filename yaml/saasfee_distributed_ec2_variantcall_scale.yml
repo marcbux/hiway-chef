@@ -26,9 +26,11 @@ attrs:
         memory_mb: '6144'
         vcores: '2'
     variantcall:
+      reads:
+        url_base: 'http://s3.amazonaws.com/1000genomes/phase3/data'
       scale:
-        gz: 
-          HG02025: ["SRR359189"]
+        nsamples: '4'
+        nruns: '8'
   hadoop:
     version: '2.7.1'
     yarn:

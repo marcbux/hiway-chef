@@ -149,3 +149,9 @@ attribute "saasfee/hiway/hdfs/basedir",
 :description => "The directory in HDFS relative to which Hi-WAY is to look for workflow input data",
 :type => 'string',
 :default => "/home/hiway/"
+
+attribute "saasfee/variantcall/reads/url_base",
+:display_name => "1k Genomes URL base",
+:description => "Base directory for obtaining 1000 genomes reads files",
+:type => 'string',
+:default => "ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data"
