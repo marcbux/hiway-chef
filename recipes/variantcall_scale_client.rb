@@ -41,7 +41,7 @@ node[:saasfee][:variantcall][:scale][:gz].each do |sample, runs|
       gz = "#{run}_#{id}.filt.fastq.gz"
       
       remote_file "#{node[:saasfee][:data]}/#{sample}/#{gz}" do
-        source "#{node[:saasfee][:variantcall][:reads][:url_base]}/#{gz}"
+        source "#{node[:saasfee][:variantcall][:reads][:url_base]}/#{sample}/sequence_read/#{gz}"
         owner node[:saasfee][:user]
         group node[:hadoop][:group]
         mode "775"

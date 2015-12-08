@@ -91,7 +91,7 @@ node[:saasfee][:variantcall][:reads][:run_ids].each do |run_id|
     gz = "#{fq}.gz"
     
     remote_file "#{Chef::Config[:file_cache_path]}/#{gz}" do
-      source "#{node[:saasfee][:variantcall][:reads][:url_base]}/#{gz}"
+      source "#{node[:saasfee][:variantcall][:reads][:url_base]}/#{node[:saasfee][:variantcall][:reads][:sample_id]}/sequence_read/#{gz}"
       owner node[:saasfee][:user]
       group node[:hadoop][:group]
       mode "775"

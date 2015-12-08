@@ -50,7 +50,7 @@ default[:saasfee][:variantcall][:memory_mb]             = "#{node[:saasfee][:hiw
 
 default[:saasfee][:variantcall][:reads][:sample_id]     = "HG02025"
 default[:saasfee][:variantcall][:reads][:run_ids]       = ["SRR359188", "SRR359195"]
-default[:saasfee][:variantcall][:reads][:url_base]      = "ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/#{node[:saasfee][:variantcall][:reads][:sample_id]}/sequence_read"
+default[:saasfee][:variantcall][:reads][:url_base]      = "ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data"
 
 default[:saasfee][:variantcall][:reference][:id]          = "hg38" 
 default[:saasfee][:variantcall][:reference][:chromosomes] = ["chr22", "chrY"]
