@@ -51,7 +51,6 @@ groups:
         - hadoop::nn
         - hadoop::rm
         - hadoop::jhs
-        - saasfee::cuneiform_client
         - saasfee::hiway_client
         - saasfee::variantcall_scale_client
 
@@ -60,6 +59,5 @@ groups:
     recipes:
         - hadoop::dn
         - hadoop::nm
-        - saasfee::cuneiform_worker
         - saasfee::hiway_worker
         - saasfee::variantcall_scale_worker
