@@ -10,6 +10,8 @@
 % (5) Read input data is zipped to conserve storage
 % (6) it uses multithreading and memory boundaries
 % (7) it does not do QC
+% (8) it does zip (large) intermediate files
+% (9) it obtains input read data from s3 rather than expecting it to be located in HDFS
 %
 % A variant calling workflow.
 %
@@ -44,10 +46,12 @@ deftask fastqc( zip( File ) : fastq( File ) )in bash *{
 % bowtie2
 deftask bowtie2-align(
   bam( File )
-: [fastq1( File ) fastq2( File )] )in bash *{
+: [fastq1 fastq2] )in bash *{
 
-  gzip -c -d $fastq1 > 1.fastq
-  gzip -c -d $fastq2 > 2.fastq
+  wget $fastq1
+  wget $fastq2
+  gzip -c -d 1.fastq.gz > 1.fastq
+  gzip -c -d 2.fastq.gz > 2.fastq
   bowtie2 -D 5 -R 1 -N 0 -L 22 -i S,0,2.50 --no-unal \
   -p <%= node[:saasfee][:variantcall][:threads] %> \
   -x <%= node[:saasfee][:variantcall][:scale][:index] %> \
@@ -133,9 +137,9 @@ deftask per-fastq(
 % <%= sample %>: Input data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-<%= sample %>_fastq1 = <% runs.each do |run| %> '<%= sample %>/<%= run %>_1.filt.fastq.gz'<% end -%>;
+<%= sample %>_fastq1 = <% runs.each do |run| %> '<%= node[:saasfee][:variantcall][:reads][:url_base] %>/<%= sample %>/sequence_read/<%= run %>_1.filt.fastq.gz'<% end -%>;
 
-<%= sample %>_fastq2 = <% runs.each do |run| %> '<%= sample %>/<%= run %>_2.filt.fastq.gz'<% end -%>;
+<%= sample %>_fastq2 = <% runs.each do |run| %> '<%= node[:saasfee][:variantcall][:reads][:url_base] %>/<%= sample %>/sequence_read/<%= run %>_2.filt.fastq.gz'<% end -%>;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % <%= sample %>: Workflow definition

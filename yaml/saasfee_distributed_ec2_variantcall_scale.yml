@@ -29,7 +29,7 @@ attrs:
       reads:
         url_base: 'http://s3.amazonaws.com/1000genomes/phase3/data'
       scale:
-        nsamples: '4'
+        nsamples: '1'
         nruns: '8'
   hadoop:
     version: '2.7.1'
