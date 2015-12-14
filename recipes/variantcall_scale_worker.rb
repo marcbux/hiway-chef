@@ -64,6 +64,11 @@ bash 'update_env_variables' do
   not_if { ::File.exist?("/usr/bin/bowtie2") }
 end
 
+# install zlib, which is required for building samtools
+package "zlib1g-dev" do
+  options "--force-yes"
+end
+
 # install libcurses, which is required for building samtools
 package "libncurses5-dev" do
   options "--force-yes"
@@ -167,7 +172,7 @@ bash 'update_env_variables' do
 end
 
 # create reference directory
-directory "#{node[:saasfee][:variantcall][:scale][:index]}" do
+directory "#{node[:saasfee][:variantcall][:scale][:data]}" do
   owner node[:saasfee][:user]
   group node[:hadoop][:group]
   mode "755"
@@ -184,14 +189,23 @@ remote_file "#{Chef::Config[:file_cache_path]}/hg19.zip" do
 end
 
 # extract bowtie2 index
-bash 'extract' do
-  user node[:saasfee][:user]
-  group node[:hadoop][:group]
-  code <<-EOH
-  set -e
-    unzip #{Chef::Config[:file_cache_path]}/hg19.zip -d #{node[:saasfee][:variantcall][:scale][:index]}
-  EOH
-  not_if { ::File.exists?( "#{node[:saasfee][:variantcall][:scale][:index]}/hg19.1.bt2" ) }
+if !File.exists?( "#{node[:saasfee][:variantcall][:scale][:index]}.1.bt2" )
+  bash 'extract' do
+    user node[:saasfee][:user]
+    group node[:hadoop][:group]
+    code <<-EOH
+    set -e
+      unzip #{Chef::Config[:file_cache_path]}/hg19.zip -d #{node[:saasfee][:variantcall][:scale][:data]}
+    EOH
+  end
+
+  bash 'rm_zip' do
+    user "root"
+    code <<-EOH
+    set -e
+      rm {Chef::Config[:file_cache_path]}/hg19.zip
+    EOH
+  end
 end
 
 # download reference fasta

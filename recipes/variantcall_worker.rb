@@ -42,10 +42,12 @@ remote_file "#{Chef::Config[:file_cache_path]}/#{node[:saasfee][:variantcall][:b
   action :create_if_missing
 end
 
-# install g++ and zlib, which are required for building bwa
+# install g++, which is required for building bwa
 package "g++" do
   options "--force-yes"
 end
+
+# install zlib, which is required for building bwa and samtools
 package "zlib1g-dev" do
   options "--force-yes"
 end

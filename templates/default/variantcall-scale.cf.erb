@@ -10,8 +10,9 @@
 % (5) Read input data is zipped to conserve storage
 % (6) it uses multithreading and memory boundaries
 % (7) it does not do QC
-% (8) it does zip (large) intermediate files
-% (9) it obtains input read data from s3 rather than expecting it to be located in HDFS
+% (8) it obtains input read data from s3 rather than expecting it to be located in HDFS
+% (9) it clusters alignment and bam file sorting
+% (10) it clusters bam file merger, pileup, and varscan
 %
 % A variant calling workflow.
 %
@@ -36,8 +37,7 @@
 % Task definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% bowtie2
-deftask bowtie2-align(
+deftask align(
   bam( File )
 : [fastq1 fastq2] )in bash *{
 
@@ -48,24 +48,13 @@ deftask bowtie2-align(
   bowtie2 -D 5 -R 1 -N 0 -L 22 -i S,0,2.50 --no-unal \
   -p <%= node[:saasfee][:variantcall][:threads] %> \
   -x <%= node[:saasfee][:variantcall][:scale][:index] %> \
-  -1 1.fastq -2 2.fastq -S - | samtools view -b - > $bam
-}*
-
-% samtools
-deftask samtools-sort( sortedbam( File ) : bam( File ) )in bash *{
-  sortedbam=alignment-sorted.bam
+  -1 1.fastq -2 2.fastq -S - | samtools view -b - > alignment.bam
+  bam=alignment-sorted.bam
   samtools sort -m `expr <%= node[:saasfee][:variantcall][:memory_mb] %> \* 512 \* 1024` \
-  $bam alignment-sorted
+  alignment.bam alignment-sorted
 }*
 
-deftask samtools-mpileup(
-  mpileup( File )
-: bam( File ) )in bash *{
-
-  samtools mpileup -f <%= node[:saasfee][:variantcall][:scale][:fa] %> $bam > $mpileup
-}*
-
-deftask samtools-merge( merged( File ) : <bam( File )> )in bash *{
+deftask varscan( vcf( File ) : <bam( File )> )in bash *{
   if [ ${#bam[@]} -eq "0" ]
   then
     echo "No files to merge." >&2
@@ -73,16 +62,13 @@ deftask samtools-merge( merged( File ) : <bam( File )> )in bash *{
   else
     if [ ${#bam[@]} -eq "1" ]
     then
-      merged=$bam
+      mv $bam merged.bam
     else
-      samtools merge -f $merged ${bam[@]}
+      samtools merge -f merged.bam ${bam[@]}
     fi
   fi
-}*
-
-% varscan
-deftask varscan( vcf( File ) : mpileup( File ) )in bash *{
-  varscan mpileup2snp $mpileup --output-vcf --p-value 99e-02 > $vcf
+  samtools mpileup -f <%= node[:saasfee][:variantcall][:scale][:fa] %> merged.bam > mpileup
+  varscan mpileup2snp mpileup --output-vcf --p-value 99e-02 > $vcf
 }*
 
 % annovar
@@ -98,32 +84,6 @@ deftask annovar(
   -geneanno -outfile table - <%= node[:saasfee][:variantcall][:scale][:db] %>
 }*
 
-deftask per-sample(
-    vcf( File )
-  : <fastq1( File )> <fastq2( File )> ) {
-
-  sortedbam = per-fastq(
-    fastq1: fastq1,
-    fastq2: fastq2 );
-
-  mergedbam = samtools-merge( bam: sortedbam );
-
-  mpileup = samtools-mpileup( bam: mergedbam );
-
-  vcf = varscan( mpileup: mpileup );
-}
-
-deftask per-fastq(
-    sortedbam
-  : [fastq1( File ) fastq2( File )] ) {
-
-  bam = bowtie2-align(
-    fastq1: fastq1,
-    fastq2: fastq2 );
-
-  sortedbam = samtools-sort( bam: bam );
-  sortedbam = samtools-sort( bam: bam );
-}
 <% i = 1 %>
 <% @gz.each do |sample, runs| %>
 <% if i > node[:saasfee][:variantcall][:scale][:nsamples].to_i then %>
@@ -144,9 +104,11 @@ deftask per-fastq(
 
 % <%= sample %>_qc = fastqc( fastq: <%= sample %>_fastq1 <%= sample %>_fastq2 );
 
-<%= sample %>_vcf = per-sample(
+<%= sample %>_bam = align(
   fastq1: <%= sample %>_fastq1,
   fastq2: <%= sample %>_fastq2 );
+  
+<%= sample %>_vcf = varscan( bam: <%= sample %>_bam );
   
 <%= sample %>_fun <%= sample %>_exonicfun = annovar( vcf: <%= sample %>_vcf );
 

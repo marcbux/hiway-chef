@@ -83,9 +83,10 @@ default[:saasfee][:variantcall][:fastqc][:home]       = "#{node[:saasfee][:softw
 default[:saasfee][:variantcall][:fastqc][:url]        = "http://www.bioinformatics.babraham.ac.uk/projects/fastqc/#{node[:saasfee][:variantcall][:fastqc][:zip]}"
 
 default[:saasfee][:variantcall][:scale][:workflow]    = "variantcall-scale.cf"
-default[:saasfee][:variantcall][:scale][:index]       = "#{node[:saasfee][:data]}/hg19"
-default[:saasfee][:variantcall][:scale][:fa]          = "#{node[:saasfee][:data]}/hg19/hg19.fa"
-default[:saasfee][:variantcall][:scale][:db]          = "#{node[:saasfee][:data]}/hg19/db"
+default[:saasfee][:variantcall][:scale][:data]        = "#{node[:saasfee][:data]}/hg19"
+default[:saasfee][:variantcall][:scale][:index]       = "#{node[:saasfee][:variantcall][:scale][:data]}/hg19"
+default[:saasfee][:variantcall][:scale][:fa]          = "#{node[:saasfee][:variantcall][:scale][:data]}/hg19.fa"
+default[:saasfee][:variantcall][:scale][:db]          = "#{node[:saasfee][:variantcall][:scale][:data]}/db"
 default[:saasfee][:variantcall][:scale][:nsamples]    = "1"
 default[:saasfee][:variantcall][:scale][:gz]          = { "HG02684" => ["SRR589976", "SRR589762", "SRR588698", "SRR589336", "SRR589017", "SRR590519", "SRR590512", "SRR590699"],
                                                           "HG02660" => ["SRR590069", "SRR590551", "SRR590395", "SRR589993", "SRR589194", "SRR589742", "SRR590056", "SRR588889"],
