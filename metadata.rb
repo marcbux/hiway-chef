@@ -138,12 +138,6 @@ attribute "saasfee/variantcall/scale/nsamples",
 :type => 'string',
 :default => "1"
 
-attribute "saasfee/variantcall/scale/nruns",
-:display_name => "Number of Runs",
-:description => "The maximum number of runs per sample to be downloaded from the 1000 Genomes Project",
-:type => 'string',
-:default => "1"
-
 attribute "saasfee/hiway/hdfs/basedir",
 :display_name => "Hi-WAY HDFS directory",
 :description => "The directory in HDFS relative to which Hi-WAY is to look for workflow input data",

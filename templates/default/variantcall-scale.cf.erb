@@ -124,7 +124,11 @@ deftask per-fastq(
   sortedbam = samtools-sort( bam: bam );
   sortedbam = samtools-sort( bam: bam );
 }
+<% i = 1 %>
 <% @gz.each do |sample, runs| %>
+<% if i > node[:saasfee][:variantcall][:scale][:nsamples].to_i then %>
+<%   break %>
+<% end %>
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % <%= sample %>: Input data
@@ -153,4 +157,5 @@ deftask per-fastq(
 % <%= sample %>_qc;
 <%= sample %>_fun <%= sample %>_exonicfun;
 
+<% i = i + 1 %>
 <% end %>

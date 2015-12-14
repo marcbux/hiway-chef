@@ -167,7 +167,7 @@ bash 'update_env_variables' do
 end
 
 # create reference directory
-directory "#{node[:saasfee][:data]}/hg19" do
+directory "#{node[:saasfee][:variantcall][:scale][:index]}" do
   owner node[:saasfee][:user]
   group node[:hadoop][:group]
   mode "755"
@@ -181,7 +181,6 @@ remote_file "#{Chef::Config[:file_cache_path]}/hg19.zip" do
   group node[:hadoop][:group]
   mode "775"
   action :create_if_missing
-  not_if { ::File.exists?( "#{node[:saasfee][:variantcall][:scale][:index]}.1.bt2" ) }
 end
 
 # extract bowtie2 index
@@ -190,9 +189,9 @@ bash 'extract' do
   group node[:hadoop][:group]
   code <<-EOH
   set -e
-    unzip #{Chef::Config[:file_cache_path]}/hg19.zip -d #{node[:saasfee][:data]}/hg19
+    unzip #{Chef::Config[:file_cache_path]}/hg19.zip -d #{node[:saasfee][:variantcall][:scale][:index]}
   EOH
-  not_if { ::File.exists?( "#{node[:saasfee][:variantcall][:scale][:index]}.1.bt2" ) }
+  not_if { ::File.exists?( "#{node[:saasfee][:variantcall][:scale][:index]}/hg19.1.bt2" ) }
 end
 
 # download reference fasta
