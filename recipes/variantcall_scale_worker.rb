@@ -167,7 +167,7 @@ bash 'update_env_variables' do
 end
 
 # create reference directory
-directory "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:id]}" do
+directory "#{node[:saasfee][:data]}/hg19" do
   owner node[:saasfee][:user]
   group node[:hadoop][:group]
   mode "755"
@@ -175,8 +175,8 @@ directory "#{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:
 end
 
 # download bowtie2 index
-remote_file "#{Chef::Config[:file_cache_path]}/#{node[:saasfee][:variantcall][:reference][:id]}.zip" do
-  source "ftp://ftp.ccb.jhu.edu/pub/data/bowtie2_indexes/#{node[:saasfee][:variantcall][:reference][:id]}.zip"
+remote_file "#{Chef::Config[:file_cache_path]}/hg19.zip" do
+  source "ftp://ftp.ccb.jhu.edu/pub/data/bowtie2_indexes/hg19.zip"
   owner node[:saasfee][:user]
   group node[:hadoop][:group]
   mode "775"
@@ -190,19 +190,20 @@ bash 'extract' do
   group node[:hadoop][:group]
   code <<-EOH
   set -e
-    unzip #{Chef::Config[:file_cache_path]}/#{node[:saasfee][:variantcall][:reference][:id]}.zip -d #{node[:saasfee][:data]}/#{node[:saasfee][:variantcall][:reference][:id]}
+    unzip #{Chef::Config[:file_cache_path]}/hg19.zip -d #{node[:saasfee][:data]}/hg19
   EOH
   not_if { ::File.exists?( "#{node[:saasfee][:variantcall][:scale][:index]}.1.bt2" ) }
 end
 
 # download reference fasta
+chromosomes = ["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chrX", "chrY", "chrM", "chr1_gl000191_random", "chr1_gl000192_random", "chr4_gl000193_random", "chr4_gl000194_random", "chr7_gl000195_random", "chr8_gl000196_random", "chr8_gl000197_random", "chr9_gl000198_random", "chr9_gl000199_random", "chr9_gl000200_random", "chr9_gl000201_random", "chr11_gl000202_random", "chr17_gl000203_random", "chr17_gl000204_random", "chr17_gl000205_random", "chr17_gl000206_random", "chr18_gl000207_random", "chr19_gl000208_random", "chr19_gl000209_random", "chr21_gl000210_random", "chrUn_gl000211", "chrUn_gl000212", "chrUn_gl000213", "chrUn_gl000214", "chrUn_gl000215", "chrUn_gl000216", "chrUn_gl000217", "chrUn_gl000218", "chrUn_gl000219", "chrUn_gl000220", "chrUn_gl000221", "chrUn_gl000222", "chrUn_gl000223", "chrUn_gl000224", "chrUn_gl000225", "chrUn_gl000226", "chrUn_gl000227", "chrUn_gl000228", "chrUn_gl000229", "chrUn_gl000230", "chrUn_gl000231", "chrUn_gl000232", "chrUn_gl000233", "chrUn_gl000234", "chrUn_gl000235", "chrUn_gl000236", "chrUn_gl000237", "chrUn_gl000238", "chrUn_gl000239", "chrUn_gl000240", "chrUn_gl000241", "chrUn_gl000242", "chrUn_gl000243", "chrUn_gl000244", "chrUn_gl000245", "chrUn_gl000246", "chrUn_gl000247", "chrUn_gl000248", "chrUn_gl000249"]
 if !File.exists?( node[:saasfee][:variantcall][:scale][:fa] )
-  node[:saasfee][:variantcall][:reference][:chromosomes].each do |ref|
+  chromosomes.each do |ref|
     fa = "#{ref}.fa"
     gz = "#{fa}.gz"
     
     remote_file "#{Chef::Config[:file_cache_path]}/#{gz}" do
-      source "#{node[:saasfee][:variantcall][:reference][:url_base]}/#{gz}"
+      source "ftp://hgdownload.cse.ucsc.edu/goldenPath/hg19/chromosomes/#{gz}"
       owner node[:saasfee][:user]
       group node[:hadoop][:group]
       mode "775"
@@ -237,7 +238,7 @@ bash 'download_annovar_db' do
   group node[:hadoop][:group]
   code <<-EOH
   set -e
-    annotate_variation.pl -downdb -webfrom annovar refGene -buildver #{node[:saasfee][:variantcall][:reference][:id]} #{node[:saasfee][:variantcall][:scale][:db]}
+    annotate_variation.pl -downdb -webfrom annovar refGene -buildver hg19 #{node[:saasfee][:variantcall][:scale][:db]}
   EOH
   not_if { ::File.exists?( node[:saasfee][:variantcall][:scale][:db] ) }
 end

@@ -54,7 +54,7 @@ default[:saasfee][:variantcall][:reads][:url_base]      = "ftp://ftp.1000genomes
 
 default[:saasfee][:variantcall][:reference][:id]          = "hg38" 
 default[:saasfee][:variantcall][:reference][:chromosomes] = ["chr22", "chrY"]
-default[:saasfee][:variantcall][:reference][:url_base]    = "ftp://hgdownload.soe.ucsc.edu/apache/htdocs/goldenPath/#{node[:saasfee][:variantcall][:reference][:id]}/chromosomes"
+default[:saasfee][:variantcall][:reference][:url_base]    = "ftp://hgdownload.soe.ucsc.edu/goldenPath/#{node[:saasfee][:variantcall][:reference][:id]}/chromosomes"
 
 default[:saasfee][:variantcall][:annovardb][:directory] = "annodb"
 default[:saasfee][:variantcall][:annovardb][:file]      = "hg38db.tar"
