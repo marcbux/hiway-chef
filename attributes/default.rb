@@ -84,9 +84,9 @@ default[:saasfee][:variantcall][:fastqc][:url]        = "http://www.bioinformati
 
 default[:saasfee][:variantcall][:scale][:workflow]    = "variantcall-scale.cf"
 default[:saasfee][:variantcall][:scale][:index]       = "#{node[:saasfee][:data]}/hg19"
-default[:saasfee][:variantcall][:scale][:fa]          = "#{node[:saasfee][:variantcall][:scale][:fa]}/hg19.fa"
+default[:saasfee][:variantcall][:scale][:fa]          = "#{node[:saasfee][:data]}/hg19.fa"
 default[:saasfee][:variantcall][:scale][:db]          = "#{node[:saasfee][:data]}/hg19/db"
-default[:saasfee][:variantcall][:scale][:nsamples]    = "2"
+default[:saasfee][:variantcall][:scale][:nsamples]    = "1"
 default[:saasfee][:variantcall][:scale][:gz]          = { "HG02684" => ["SRR589976", "SRR589762", "SRR588698", "SRR589336", "SRR589017", "SRR590519", "SRR590512", "SRR590699"],
                                                           "HG02660" => ["SRR590069", "SRR590551", "SRR590395", "SRR589993", "SRR589194", "SRR589742", "SRR590056", "SRR588889"],
                                                           "NA20531" => ["ERR241206", "ERR241446", "ERR241246", "ERR244790", "ERR242866", "ERR242903", "ERR242828", "ERR241286"],

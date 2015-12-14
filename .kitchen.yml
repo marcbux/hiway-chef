@@ -87,13 +87,6 @@ suites:
              worker:
                vcores: "2"
                memory_mb: "5120"
-           variantcall:
-             reference:
-               id: "hg19"
-               chromosomes: ['chr22', 'chrY']
-               scale:
-                 nsamples: 1
-                 nruns: 1
            private_ips: ["10.0.2.15"]
            public_ips: ["10.0.2.15"]
          hdfs:

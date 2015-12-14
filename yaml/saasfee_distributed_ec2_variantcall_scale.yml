@@ -4,7 +4,6 @@ ec2:
     ami: ami-d05e75b8
     region: us-east-1
     username: hiway
-    price: 1
 
 cookbooks:
   hadoop:
