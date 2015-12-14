@@ -215,6 +215,13 @@ if !File.exists?( node[:saasfee][:variantcall][:scale][:fa] )
       code <<-EOH
       set -e
         gzip -c -d "#{Chef::Config[:file_cache_path]}/#{gz}" >> #{node[:saasfee][:variantcall][:scale][:fa]}
+      EOH
+    end
+    
+    bash 'rm_gz' do
+      user "root"
+      code <<-EOH
+      set -e
         rm #{Chef::Config[:file_cache_path]}/#{gz}
       EOH
     end
