@@ -4,7 +4,7 @@ baremetal:
 
 cookbooks:
   hadoop:
-    github: "hopshadoop/apache-hadoop-chef"
+    github: "marcbux/apache-hadoop-chef"
     branch: "master"
   saasfee:
     github: "marcbux/hiway-chef"
