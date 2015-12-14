@@ -36,20 +36,13 @@
 % Task definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% fastqc
-deftask fastqc( zip( File ) : fastq( File ) )in bash *{
-    gzip -c -d $fastq > temp.fastq
-    fastqc -f fastq --noextract -o ./ temp.fastq
-    zip=`ls *.zip`
-}*
-
 % bowtie2
 deftask bowtie2-align(
   bam( File )
 : [fastq1 fastq2] )in bash *{
 
-  wget $fastq1
-  wget $fastq2
+  wget $fastq1 -O 1.fastq.gz
+  wget $fastq2 -O 2.fastq.gz
   gzip -c -d 1.fastq.gz > 1.fastq
   gzip -c -d 2.fastq.gz > 2.fastq
   bowtie2 -D 5 -R 1 -N 0 -L 22 -i S,0,2.50 --no-unal \
