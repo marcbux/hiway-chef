@@ -74,3 +74,9 @@ dependencies:
   - recipe: saasfee::RNAseq_worker
     local: 
       - saasfee::galaxy_worker
+  - recipe: saasfee::variantcall_scale_client
+    local: 
+      - saasfee::hiway_client
+  - recipe: saasfee::variantcall_scale_worker
+    local: 
+      - saasfee::hiway_worker
