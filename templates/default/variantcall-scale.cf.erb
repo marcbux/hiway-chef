@@ -37,21 +37,13 @@
 % Task definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-deftask align(
-  bam( File )
-: [fastq1 fastq2] )in bash *{
-
-  wget $fastq1 -O 1.fastq.gz
-  wget $fastq2 -O 2.fastq.gz
-  gzip -c -d 1.fastq.gz > 1.fastq
-  gzip -c -d 2.fastq.gz > 2.fastq
-  bowtie2 -D 5 -R 1 -N 0 -L 22 -i S,0,2.50 --no-unal \
-  -p <%= node[:saasfee][:variantcall][:threads] %> \
-  -x <%= node[:saasfee][:variantcall][:scale][:index] %> \
-  -1 1.fastq -2 2.fastq -S - | samtools view -b - > alignment.bam
-  bam=alignment-sorted.bam
-  samtools sort -m `expr <%= node[:saasfee][:variantcall][:memory_mb] %> \* 512 \* 1024` \
-  alignment.bam alignment-sorted
+deftask align( bam( File ) : [fastq1 fastq2] )in bash *{
+  wget $fastq1 -O - | gzip -c -d > reads_1.fastq
+  wget $fastq2 -O - | gzip -c -d > reads_2.fastq
+  bowtie2 --very-fast --no-unal -p <%= node[:saasfee][:variantcall][:threads] %> -x <%= node[:saasfee][:variantcall][:scale][:index] %> -1 reads_1.fastq -2 reads_2.fastq -S - | samtools view -b - > alignment.bam
+  rm reads_1.fastq reads_2.fastq
+  bam=sorted.bam
+  samtools sort -@ <%= node[:saasfee][:variantcall][:threads] %> -m `expr <%= node[:saasfee][:variantcall][:memory_mb] %> / 2 / <%= node[:saasfee][:variantcall][:threads] %>`M alignment.bam sorted
 }*
 
 deftask varscan( vcf( File ) : <bam( File )> )in bash *{
@@ -64,24 +56,18 @@ deftask varscan( vcf( File ) : <bam( File )> )in bash *{
     then
       mv $bam merged.bam
     else
-      samtools merge -f merged.bam ${bam[@]}
+      samtools merge -@ <%= node[:saasfee][:variantcall][:threads] %> merged.bam ${bam[@]}
     fi
   fi
-  samtools mpileup -f <%= node[:saasfee][:variantcall][:scale][:fa] %> merged.bam > mpileup
-  varscan mpileup2snp mpileup --output-vcf --p-value 99e-02 > $vcf
+  rm ${bam[@]}
+  samtools mpileup -f <%= node[:saasfee][:variantcall][:scale][:fa] %> merged.bam | varscan mpileup2snp --output-vcf | gzip > $vcf
 }*
 
 % annovar
-deftask annovar(
-  fun( File ) exonicfun( File )
-: <vcf( File )> )in bash *{
-
+deftask annovar( fun( File ) exonicfun( File ) : <vcf( File )> )in bash *{
   fun=table.variant_function
   exonicfun=table.exonic_variant_function
-  cat ${vcf[@]} | \
-  convert2annovar.pl -format vcf4 - | \
-  annotate_variation.pl -buildver <%= node[:saasfee][:variantcall][:reference][:id] %> \
-  -geneanno -outfile table - <%= node[:saasfee][:variantcall][:scale][:db] %>
+  gzip -c -d merged_varscan.vcf.gz | convert2annovar.pl -format vcf4 - | annotate_variation.pl -buildver hg19 -geneanno -outfile table - <%= node[:saasfee][:variantcall][:scale][:db] %>
 }*
 
 <% i = 1 %>
@@ -104,9 +90,8 @@ deftask annovar(
 
 % <%= sample %>_qc = fastqc( fastq: <%= sample %>_fastq1 <%= sample %>_fastq2 );
 
-<%= sample %>_bam = align(
-  fastq1: <%= sample %>_fastq1,
-  fastq2: <%= sample %>_fastq2 );
+<%= sample %>_bam = align( fastq1: <%= sample %>_fastq1,
+                            fastq2: <%= sample %>_fastq2 );
   
 <%= sample %>_vcf = varscan( bam: <%= sample %>_bam );
   
