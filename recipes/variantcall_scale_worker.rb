@@ -203,7 +203,7 @@ if !File.exists?( "#{node[:saasfee][:variantcall][:scale][:index]}.1.bt2" )
     user "root"
     code <<-EOH
     set -e
-      rm {Chef::Config[:file_cache_path]}/hg19.zip
+      rm #{Chef::Config[:file_cache_path]}/hg19.zip
     EOH
   end
 end
