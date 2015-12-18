@@ -37,31 +37,38 @@
 % Task definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-deftask align( bam( File ) : [fastq1 fastq2] )in bash *{
+deftask align( cram( File ) : [fastq1 fastq2] )in bash *{
   wget $fastq1 -O - | gzip -c -d > reads_1.fastq
   wget $fastq2 -O - | gzip -c -d > reads_2.fastq
   echo "reads_1.fastq `du -b -L reads_1.fastq | awk '{print $1}'`"
   echo "reads_2.fastq `du -b -L reads_2.fastq | awk '{print $1}'`"
   bowtie2 --very-fast --no-unal -p <%= node[:saasfee][:variantcall][:threads] %> -x <%= node[:saasfee][:variantcall][:scale][:index] %> -1 reads_1.fastq -2 reads_2.fastq -S - | samtools view -b - > alignment.bam
   rm reads_1.fastq reads_2.fastq
-  bam=sorted.bam
   samtools sort -@ <%= node[:saasfee][:variantcall][:threads] %> -m `expr <%= node[:saasfee][:variantcall][:memory_mb] %> / 2 / <%= node[:saasfee][:variantcall][:threads] %>`M alignment.bam sorted
+  rm alignment.bam
+  samtools view -T <%= node[:saasfee][:variantcall][:scale][:fa] %> -C sorted.bam -o $cram
 }*
 
-deftask varscan( vcf( File ) : <bam( File )> )in bash *{
-  if [ ${#bam[@]} -eq "0" ]
+deftask varscan( vcf( File ) : <cram( File )> )in bash *{
+  if [ ${#cram[@]} -eq "0" ]
   then
     echo "No files to merge." >&2
     exit -1
   else
-    if [ ${#bam[@]} -eq "1" ]
+    if [ ${#cram[@]} -eq "1" ]
     then
-      mv $bam merged.bam
+      samtools view $cram -b > merged.bam
     else
-      samtools merge -@ <%= node[:saasfee][:variantcall][:threads] %> merged.bam ${bam[@]}
+      for i in "${cram[@]}"
+      do
+        samtools view $i -b > .$i
+        rm $i
+        mv .$i $i
+      done
+      samtools merge -@ <%= node[:saasfee][:variantcall][:threads] %> merged.bam ${cram[@]}
     fi
   fi
-  rm ${bam[@]}
+  rm ${cram[@]}
   samtools mpileup -f <%= node[:saasfee][:variantcall][:scale][:fa] %> merged.bam | varscan mpileup2snp --output-vcf | gzip > $vcf
 }*
 
@@ -95,7 +102,7 @@ deftask annovar( fun( File ) exonicfun( File ) : vcf( File ) )in bash *{
 <%= sample %>_bam = align( fastq1: <%= sample %>_fastq1,
                             fastq2: <%= sample %>_fastq2 );
   
-<%= sample %>_vcf = varscan( bam: <%= sample %>_bam );
+<%= sample %>_vcf = varscan( cram: <%= sample %>_bam );
   
 <%= sample %>_fun <%= sample %>_exonicfun = annovar( vcf: <%= sample %>_vcf );
 
