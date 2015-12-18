@@ -40,6 +40,8 @@
 deftask align( bam( File ) : [fastq1 fastq2] )in bash *{
   wget $fastq1 -O - | gzip -c -d > reads_1.fastq
   wget $fastq2 -O - | gzip -c -d > reads_2.fastq
+  echo "reads_1.fastq `du -b -L reads_1.fastq | awk '{print $1}'`"
+  echo "reads_2.fastq `du -b -L reads_2.fastq | awk '{print $1}'`"
   bowtie2 --very-fast --no-unal -p <%= node[:saasfee][:variantcall][:threads] %> -x <%= node[:saasfee][:variantcall][:scale][:index] %> -1 reads_1.fastq -2 reads_2.fastq -S - | samtools view -b - > alignment.bam
   rm reads_1.fastq reads_2.fastq
   bam=sorted.bam
