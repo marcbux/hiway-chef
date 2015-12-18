@@ -1,8 +1,7 @@
 dependencies:
   - recipe: saasfee::hiway_client
-    local: 
-      - hadoop::rm
     global: 
+      - hadoop::rm
       - hadoop::dn
       - hadoop::nn
   - recipe: saasfee::hiway_worker

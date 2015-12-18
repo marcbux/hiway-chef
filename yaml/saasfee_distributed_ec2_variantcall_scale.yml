@@ -1,4 +1,4 @@
-name: saasfeeDistributedEc2VariantcallScale
+name: saasfeeDistributedEc2VariantcallScale2
 ec2:
     type: m3.large
     ami: ami-234ecc54
@@ -21,8 +21,8 @@ attrs:
     hiway:
       scheduler: 'greedyQueue'
       am:
-        memory_mb: '512'
-        vcores: '1'
+        memory_mb: '6656'
+        vcores: '2'
       worker:
         memory_mb: '6144'
         vcores: '2'
@@ -34,10 +34,10 @@ attrs:
   hadoop:
     version: '2.7.1'
     yarn:
-      nm:
-        memory_mbs: '6656'
-      vcores: '3'
+      vcores: '2'
       user: 'ubuntu'
+      nm:
+        memory_mbs: '6144'
     mr:
       user: 'ubuntu'
     tmp_dir: '/mnt/hadoop'
@@ -47,16 +47,30 @@ attrs:
     user: 'ubuntu'
     
 groups:
-  master:
+  nn:
     size: 1
     recipes:
         - hadoop::nn
+        
+  rm:
+    size: 1
+    recipes:
         - hadoop::rm
         - hadoop::jhs
+
+  am:
+    size: 1
+    attrs:
+      hadoop:
+        yarn:
+          nm:
+            memory_mbs: '6656'
+    recipes:
+        - hadoop::nm
         - saasfee::hiway_client
         - saasfee::cuneiform_client
         - saasfee::variantcall_scale_client
-
+        
   workers:
     size: 1
     recipes:
