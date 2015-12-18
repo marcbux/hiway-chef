@@ -41,7 +41,7 @@ attrs:
       user: 'ubuntu'
     tmp_dir: '/mnt/hadoop'
     data_dir: '/mnt/hadoop'
-    num_replicas: '2'
+    num_replicas: '3'
   hdfs:
     user: 'ubuntu'
     
