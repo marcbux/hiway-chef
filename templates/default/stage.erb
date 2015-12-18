@@ -5,3 +5,6 @@ for index in "${!array[@]}"
 do
   <%= node[:hadoop][:home] %>/bin/hdfs dfs -get ${array[index]} $2
 done
+<%= node[:hadoop][:home] %>/bin/hdfs dfs -get `cat $1 | grep -oP '\"stdout\":\"\K[^\"]*'`
+<%= node[:hadoop][:home] %>/bin/hdfs dfs -get `cat $1 | grep -oP '\"stderr\":\"\K[^\"]*'`
+<%= node[:hadoop][:home] %>/bin/hdfs dfs -get `cat $1 | grep -oP '\"statlog\":\"\K[^\"]*'`
