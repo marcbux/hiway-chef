@@ -52,6 +52,7 @@ groups:
         - hadoop::rm
         - hadoop::jhs
         - saasfee::hiway_client
+        - saasfee::cuneiform_client
         - saasfee::variantcall_scale_client
 
   workers:

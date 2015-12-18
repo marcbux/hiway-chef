@@ -64,10 +64,10 @@ deftask varscan( vcf( File ) : <bam( File )> )in bash *{
 }*
 
 % annovar
-deftask annovar( fun( File ) exonicfun( File ) : <vcf( File )> )in bash *{
+deftask annovar( fun( File ) exonicfun( File ) : vcf( File ) )in bash *{
   fun=table.variant_function
   exonicfun=table.exonic_variant_function
-  gzip -c -d merged_varscan.vcf.gz | convert2annovar.pl -format vcf4 - | annotate_variation.pl -buildver hg19 -geneanno -outfile table - <%= node[:saasfee][:variantcall][:scale][:db] %>
+  gzip -c -d $vcf | convert2annovar.pl -format vcf4 - | annotate_variation.pl -buildver hg19 -geneanno -outfile table - <%= node[:saasfee][:variantcall][:scale][:db] %>
 }*
 
 <% i = 1 %>
