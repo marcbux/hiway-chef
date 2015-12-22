@@ -4,4 +4,4 @@ echo `date` > ~/if.log
 echo `date` > ~/up.log
 iostat -dx 1 >> ~/io.log &
 ifstat >> ~/if.log &
-while true; do uptime >> up.log; sleep 1; done
+while true; do uptime >> ~/up.log; sleep 1; done

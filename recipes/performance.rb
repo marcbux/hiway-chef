@@ -1,5 +1,6 @@
 package "sysstat"
 package "ifstat"
+package "htop"
 
 # prepare the variant call workflow file
 template "#{node[:saasfee][:home]}/perf.sh" do
