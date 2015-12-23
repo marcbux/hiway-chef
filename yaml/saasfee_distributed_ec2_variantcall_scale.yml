@@ -65,4 +65,5 @@ groups:
         - hadoop::nm
         - saasfee::hiway_worker
         - saasfee::variantcall_scale_worker
+        - saasfee::variantcall_scale_data
         - saasfee::performance

@@ -139,14 +139,3 @@ bash 'update_env_variables' do
   EOH
   not_if { ::File.exist?("/usr/bin/annotate_variation.pl") }
 end
-
-# obtain data from hdfs
-bash "copy_data_to_hdfs" do
-  user node[:saasfee][:user]
-  group node[:hadoop][:group]
-  code <<-EOH
-  set -e && set -o pipefail
-    #{node[:hadoop][:home]}/bin/hdfs dfs -get #{node[:saasfee][:hiway][:hdfs][:basedir]}/hg19 #{node[:saasfee][:variantcall][:scale][:data]}
-  EOH
-  not_if { ::File.exist?("#{node[:saasfee][:variantcall][:scale][:data]}") }
-end
