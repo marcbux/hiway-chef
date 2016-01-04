@@ -139,3 +139,24 @@ bash 'update_env_variables' do
   EOH
   not_if { ::File.exist?("/usr/bin/annotate_variation.pl") }
 end
+
+# download worker data from S3
+remote_file "#{node[:saasfee][:data]}/hg19.tar.gz" do
+  source node[:saasfee][:variantcall][:scale][:url]
+  owner node[:saasfee][:user]
+  group node[:hadoop][:group]
+  mode "775"
+  action :create_if_missing
+end
+
+# extract worker data
+bash "get_data_from_hdfs" do
+  user node[:saasfee][:user]
+  group node[:hadoop][:group]
+  code <<-EOH
+  set -e && set -o pipefail
+    tar -zxvf #{node[:saasfee][:data]}/hg19.tar.gz -C #{node[:saasfee][:data]}
+    rm #{node[:saasfee][:data]}/hg19.tar.gz
+  EOH
+  not_if { ::File.exist?("#{node[:saasfee][:variantcall][:scale][:data]}") }
+end

@@ -177,23 +177,3 @@ end
 #  EOH
 #  not_if { ::File.exists?( node[:saasfee][:variantcall][:scale][:db] ) }
 #end
-
-# download worker data 
-remote_file "#{node[:saasfee][:data]}/hg19.tar.gz" do
-  source "https://www2.informatik.hu-berlin.de/~buxmarcn/downloads/hg19.tar.gz"
-  owner node[:saasfee][:user]
-  group node[:hadoop][:group]
-  mode "775"
-  action :create_if_missing
-end
-
-# copy data to hdfs
-bash "copy_data_to_hdfs" do
-  user node[:saasfee][:user]
-  group node[:hadoop][:group]
-  code <<-EOH
-  set -e && set -o pipefail
-    #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:saasfee][:data]}/hg19.tar.gz #{node[:saasfee][:hiway][:hdfs][:basedir]}/hg19.tar.gz
-  EOH
-  not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:saasfee][:hiway][:hdfs][:basedir]}/hg19.tar.gz"
-end

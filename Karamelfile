@@ -79,6 +79,3 @@ dependencies:
   - recipe: saasfee::variantcall_scale_worker
     local: 
       - saasfee::hiway_worker
-  - recipe: saasfee::variantcall_scale_data
-    global:
-      - saasfee::variantcall_scale_client

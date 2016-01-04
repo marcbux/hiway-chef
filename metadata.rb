@@ -132,6 +132,12 @@ attribute "saasfee/variantcall/reference/id",
 :type => 'string',
 :default => "hg38"
 
+attribute "saasfee/variantcall/scale/url",
+:display_name => "Variantcalling scale data URL",
+:description => "URL from where to obtain input data for the variant call scale workflow",
+:type => 'string',
+:default => "https://s3.amazonaws.com/variantcall-scale/hg19.tar.gz"
+
 attribute "saasfee/variantcall/scale/nsamples",
 :display_name => "Number of Samples",
 :description => "The maximum number of samples to be downloaded from the 1000 Genomes Project",

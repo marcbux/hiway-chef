@@ -83,6 +83,7 @@ default[:saasfee][:variantcall][:fastqc][:home]       = "#{node[:saasfee][:softw
 default[:saasfee][:variantcall][:fastqc][:url]        = "http://www.bioinformatics.babraham.ac.uk/projects/fastqc/#{node[:saasfee][:variantcall][:fastqc][:zip]}"
 
 default[:saasfee][:variantcall][:scale][:workflow]    = "variantcall-scale.cf"
+default[:saasfee][:variantcall][:scale][:url]         = "https://s3.amazonaws.com/variantcall-scale/hg19.tar.gz"
 default[:saasfee][:variantcall][:scale][:data]        = "#{node[:saasfee][:data]}/hg19"
 default[:saasfee][:variantcall][:scale][:index]       = "#{node[:saasfee][:variantcall][:scale][:data]}/hg19"
 default[:saasfee][:variantcall][:scale][:fa]          = "#{node[:saasfee][:variantcall][:scale][:data]}/hg19.fa"
