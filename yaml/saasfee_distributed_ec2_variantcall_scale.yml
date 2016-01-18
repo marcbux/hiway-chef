@@ -1,10 +1,9 @@
 name: saasfeeDistributedEc2VariantcallScale
 ec2:
     type: m3.large
-    ami: ami-234ecc54
-    region: eu-west-1
+    ami: ami-d05e75b8
+    region: us-east-1
     username: hiway
-    price: 1
 
 cookbooks:
   hadoop:
@@ -21,7 +20,7 @@ attrs:
     hiway:
       scheduler: 'greedyQueue'
       am:
-        memory_mb: '512'
+        memory_mb: '6656'
         vcores: '2'
       worker:
         memory_mb: '6144'
@@ -31,13 +30,14 @@ attrs:
         url_base: 'http://s3.amazonaws.com/1000genomes/phase3/data'
       scale:
         nsamples: '1'
+        url: 'https://s3.amazonaws.com/variantcall-scale/hg19.tar.gz'
   hadoop:
     version: '2.7.1'
     yarn:
       vcores: '2'
       user: 'ubuntu'
       nm:
-        memory_mbs: '6656'
+        memory_mbs: '6144'
     mr:
       user: 'ubuntu'
     tmp_dir: '/mnt/hadoop'
@@ -65,5 +65,4 @@ groups:
         - hadoop::nm
         - saasfee::hiway_worker
         - saasfee::variantcall_scale_worker
-        - saasfee::variantcall_scale_data
         - saasfee::performance

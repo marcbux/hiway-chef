@@ -150,7 +150,7 @@ remote_file "#{node[:saasfee][:data]}/hg19.tar.gz" do
 end
 
 # extract worker data
-bash "get_data_from_hdfs" do
+bash "extract_data" do
   user node[:saasfee][:user]
   group node[:hadoop][:group]
   code <<-EOH
