@@ -4,7 +4,7 @@ bash "run_variant_calling" do
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
-    hiway -w "#{node[:saasfee][:workflows]}/#{node[:saasfee][:variantcall][:workflow]}" -s "#{node[:saasfee][:home]}/variantcall_summary.json"
+    hiway -u "#{node[:saasfee][:home]}/variantcall_summary.json" "#{node[:saasfee][:workflows]}/#{node[:saasfee][:variantcall][:workflow]}"
     stage "#{node[:saasfee][:home]}/variantcall_summary.json" "#{node[:saasfee][:data]}/"
   EOH
   not_if { ::File.exists?( "#{node[:saasfee][:home]}/variantcall_summary.json" ) }

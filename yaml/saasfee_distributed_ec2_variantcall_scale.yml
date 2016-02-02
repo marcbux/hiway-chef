@@ -18,7 +18,7 @@ attrs:
     user: 'ubuntu'
     data: '/mnt/data'
     hiway:
-      scheduler: 'greedyQueue'
+      scheduler: 'greedy'
       am:
         memory_mb: '6656'
         vcores: '2'
