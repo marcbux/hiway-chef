@@ -1,3 +1,8 @@
+# install g++, which is required for building Montage
+package "g++" do
+  options "--force-yes"
+end
+
 # download Montage binaries
 remote_file "#{Chef::Config[:file_cache_path]}/#{node[:saasfee][:montage][:targz]}" do
   source node[:saasfee][:montage][:url]
