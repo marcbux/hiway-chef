@@ -59,6 +59,12 @@ dependencies:
   - recipe: saasfee::variantcall_worker
     local: 
       - saasfee::hiway_worker
+  - recipe: saasfee::montage_client
+    local: 
+      - saasfee::hiway_client
+  - recipe: saasfee::montage_worker
+    local: 
+      - saasfee::hiway_worker
   - recipe: saasfee::variantcall_run_hw
     local: 
       - saasfee::variantcall_client

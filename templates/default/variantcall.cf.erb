@@ -92,27 +92,27 @@ deftask annovar( fun( File ) exonicfun( File ) : <vcf( File )> db( File ) buildv
 
 deftask per-chromosome( fun( File ) exonicfun( File ) : [fa( File ) fai( File ) bt2idx( File )] <fastq1( File )> <fastq2( File )> db( File ) ) {
   sortedbam = per-fastq(
-    fa:     fa
-    fai:    fai
-    fastq1: fastq1
-    fastq2: fastq2
+    fa:     fa,
+    fai:    fai,
+    fastq1: fastq1,
+    fastq2: fastq2,
     db:     db );
   mergedbam = samtools-merge( bam: sortedbam );
   mpileup = samtools-mpileup(
-    sortedbam: mergedbam
-    fa:  fa
+    sortedbam: mergedbam,
+    fa:  fa,
     fai: fai );
   vcf = varscan( mpileup: mpileup );
   fun exonicfun = annovar(
-    vcf:      vcf
-    db:       db
+    vcf:      vcf,
+    db:       db,
     buildver: '<%= node[:saasfee][:variantcall][:reference][:id] %>' );
 }
 
 deftask per-fastq( sortedbam : fa( File ) [fastq1( File ) fastq2( File )] db( File ) ) {
   sam = bwa-align(
-    idx:    bt2idx
-    fastq1: fastq1
+    idx:    bt2idx,
+    fastq1: fastq1,
     fastq2: fastq2 );
   bam = samtools-view( sam: sam );
   sortedbam = samtools-sort( bam: bam );
@@ -128,11 +128,11 @@ db = '<%= node[:saasfee][:variantcall][:annovardb][:directory] %>/<%= node[:saas
 bt2idx = bwa-build( fa: fa );
 fai = samtools-faidx( fa: fa );
 fun exonicfun = per-chromosome(
-  fa:     fa
-  bt2idx: bt2idx
-  fai:    fai
-  fastq1: fastq1
-  fastq2: fastq2
+  fa:     fa,
+  bt2idx: bt2idx,
+  fai:    fai,
+  fastq1: fastq1,
+  fastq2: fastq2,
   db:     db );
 
 // (4) Query

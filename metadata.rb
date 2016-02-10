@@ -155,3 +155,15 @@ attribute "saasfee/variantcall/reads/url_base",
 :description => "Base directory for obtaining 1000 genomes reads files",
 :type => 'string',
 :default => "ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data"
+
+attribute "saasfee/montage/region",
+:display_name => "Montage region",
+:description => "Sky region for Montage workflow",
+:type => 'string',
+:default => "M17"
+
+attribute "saasfee/montage/degree",
+:display_name => "Montage degree",
+:description => "Degree for Montage workflow",
+:type => 'string',
+:default => "4"

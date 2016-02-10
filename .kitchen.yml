@@ -37,28 +37,28 @@ suites:
       - recipe[hadoop::jhs]
       - recipe[saasfee::hiway_client]
       - recipe[saasfee::hiway_worker]
-      - recipe[saasfee::galaxy_worker]
+#      - recipe[saasfee::galaxy_worker]
       - recipe[saasfee::cuneiform_client]
       - recipe[saasfee::cuneiform_worker]
-      - recipe[saasfee::helloworld_client]
-#     - recipe[saasfee::helloworld_run_loc]
-      - recipe[saasfee::wordcount_client]
+#      - recipe[saasfee::helloworld_client]
+#      - recipe[saasfee::helloworld_run_loc]
+#      - recipe[saasfee::wordcount_client]
 #      - recipe[saasfee::wordcount_run_loc]
-      - recipe[saasfee::montage_synth_client]
+#      - recipe[saasfee::montage_synth_client]
 #      - recipe[saasfee::montage_synth_run_hw]
-      - recipe[saasfee::galaxy101_client]
-      - recipe[saasfee::galaxy101_worker]
+#      - recipe[saasfee::galaxy101_client]
+#      - recipe[saasfee::galaxy101_worker]
 #      - recipe[saasfee::galaxy101_run_hw]
-      - recipe[saasfee::variantcall_client]
-      - recipe[saasfee::variantcall_worker]
+#      - recipe[saasfee::variantcall_client]
+#      - recipe[saasfee::variantcall_worker]
 #      - recipe[saasfee::variantcall_run_hw]
 #      - recipe[saasfee::variantcall_scale_client]
 #      - recipe[saasfee::variantcall_scale_worker]
 #      - recipe[saasfee::variantcall_scale_data]
 #      - recipe[saasfee::RNAseq_client]
 #      - recipe[saasfee::RNAseq_worker]
-#      - recipe[saasfee::montage_m17_4_client]
-#      - recipe[saasfee::montage_m17_4_worker]
+      - recipe[saasfee::montage_client]
+      - recipe[saasfee::montage_worker]
 #      - recipe[saasfee::performance]
 
     attributes:
@@ -91,6 +91,8 @@ suites:
                memory_mb: "1536"
            private_ips: ["10.0.2.15"]
            public_ips: ["10.0.2.15"]
+           montage:
+             degree: '0.5'
          hdfs:
            user: 'vagrant'
          kmon:

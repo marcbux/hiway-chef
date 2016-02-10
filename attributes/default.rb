@@ -218,14 +218,15 @@ default[:saasfee][:variantcall][:scale][:gz]          = { "HG00410" => ["SRR5936
                                                           "HG01936" => ["SRR395758", "SRR398787", "SRR398843", "SRR398778", "SRR394428", "SRR396832", "SRR395746", "SRR394567"],
                                                           "HG03851" => ["SRR789140", "SRR789500", "SRR789547", "SRR788887", "SRR789402", "SRR789180", "SRR789364", "SRR788879"] }
 
+default[:saasfee][:montage][:degree] = "0.5"
+default[:saasfee][:montage][:region] = "M17"
+default[:saasfee][:montage][:version] = "4.0"
+default[:saasfee][:montage][:targz] = "Montage_v#{node[:saasfee][:montage][:version]}.tar.gz"
+default[:saasfee][:montage][:home] = "#{node[:saasfee][:software][:dir]}/montage"
+default[:saasfee][:montage][:url] = "http://montage.ipac.caltech.edu/download/#{node[:saasfee][:montage][:targz]}"
+
 default[:saasfee][:montage_synthetic][:workflow]       = "Montage_25.xml"
 default[:saasfee][:montage_synthetic][:url]            = "https://confluence.pegasus.isi.edu/download/attachments/2490624/#{node[:saasfee][:montage_synthetic][:workflow]}"
-
-default[:saasfee][:montage_m17_4][:workflow]           = "montage_m17_4.dax"
-default[:saasfee][:montage_m17_4][:montage][:version]  = "3.3"
-default[:saasfee][:montage_m17_4][:montage][:targz]    = "Montage_v#{node[:saasfee][:montage_m17_4][:montage][:version]}.tar.gz"
-default[:saasfee][:montage_m17_4][:montage][:home]     = "#{node[:saasfee][:software][:dir]}/Montage_v#{node[:saasfee][:montage_m17_4][:montage][:version]}"
-default[:saasfee][:montage_m17_4][:montage][:url]      = "http://montage.ipac.caltech.edu/download/#{node[:saasfee][:montage_m17_4][:montage][:targz]}"
 
 default[:saasfee][:galaxy101][:workflow]               = "galaxy101.ga"
 default[:saasfee][:galaxy101][:exons][:bed]            = "Exons.bed"
