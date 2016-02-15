@@ -50,8 +50,8 @@ bash "obtain_montage_input_data" do
   code <<-EOH
   set -e && set -o pipefail
     cd #{node[:saasfee][:data]}/montage
-    mDAG 2mass j #{node[:saasfee][:montage][:region]} #{node[:saasfee][:montage][:degree]} #{node[:saasfee][:montage][:degree]} 0.000278 #{node[:saasfee][:data]}/montage file:/ | grep -o '[0-9_]*' > #{Chef::Config[:file_cache_path]}/id
-    sed -i "s#_`cat #{Chef::Config[:file_cache_path]}/id`##g" #{node[:saasfee][:data]}/montage/*
+    mDAG 2mass j #{node[:saasfee][:montage][:region]} #{node[:saasfee][:montage][:degree]} #{node[:saasfee][:montage][:degree]} 0.000278 #{node[:saasfee][:data]}/montage file:/ | grep -o '[0-9_]*' > #{node[:saasfee][:data]}/id
+    sed -i "s#_`cat #{node[:saasfee][:data]}/id`##g" #{node[:saasfee][:data]}/montage/*
     for i in 2mass big_region.hdr cache.list cimages dag.xml diffs.tbl images.tbl pimages.tbl region rimages.tbl shrunken.hdr slist.tbl statfile.tbl url.list; do
       sed -i "s#file=\\"$i#file=\\"montage/$i#g" #{node[:saasfee][:data]}/montage/dag.xml
     done
