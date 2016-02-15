@@ -68,7 +68,7 @@ bash "move_montage_input_to_hdfs" do
   code <<-EOH
   set -e && set -o pipefail
     #{node[:hadoop][:home]}/bin/hdfs dfs -put #{node[:saasfee][:data]}/montage #{node[:saasfee][:hiway][:hdfs][:basedir]}/montage
-    rm #{node[:saasfee][:data]}/montage
+    rm -r #{node[:saasfee][:data]}/montage
   EOH
   not_if "#{node[:hadoop][:home]}/bin/hdfs dfs -test -e #{node[:saasfee][:hiway][:hdfs][:basedir]}/montage"
 end
