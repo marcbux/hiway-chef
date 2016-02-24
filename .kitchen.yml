@@ -38,9 +38,9 @@ suites:
       - recipe[saasfee::hiway_client]
       - recipe[saasfee::hiway_worker]
 #      - recipe[saasfee::galaxy_worker]
-      - recipe[saasfee::cuneiform_client]
-      - recipe[saasfee::cuneiform_worker]
-#      - recipe[saasfee::helloworld_client]
+#      - recipe[saasfee::cuneiform_client]
+#      - recipe[saasfee::cuneiform_worker]
+      - recipe[saasfee::helloworld_client]
 #      - recipe[saasfee::helloworld_run_loc]
 #      - recipe[saasfee::wordcount_client]
 #      - recipe[saasfee::wordcount_run_loc]
@@ -57,8 +57,8 @@ suites:
 #      - recipe[saasfee::variantcall_scale_data]
 #      - recipe[saasfee::RNAseq_client]
 #      - recipe[saasfee::RNAseq_worker]
-      - recipe[saasfee::montage_client]
-      - recipe[saasfee::montage_worker]
+#      - recipe[saasfee::montage_client]
+#      - recipe[saasfee::montage_worker]
 #      - recipe[saasfee::performance]
 
     attributes:

@@ -26,7 +26,7 @@ attrs:
         memory_mb: '1536'
         vcores: '1'
     montage:
-      degree: '4'
+      degree: '0.25'
   hadoop:
     version: '2.7.1'
     yarn:
