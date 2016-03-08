@@ -19,7 +19,7 @@ attrs:
     data: '/mnt/data'
     hiway:
       am:
-        memory_mb: '512'
+        memory_mb: '1024'
         vcores: '1'
       worker:
         memory_mb: '6144'
@@ -34,7 +34,7 @@ attrs:
     version: '2.7.1'
     yarn:
       nm:
-        memory_mbs: '6656'
+        memory_mbs: '7168'
       vcores: '3'
       user: 'ubuntu'
     mr:

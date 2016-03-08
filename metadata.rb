@@ -39,7 +39,6 @@ recipe           "saasfee::RNAseq_worker", "Runs the TRAPLINE RNAseq Galaxy Work
 #recipe           "saasfee::montage_m17_4_client", "Prepares the Montage DAX Workflow on the Client"
 #recipe           "saasfee::montage_m17_4_worker", "Prepares the Montage DAX Workflow on the Workers"
 
-depends 'java'
 depends 'git'
 depends 'hadoop'
 depends 'kagent'
@@ -82,7 +81,7 @@ attribute "saasfee/hiway/am/memory_mb",
 :display_name => "Hi-WAY Application Master Memory in MB",
 :description => "Amount of memory in MB to be requested to run the application master.",
 :type => 'string',
-:default => 512
+:default => 1024
 
 attribute "saasfee/hiway/am/vcores",
 :display_name => "Hi-WAY Application Master Number of Virtual Cores",

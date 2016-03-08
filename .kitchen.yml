@@ -2,7 +2,7 @@
 driver:
   name: vagrant
   customize:
-    memory: 4096
+    memory: 3584
     cpus: 2
     natdnshostresolver1: "on"
     natdnsproxy1: "on"
@@ -80,15 +80,11 @@ suites:
               user: 'vagrant'
               vcores: "3"
               nm:
-                memory_mbs: "3584"
+                memory_mbs: "3072"
             mr:
               user: 'vagrant'
          saasfee:
            user: 'vagrant'
-           hiway:
-             worker:
-               vcores: "1"
-               memory_mb: "1536"
            private_ips: ["10.0.2.15"]
            public_ips: ["10.0.2.15"]
            montage:
