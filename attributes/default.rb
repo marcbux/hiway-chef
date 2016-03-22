@@ -38,6 +38,7 @@ default[:saasfee][:galaxy][:user][:password]          = "#{node[:saasfee][:galax
 default[:saasfee][:galaxy][:user][:email]             = "hiway@hiway.com"
 
 default[:saasfee][:helloworld][:workflow]             = "helloworld.cf"
+default[:saasfee][:kmeans][:workflow]                 = "kmeans.cf"
 
 default[:saasfee][:wordcount][:workflow]              = "wordcount.cf"
 default[:saasfee][:wordcount][:input][:url]           = "http://stateoftheunion.onetwothree.net/texts/stateoftheunion1790-2014.txt.zip"

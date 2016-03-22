@@ -1,0 +1,54 @@
+name: saasfeeStandaloneEc2Kmeans
+ec2:
+    type: m3.large
+    ami: ami-234ecc54
+    region: eu-west-1
+    username: hiway
+
+cookbooks:
+  hadoop:
+    github: "marcbux/apache-hadoop-chef"
+    branch: "master"
+  saasfee:
+    github: "marcbux/hiway-chef"
+    branch: "master"
+
+attrs:
+  saasfee:
+    user: 'ubuntu'
+    data: '/mnt/data'
+    hiway:
+      am:
+        memory_mb: '1024'
+        vcores: '1'
+      worker:
+        memory_mb: '3072'
+        vcores: '1'
+  hadoop:
+    version: '2.7.1'
+    yarn:
+      nm:
+        memory_mbs: '7168'
+      vcores: '3'
+      user: 'ubuntu'
+    mr:
+      user: 'ubuntu'
+    tmp_dir: '/mnt/hadoop'
+    data_dir: '/mnt/hadoop'
+  hdfs:
+    user: 'ubuntu'
+    
+groups:
+  masterworker:
+    size: 1
+    recipes:
+      - hadoop::nn
+      - hadoop::rm
+      - hadoop::dn
+      - hadoop::nm
+      - hadoop::jhs
+      - saasfee::cuneiform_client
+      - saasfee::hiway_client
+      - saasfee::kmeans_client
+      - saasfee::cuneiform_worker
+      - saasfee::hiway_worker

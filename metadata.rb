@@ -24,6 +24,7 @@ recipe           "saasfee::helloworld_client", "Prepares the Hello World Cuneifo
 recipe           "saasfee::helloworld_run_loc", "Runs the Hello World Cuneiform workflow locally on the Client via Cuneiform"
 recipe           "saasfee::wordcount_client", "Prepares the Word Count Cuneiform workflow on the Client"
 recipe           "saasfee::wordcount_run_loc", "Runs the Word Count Cuneiform workflow locally on the Client via Cuneiform"
+recipe           "saasfee::kmeans_client", "Prepares the k-means Cuneiform workflow on the Client"
 recipe           "saasfee::montage_synth_client", "Prepares the synthetic Montage DAX workflow on the Client"
 recipe           "saasfee::montage_synth_run_hw", "Runs the synthetic Montage DAX workflow on Hi-WAY from the Client"
 recipe           "saasfee::galaxy101_client", "Prepares the Galaxy 101 Galaxy workflow on the Client"

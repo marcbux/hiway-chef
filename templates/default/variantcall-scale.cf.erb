@@ -89,9 +89,9 @@ deftask annovar( fun( File ) exonicfun( File ) : vcf( File ) )in bash *{
 % <%= sample %>: Input data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-<%= sample %>_fastq1 = <% runs.each do |run| %> '<%= node[:saasfee][:variantcall][:reads][:url_base] %>/<%= sample %>/sequence_read/<%= run %>_1.filt.fastq.gz'<% end -%>;
+<%= sample %>_fastq1 = <% runs.each do |run| %> "<%= node[:saasfee][:variantcall][:reads][:url_base] %>/<%= sample %>/sequence_read/<%= run %>_1.filt.fastq.gz"<% end -%>;
 
-<%= sample %>_fastq2 = <% runs.each do |run| %> '<%= node[:saasfee][:variantcall][:reads][:url_base] %>/<%= sample %>/sequence_read/<%= run %>_2.filt.fastq.gz'<% end -%>;
+<%= sample %>_fastq2 = <% runs.each do |run| %> "<%= node[:saasfee][:variantcall][:reads][:url_base] %>/<%= sample %>/sequence_read/<%= run %>_2.filt.fastq.gz"<% end -%>;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % <%= sample %>: Workflow definition

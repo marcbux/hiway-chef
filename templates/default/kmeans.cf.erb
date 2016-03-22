@@ -1,0 +1,139 @@
+deftask gen_data( data( File ) : N k ) in python *{
+
+import numpy as np
+import random
+
+random.seed( 42 )
+
+N = int( N )
+k = int( k )
+
+n = float(N)/k
+X = []
+for i in range(k):
+  c = (random.uniform(-1, 1), random.uniform(-1, 1))
+  s = random.uniform(0.05,0.2)
+  x = []
+  while len(x) < n:
+    a, b = np.array([np.random.normal(c[0], s), np.random.normal(c[1], s)])
+    if abs(a) < 1 and abs(b) < 1:
+      x.append([a,b])
+  X.extend(x)
+X = np.array(X)[:N]
+
+data = "data.npy"
+np.save( data, X )
+}*
+
+deftask init_state( state( File ) : data( File ) k ) in python *{
+
+import numpy as np
+import random
+
+X = np.load( data )
+k = int( k )
+
+mu0 = random.sample( X, k )
+
+state = "state.npy"
+np.save( state, mu0 )
+}*
+
+deftask cluster( cls( File ) : data( File ) state( File ) ) in python *{
+
+import numpy as np
+
+X = np.load( data )
+mu = np.load( state )
+
+clusters  = {}
+for x in X:
+  bestmukey = min( [(i[ 0 ], np.linalg.norm( x-mu[ i[ 0 ] ] ) ) \
+    for i in enumerate( mu )], key=lambda t:t[ 1 ])[ 0 ]
+  try:
+    clusters[ bestmukey ].append(x)
+  except KeyError:
+    clusters[ bestmukey ] = [ x ]
+
+cls = "cls.npy"
+np.save( cls, clusters )
+}*
+
+deftask reevaluate( state1( File ) : cls( File ) ) in python *{
+
+import numpy as np
+
+clusters = np.load( cls ).item()
+print( clusters )
+
+newmu = []
+keys = sorted( clusters.keys() )
+for k in keys:
+  newmu.append( np.mean( clusters[ k ], axis = 0 ) )
+
+state1 = "state1.npy"
+np.save( state1, newmu )
+}*
+
+deftask has_converged( <conv> : old( File ) new( File ) ) in python *{
+
+import numpy as np
+
+oldmu = np.load( old )
+mu    = np.load( new )
+
+if set([tuple(a) for a in mu]) == set([tuple(a) for a in oldmu]):
+  conv = ["true"]
+else:
+  conv = []
+}*
+
+deftask plot( png( File ) : cls( File ) k )in python *{
+
+import numpy as np
+import matplotlib as mpl
+mpl.use('Agg')
+import matplotlib.pyplot as plt
+
+clusters = np.load( cls ).item()
+k = int( k )
+col = ["r", "g", "b", "c"]
+
+for i in range( k ):
+
+  N = np.array( clusters[ i ] )
+  Nt = N.transpose()
+  Nx = Nt[ 0 ]
+  Ny = Nt[ 1 ]
+
+  plt.plot( Nx, Ny, col[ i ]+"." )
+
+plt.axis( [-1.1, 1.1, -1.1, 1.1] )
+png = "fig.png"
+plt.savefig( png )
+}*
+
+deftask find_clusters( cls( File ) : data( File ) state( File ) ) {
+
+  clusters = cluster( data: data, state: state );
+  state1   = reevaluate( cls: clusters );
+
+  cls = if has_converged( old: state, new: state1 )
+        then
+          clusters
+        else
+          find_clusters( data: data, state: state1 )
+        end;
+}
+
+k = 4;
+N = 1600;
+
+X   = gen_data( N: N, k: k );
+mu0 = init_state( data: X, k: k );
+
+cls = find_clusters( data: X, state: mu0 );
+
+plt = plot( cls: cls, k: k );
+
+plt;
