@@ -1,5 +1,5 @@
 # update tool shed: install join
-bash "intall_join" do
+bash "install_join" do
   user node[:saasfee][:user]
   group node[:hadoop][:group]
   environment "PYTHON_EGG_CACHE" => "#{node[:saasfee][:home]}/.python-eggs"

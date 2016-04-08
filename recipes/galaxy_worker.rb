@@ -27,6 +27,7 @@ bash "install_bioblend" do
   set -e && set -o pipefail
     pip install boto==2.9.7
     pip install bioblend
+    pip install pycrypto
   EOH
   not_if "pip list | grep boto (2.9.7)"
 end
