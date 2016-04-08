@@ -61,8 +61,7 @@ bash "compile_erlang" do
 end
 
 bash "install_erlang" do
-  user node[:saasfee][:user]
-  group node[:hadoop][:group]
+  user "root"
   cwd erlang_dir
   code <<-EOH
   set -e && set -o pipefail
@@ -96,7 +95,7 @@ bash "build_rebar" do
 end
 
 # create link
-link "/usr/bin//rebar" do
+link "/usr/bin/rebar" do
   user node[:saasfee][:user]
   group node[:hadoop][:group]
   to "#{rebar_dir}/rebar"
@@ -125,8 +124,7 @@ bash "compile_getopt" do
 end
 
 link "/usr/local/lib/erlang/lib/getopt-0.8.2" do
-  user node[:saasfee][:user]
-  group node[:hadoop][:group]
+  user "root"
   to "#{getopt_dir}/ebin"
 end
 
