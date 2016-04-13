@@ -109,6 +109,7 @@ effi_dir = "#{node[:saasfee][:software][:dir]}/effi-0.1.0"
 git "git_clone_effi" do
   user node[:saasfee][:user]
   group node[:hadoop][:group]
+  revision "0.1.0-release"
   action :sync
   repository effi_githuburl
   destination effi_dir
