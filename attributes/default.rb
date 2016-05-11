@@ -20,10 +20,9 @@ default[:saasfee][:hiway][:worker][:memory_mb]        = 1024
 default[:saasfee][:hiway][:worker][:vcores]           = 1
 default[:saasfee][:hiway][:scheduler]                 = "dataAware"
 
-default[:saasfee][:cuneiform][:release][:version]     = "2.0.3-RELEASE"
-default[:saasfee][:cuneiform][:release][:targz]       = "cuneiform-dist-#{node[:saasfee][:cuneiform][:release][:version]}.tar.gz"
-default[:saasfee][:cuneiform][:release][:url]         = "https://github.com/joergen7/cuneiform/releases/download/#{node[:saasfee][:cuneiform][:release][:version]}/#{node[:saasfee][:cuneiform][:release][:targz]}"
-default[:saasfee][:cuneiform][:github_url]            = "https://github.com/joergen7/cuneiform.git"
+default[:saasfee][:cuneiform][:release][:version]     = "2.0.4-RELEASE"
+default[:saasfee][:cuneiform][:release][:jar]         = "cuneiform-dist-#{node[:saasfee][:cuneiform][:release][:version]}.jar"
+default[:saasfee][:cuneiform][:release][:url]         = "https://github.com/joergen7/cuneiform/releases/download/#{node[:saasfee][:cuneiform][:release][:version]}/#{node[:saasfee][:cuneiform][:release][:jar]}"
 default[:saasfee][:cuneiform][:home]                  = "#{node[:saasfee][:software][:dir]}/cuneiform"
 default[:saasfee][:cuneiform][:r_packages]            = "#{node[:saasfee][:software][:dir]}/r_packages"
 default[:saasfee][:cuneiform][:cache]                 = "/tmp/cf-cache"

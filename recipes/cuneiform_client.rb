@@ -23,68 +23,23 @@ bash 'enable_x11_forwarding' do
   not_if "grep -q \"X11Forwarding yes\" /etc/ssh/sshd_config"
 end
 
-# adjust resolution of the terminal
-#bash 'adjust_resolution' do
-#  user "root"
-#  code <<-EOH
-#  set -e && set -o pipefail
-#    echo "GRUB_GFXMODE=#{node[:saasfee][:resolution]}" >> /etc/default/grub
-#    sed -i s/GRUB_GFXMODE=auto/GRUB_GFXMODE=#{node[:saasfee][:resolution]}/ /etc/grub.d/00_header
-#    update-grub2
-#  EOH
-#  not_if "grep -q #{node[:saasfee][:resolution]} /etc/default/grub && grep -q #{node[:saasfee][:resolution]} /etc/grub.d/00_header"
-#end
+# create home directory
+directory "#{node[:saasfee][:cuneiform][:home]}" do
+  owner node[:saasfee][:user]
+  group node[:hadoop][:group]
+  mode "755"
+  recursive true
+  action :create
+  not_if { File.directory?("#{node[:saasfee][:cuneiform][:home]}") }
+end
 
-if node[:saasfee][:release] == "true"
-  # download Cuneiform binaries
-  remote_file "#{Chef::Config[:file_cache_path]}/#{node[:saasfee][:cuneiform][:release][:targz]}" do
-    source node[:saasfee][:cuneiform][:release][:url]
-    owner node[:saasfee][:user]
-    group node[:hadoop][:group]
-    mode "775"
-    action :create_if_missing
-  end
-  
-  # install Cuneiform binaries
-  bash "install_cuneiform" do
-    user node[:saasfee][:user]
-    group node[:hadoop][:group]
-    code <<-EOH
-    set -e && set -o pipefail
-      tar xvfz #{Chef::Config[:file_cache_path]}/#{node[:saasfee][:cuneiform][:release][:targz]} -C #{node[:saasfee][:software][:dir]}
-    EOH
-    not_if { ::File.exist?("#{node[:saasfee][:cuneiform][:home]}") }
-  end
-else
-  # install Git
-  include_recipe "git"
-  
-  # install Maven
-  package "maven" do
-    options "--force-yes"
-  end
-  
-  # git clone Cuneiform
-  git "/tmp/cuneiform" do
-    repository node[:saasfee][:cuneiform][:github_url]
-    reference "master"
-    user node[:saasfee][:user]
-    group node[:hadoop][:group]
-    action :sync
-  end
-
-  # maven build Cuneiform
-  bash 'build-cuneiform' do
-    user node[:saasfee][:user]
-    group node[:hadoop][:group]
-    code <<-EOH
-    set -e && set -o pipefail
-      mvn -f /tmp/cuneiform/pom.xml package
-      version=$(grep -Po '(?<=^\t<version>)[^<]*(?=</version>)' /tmp/cuneiform/pom.xml)
-      cp -r /tmp/cuneiform/cuneiform-dist/target/cuneiform-dist-$version/cuneiform-$version #{node[:saasfee][:cuneiform][:home]}
-    EOH
-    not_if { ::File.exist?("#{node[:saasfee][:cuneiform][:home]}") }
-  end
+# download Cuneiform binaries
+remote_file "#{node[:saasfee][:cuneiform][:home]}/#{node[:saasfee][:cuneiform][:release][:jar]}" do
+  source node[:saasfee][:cuneiform][:release][:url]
+  owner node[:saasfee][:user]
+  group node[:hadoop][:group]
+  mode "775"
+  action :create_if_missing
 end
 
 # add script for calling Cuneiform IDE
