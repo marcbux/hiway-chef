@@ -2,17 +2,20 @@
 
 // BWA
 deftask bwa-build( idx( File ) : fa( File ) )in bash *{
+  idx=bwa.tar
   bwa index -p bwa-index $fa
   tar cf $idx --remove-files bwa-index.*
 }*
 
 deftask bwa-align( sam( File ) : idx( File ) [fastq1( File ) fastq2( File )] )in bash *{
+  sam=bwa.sam
   tar xf $idx
   bwa mem -t <%= node[:saasfee][:variantcall][:threads] %> bwa-index $fastq1 $fastq2 > $sam
 }*
 
 // Bowtie 2
 deftask bowtie2-build( idx( File ) : fa( File ) )in bash *{
+  idx=bowtie2.tar
   bowtie2-build $fa bt2idx
   if [ "$?" -ne "0" ]
   then
@@ -23,6 +26,7 @@ deftask bowtie2-build( idx( File ) : fa( File ) )in bash *{
 }*
 
 deftask bowtie2-align( sam( File ) : idx( File ) [fastq1( File ) fastq2( File )] )in bash *{
+  sam=bowtie2.sam
   tar xf $idx
   if [ "$?" -ne "0" ]
   then
@@ -42,20 +46,22 @@ deftask bowtie2-align( sam( File ) : idx( File ) [fastq1( File ) fastq2( File )]
 
 // SAMtools
 deftask samtools-view( bam( File ) : sam( File ) )in bash *{
+  bam=$sam.bam
   samtools view -bS $sam > $bam
 }*
 
 deftask samtools-faidx( fai( File ) : fa( File ) )in bash *{
-  samtools faidx $fa
   fai=$fa.fai
+  samtools faidx $fa
 }*
 
 deftask samtools-sort( sortedbam( File ) : bam( File ) )in bash *{
-  sortedbam=alignment-sorted.bam
+  sortedbam=$bam.sorted.bam
   samtools sort -m `expr <%= node[:saasfee][:variantcall][:memory_mb] %> \* 512 \* 1024` $bam alignment-sorted
 }*
 
 deftask samtools-mpileup( mpileup( File ) : sortedbam( File ) [fa( File ) fai( File )] )in bash *{
+  mpileup=$sortedbam.mpileup
   ln -s $fai $fa.fai
   samtools mpileup -f $fa $sortedbam > $mpileup
 }*
@@ -70,6 +76,7 @@ deftask samtools-merge( merged( File ) : <bam( File )> )in bash *{
     then
       merged=$bam
     else
+      merged=merged.bam
       samtools merge -f $merged ${bam[@]}
     fi
   fi
@@ -77,6 +84,7 @@ deftask samtools-merge( merged( File ) : <bam( File )> )in bash *{
 
 // VarScan
 deftask varscan( vcf( File ) : mpileup( File ) )in bash *{
+  vcf=$mpileup.vcf
   varscan mpileup2snp $mpileup --output-vcf --p-value 99e-02 > $vcf
 }*
 
@@ -90,13 +98,11 @@ deftask annovar( fun( File ) exonicfun( File ) : <vcf( File )> db( File ) buildv
   annotate_variation.pl -buildver $buildver -geneanno -outfile table - db/
 }*
 
-deftask per-chromosome( fun( File ) exonicfun( File ) : [fa( File ) fai( File ) bt2idx( File )] <fastq1( File )> <fastq2( File )> db( File ) ) {
+deftask per-chromosome( fun( File ) exonicfun( File ) : [fa( File ) fai( File ) idx( File )] <fastq1( File )> <fastq2( File )> db( File ) ) {
   sortedbam = per-fastq(
-    fa:     fa,
-    fai:    fai,
+    idx:    idx,
     fastq1: fastq1,
-    fastq2: fastq2,
-    db:     db );
+    fastq2: fastq2 );
   mergedbam = samtools-merge( bam: sortedbam );
   mpileup = samtools-mpileup(
     sortedbam: mergedbam,
@@ -109,9 +115,9 @@ deftask per-chromosome( fun( File ) exonicfun( File ) : [fa( File ) fai( File ) 
     buildver: "<%= node[:saasfee][:variantcall][:reference][:id] %>" );
 }
 
-deftask per-fastq( sortedbam : fa( File ) [fastq1( File ) fastq2( File )] db( File ) ) {
+deftask per-fastq( sortedbam : idx( File ) [fastq1( File ) fastq2( File )] ) {
   sam = bwa-align(
-    idx:    bt2idx,
+    idx:    idx,
     fastq1: fastq1,
     fastq2: fastq2 );
   bam = samtools-view( sam: sam );
@@ -125,11 +131,11 @@ fa =<% @chromosomes.each do |chromosome| -%> "<%= node[:saasfee][:variantcall][:
 db = "<%= node[:saasfee][:variantcall][:annovardb][:directory] %>/<%= node[:saasfee][:variantcall][:annovardb][:file] %>";
 
 // (3) Workflow Definition
-bt2idx = bwa-build( fa: fa );
+idx = bwa-build( fa: fa );
 fai = samtools-faidx( fa: fa );
 fun exonicfun = per-chromosome(
   fa:     fa,
-  bt2idx: bt2idx,
+  idx:    idx,
   fai:    fai,
   fastq1: fastq1,
   fastq2: fastq2,

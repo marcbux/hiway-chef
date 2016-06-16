@@ -90,7 +90,7 @@ bash "generate_api_key" do
   group node[:hadoop][:group]
   code <<-EOH
   set -e && set -o pipefail
-    curl --data "username=#{node[:saasfee][:galaxy][:user][:name]}&password=#{node[:saasfee][:galaxy][:user][:password]}&email=#{node[:saasfee][:galaxy][:user][:email]}" "http://localhost:8080/api/users?key=#{node[:saasfee][:galaxy][:master_api_key]}" | grep "id" | sed 's/[\", ]//g' | sed 's/id://' > #{node[:saasfee][:galaxy][:home]}/id
+    curl --data "username=#{node[:saasfee][:galaxy][:user][:name]}&password=#{node[:saasfee][:galaxy][:user][:password]}&email=#{node[:saasfee][:galaxy][:user][:email]}" "http://localhost:8080/api/users?key=#{node[:saasfee][:galaxy][:master_api_key]}" | sed 's/[\", ]//g' | grep -o "id:[^}]*" | sed 's/id://' > #{node[:saasfee][:galaxy][:home]}/id
     curl -X POST http://localhost:8080/api/users/`cat #{node[:saasfee][:galaxy][:home]}/id`/api_key?key=#{node[:saasfee][:galaxy][:master_api_key]} | sed 's/\"//g' > #{node[:saasfee][:galaxy][:home]}/api
   EOH
   not_if { ::File.exists?( "#{node[:saasfee][:galaxy][:home]}/api" ) }

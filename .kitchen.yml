@@ -39,16 +39,16 @@ suites:
       - recipe[saasfee::hiway_worker]
       - recipe[saasfee::cuneiform_client]
       - recipe[saasfee::cuneiform_worker]
-#      - recipe[saasfee::galaxy_worker]
+      - recipe[saasfee::galaxy_worker]
       - recipe[saasfee::helloworld_client]
 #      - recipe[saasfee::helloworld_run_loc]
       - recipe[saasfee::wordcount_client]
 #      - recipe[saasfee::wordcount_run_loc]
       - recipe[saasfee::kmeans_client]
-#      - recipe[saasfee::montage_synth_client]
+      - recipe[saasfee::montage_synth_client]
 #      - recipe[saasfee::montage_synth_run_hw]
-#      - recipe[saasfee::galaxy101_client]
-#      - recipe[saasfee::galaxy101_worker]
+      - recipe[saasfee::galaxy101_client]
+      - recipe[saasfee::galaxy101_worker]
 #      - recipe[saasfee::galaxy101_run_hw]
       - recipe[saasfee::variantcall_client]
       - recipe[saasfee::variantcall_worker]
@@ -64,9 +64,9 @@ suites:
 
     attributes:
          hadoop:
-#            container_cleanup_delay_sec: "604800"
-            container_cleanup_delay_sec: "0"
-            version: "2.7.1"
+            container_cleanup_delay_sec: "604800"
+#            container_cleanup_delay_sec: "0"
+            version: "2.7.2"
             nn:
                private_ips: ["10.0.2.15"]
             dn:
