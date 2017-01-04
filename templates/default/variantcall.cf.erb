@@ -57,7 +57,7 @@ deftask samtools-faidx( fai( File ) : fa( File ) )in bash *{
 
 deftask samtools-sort( sortedbam( File ) : bam( File ) )in bash *{
   sortedbam=$bam.sorted.bam
-  samtools sort -m `expr <%= node[:saasfee][:variantcall][:memory_mb] %> \* 512 \* 1024` $bam alignment-sorted
+  samtools sort -m `expr <%= node[:saasfee][:variantcall][:memory_mb] %> \* 512 \* 1024` $bam $bam.sorted
 }*
 
 deftask samtools-mpileup( mpileup( File ) : sortedbam( File ) [fa( File ) fai( File )] )in bash *{

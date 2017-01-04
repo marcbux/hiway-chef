@@ -103,13 +103,12 @@ end
 
 # (4) install Cuneiform's Erlang Foreign Function Interface
 effi_githuburl = "https://github.com/joergen7/effi.git"
-effi_vsn = "master"
-effi_dir = "#{node[:saasfee][:software][:dir]}/effi-0.1.0"
+effi_vsn = "94920f5f610c3202fa251e5025d8ad0180163eb8"
+effi_dir = "#{node[:saasfee][:software][:dir]}/effi"
 
 git "git_clone_effi" do
   user node[:saasfee][:user]
   group node[:hadoop][:group]
-  revision "0.1.0-release"
   action :sync
   repository effi_githuburl
   destination effi_dir
